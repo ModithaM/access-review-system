@@ -68,3 +68,27 @@ exports.updatePublicSpace = async (req, res) => {
         });
     }
 };
+
+// delete a public space by ID
+exports.deletePublicSpace = async (req, res) => {
+    try {
+        const deletedSpace = await PublicSpace.findByIdAndDelete(req.params.id);
+
+        // if public space not found with id
+        if(!deletedSpace) {
+            return res.status(404).json({
+                success: false,
+                message: 'Public space not found'
+            });
+        }
+        res.status(200).json({
+            success: true,
+            message: 'Public space deleted successfully'
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
