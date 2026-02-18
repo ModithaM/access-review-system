@@ -36,3 +36,35 @@ exports.getAllPublicSpaces = async (req, res) => {
         });
     }
 };
+
+// update a public space by ID
+exports.updatePublicSpace = async (req, res) => {
+    try {
+        const updatedSpace = await PublicSpace.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true, // return the updated document
+                runValidators: true // run schema validators on update
+            }
+        );
+
+        // if public space not found with id
+        if(!updatedSpace) {
+            return res.status(404).json({
+                success: false,
+                message: 'Public space not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: updatedSpace
+        })
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
