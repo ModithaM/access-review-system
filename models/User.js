@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const bcrypt = require("bcryptjs");
 
-const adminSchema = new Schema({
+const userSchema = new Schema({
   removed: {
     type: Boolean,
     default: false,
@@ -23,6 +23,12 @@ const adminSchema = new Schema({
     type: String,
     required: true,
   },
+  userType: {
+    type: String,
+    enum: ["admin", "user", "guest"],
+    default: "user",
+    required: true,
+  },
   name: { type: String, required: true },
   surname: { type: String, required: true },
   photo: {
@@ -39,13 +45,13 @@ const adminSchema = new Schema({
 });
 
 // generating a hash
-adminSchema.methods.generateHash = function (password) {
+userSchema.methods.generateHash = function (password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(), null);
 };
 
 // checking if password is valid
-adminSchema.methods.validPassword = function (password) {
+userSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-module.exports = mongoose.model("Admin", adminSchema);
+module.exports = mongoose.model("User", userSchema);
