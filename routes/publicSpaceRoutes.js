@@ -8,4 +8,7 @@ router.post('/', publicSpaceController.createPublicSpace);
 // Route to get all public spaces
 router.get('/', publicSpaceController.getAllPublicSpaces);
 
+// Route to update a public space by ID
+router.patch('/', publicSpaceController.updatePublicSpace);
+
 module.exports = router;
