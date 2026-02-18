@@ -92,3 +92,25 @@ exports.deletePublicSpace = async (req, res) => {
         });
     }
 };
+
+// Find space by name (Partial match, Case insensitive)
+exports.findPublicSpacesByName = async (req, res) => {
+    try {
+        const nameQuery = req.params.name;
+
+        const spaces = await PublicSpace.find({
+            name: { $regex: nameQuery, $options: 'i' } // 'i' for case insensitive
+        });
+
+        res.status(200).json({
+            success: true,
+            count: spaces.length,
+            data: spaces
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
