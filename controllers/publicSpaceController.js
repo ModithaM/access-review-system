@@ -18,3 +18,21 @@ exports.createPublicSpace = async (req, res) => {
         });
     }
 };
+
+// Get all public spaces from DB
+exports.getAllPublicSpaces = async (req, res) => {
+    try {
+        const spaces = await PublicSpace.find();
+
+        res.status(200).json({
+            success: true,
+            count: spaces.length,
+            data: spaces
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
