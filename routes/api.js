@@ -422,6 +422,34 @@ router.route("/public-space/create").post(catchErrors(publicSpaceController.crea
  *         description: List of spaces
  */
 router.route("/public-space/list").get(catchErrors(publicSpaceController.getAllPublicSpaces));
+
+/**
+ * @swagger
+ * /api/public-space/update/{id}:
+ *   patch:
+ *     summary: Update an existing public space
+ *     tags: [Public Spaces]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Public space ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             description: Fields to update on the public space
+ *     responses:
+ *       200:
+ *         description: Updated successfully
+ *       404:
+ *         description: Public space not found
+ */
+router.route("/public-space/update/:id").patch(isValidToken, catchErrors(publicSpaceController.updatePublicSpace));
 //Public spaces management ends here
 
 //___________________________________ Review management _________________________________
