@@ -1,9 +1,8 @@
 const express = require("express");
-const { catchErrors } = require("../handlers/errorHandlers");
-
 const router = express.Router();
-
+const { catchErrors } = require("../handlers/errorHandlers");
 const userController = require("../controllers/userController");
+const publicSpaceController = require('../controllers/publicSpaceController');
 
 /**
  * @swagger
@@ -375,6 +374,10 @@ router
 //list of users ends here
 
 //_______________________________ Public spaces management_______________________________
+router.route("/public-space/create")
+  .post(catchErrors(publicSpaceController.createPublicSpace));
+router.route("/public-space/list")
+  .get(catchErrors(publicSpaceController.getAllPublicSpaces));
 
 //___________________________________ Review management _________________________________
 
