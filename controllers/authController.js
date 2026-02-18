@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const mongoose = require("mongoose");
 
-const Admin = mongoose.model("Admin");
+const User = mongoose.model("User");
 
 require("dotenv").config({ path: ".variables.env" });
 
@@ -22,8 +22,8 @@ exports.register = async (req, res) => {
         .status(400)
         .json({ msg: "Enter the same password twice for verification." });
 
-    const existingAdmin = await Admin.findOne({ email: email });
-    if (existingAdmin)
+    const existingUser = await User.findOne({ email: email });
+    if (existingUser)
       return res
         .status(400)
         .json({ msg: "An account with this email already exists." });
@@ -33,19 +33,19 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const newAdmin = new Admin({
+    const newUser = new User({
       email,
       password: passwordHash,
       name,
       surname,
     });
-    const savedAdmin = await newAdmin.save();
+    const savedUser = await newUser.save();
     res.status(200).send({
       success: true,
       admin: {
-        id: savedAdmin._id,
-        name: savedAdmin.name,
-        surname: savedAdmin.surname,
+        id: savedUser._id,
+        name: savedUser.name,
+        surname: savedUser.surname,
       },
     });
   } catch (err) {
@@ -65,16 +65,16 @@ exports.login = async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
 
-    const admin = await Admin.findOne({ email: email });
-    // console.log(admin);
-    if (!admin)
+    const user = await User.findOne({ email: email });
+    // console.log(user);
+    if (!user)
       return res.status(400).json({
         success: false,
         result: null,
         message: "No account with this email has been registered.",
       });
 
-    const isMatch = await bcrypt.compare(password, admin.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(400).json({
         success: false,
@@ -85,13 +85,14 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
-        id: admin._id,
+        id: user._id,
+        userType: user.userType,
       },
       process.env.JWT_SECRET
     );
 
-    const result = await Admin.findOneAndUpdate(
-      { _id: admin._id },
+    const result = await User.findOneAndUpdate(
+      { _id: user._id },
       { isLoggedIn: true },
       {
         new: true,
@@ -102,13 +103,14 @@ exports.login = async (req, res) => {
       success: true,
       result: {
         token,
-        admin: {
+        user: {
           id: result._id,
           name: result.name,
           isLoggedIn: result.isLoggedIn,
+          userType: result.userType,
         },
       },
-      message: "Successfully login admin",
+      message: "Successfully logged in user..",
     });
   } catch (err) {
     // res.status(500).json({ success: false, result:null, message: err.message });
@@ -138,25 +140,25 @@ exports.isValidToken = async (req, res, next) => {
         jwtExpired: true,
       });
 
-    const admin = await Admin.findOne({ _id: verified.id });
-    if (!admin)
+    const user = await User.findOne({ _id: verified.id });
+    if (!user)
       return res.status(401).json({
         success: false,
         result: null,
-        message: "Admin doens't Exist, authorization denied.",
+        message: "User doesn't Exist, authorization denied.",
         jwtExpired: true,
       });
 
-    if (admin.isLoggedIn === false)
+    if (user.isLoggedIn === false)
       return res.status(401).json({
         success: false,
         result: null,
-        message: "Admin is already logout try to login, authorization denied.",
+        message: "User is already logout try to login, authorization denied.",
         jwtExpired: true,
       });
     else {
-      req.admin = admin;
-      // console.log(req.admin);
+      req.user = user;
+      // console.log(req.user);
       next();
     }
   } catch (err) {
@@ -170,8 +172,8 @@ exports.isValidToken = async (req, res, next) => {
 };
 
 exports.logout = async (req, res) => {
-  const result = await Admin.findOneAndUpdate(
-    { _id: req.admin._id },
+  const result = await User.findOneAndUpdate(
+    { _id: req.user._id },
     { isLoggedIn: false },
     {
       new: true,

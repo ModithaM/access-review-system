@@ -13,6 +13,15 @@ const swaggerOptions = {
                 url: 'http://localhost:8888/api',
             },
         ],
+        components: {
+            securitySchemes: {
+                xAuthToken: {
+                    type: "apiKey",
+                    in: "header",
+                    name: "x-auth-token",
+                },
+            },
+        },
     },
     apis: ['./routes/*.js'],
 };

@@ -37,7 +37,7 @@ app.use(
 
 // pass variables to our templates + all requests
 app.use((req, res, next) => {
-  res.locals.admin = req.admin || null;
+  res.locals.user = req.user || null;
   res.locals.currentPath = req.path;
   next();
 });
@@ -67,12 +67,12 @@ app.use(function (req, res, next) {
 
 app.use("/api", authApiRouter);
 app.use("/api", isValidToken, apiRouter);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// If that above routes didnt work, we 404 them and forward to error handler
+// If that above routes didn't work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);
 
-// Otherwise this was a really bad error we didn't expect! Shoot eh
+// Otherwise this was a terrible error we didn't expect! Shoot eh
 if (app.get("env") === "development") {
   /* Development Error Handler - Prints stack trace */
   app.use(errorHandlers.developmentErrors);

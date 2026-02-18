@@ -16,7 +16,7 @@ exports.read = async (Model, req, res) => {
         message: "No document found by this id: " + req.params.id,
       });
     } else {
-      // Return success resposne
+      // Return success response
       return res.status(200).json({
         success: true,
         result,
@@ -45,7 +45,7 @@ exports.create = async (Model, req, res) => {
 
     const result = await new Model(req.body).save();
     console.log(result);
-    // Returning successfull response
+    // Returning successful response
     return res.status(200).json({
       success: true,
       result,
@@ -53,7 +53,7 @@ exports.create = async (Model, req, res) => {
     });
   } catch (err) {
     // If err is thrown by Mongoose due to required validations
-    if (err.name == "ValidationError") {
+    if (err.name === "ValidationError") {
       return res.status(400).json({
         success: false,
         result: null,
@@ -95,7 +95,7 @@ exports.update = async (Model, req, res) => {
     });
   } catch (err) {
     // If err is thrown by Mongoose due to required validations
-    if (err.name == "ValidationError") {
+    if (err.name === "ValidationError") {
       return res.status(400).json({
         success: false,
         result: null,
