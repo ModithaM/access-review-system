@@ -474,18 +474,18 @@ router.route("/public-space/delete/:id").delete(isValidToken, catchErrors(public
 /**
  * @swagger
  * /api/public-space/search/{name}:
- *  get:
- *    summary: Search public spaces by name
- *    tags: [Public Spaces]
- *    parameters:
- *      - in: path
- *        name: name
- *        required: true
- *        schema:
- *          type: string
+ *   get:
+ *     summary: Search public spaces by name
+ *     tags: [Public Spaces]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
- *       200:
- *         description: Search results
+ *         200:
+ *           description: Search results
  */
 router.route("/public-space/search/:name").get(catchErrors(publicSpaceController.getPublicSpaceByName));
 //Public spaces management ends here
