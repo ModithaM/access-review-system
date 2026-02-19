@@ -36,28 +36,28 @@ const { catchErrors } = require("../handlers/errorHandlers");
  *           schema:
  *             type: object
  *             properties:
- *               name: 
+ *               name:
  *                 type: string
- *               category: 
+ *               category:
  *                 type: string
  *                 enum: [Mall, Park, Hospital, Station, Other]
  *               locationDetails:
  *                 type: object
  *                 properties:
- *                   address: 
+ *                   address:
  *                     type: string
  *                   coordinates:
  *                     type: object
  *                     properties:
- *                       lat: 
+ *                       lat:
  *                         type: number
- *                       lng: 
+ *                       lng:
  *                         type: number
- *              imageUrl:
- *                type: string
- *                example: "../public/uploads/publicSpaces/default-space.jpg"
- *              description:
- *                type: string
+ *               imageUrl:
+ *                 type: string
+ *                 example: "../public/uploads/publicSpaces/default-space.jpg"
+ *               description:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Space created
