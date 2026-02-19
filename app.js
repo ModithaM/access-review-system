@@ -9,6 +9,7 @@ const promisify = require("es6-promisify");
 
 const apiRouter = require("./routes/api");
 const authApiRouter = require("./routes/authApi");
+const publicSpaceRouter = require("./routes/publicSpaceRoutes");
 
 const errorHandlers = require("./handlers/errorHandlers");
 
@@ -67,6 +68,10 @@ app.use(function (req, res, next) {
 
 app.use("/api", authApiRouter);
 app.use("/api", isValidToken, apiRouter);
+
+//mount public space component
+app.use("/api/public-space", publicSpaceRouter);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // If that above routes didn't work, we 404 them and forward to error handler

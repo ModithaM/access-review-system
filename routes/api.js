@@ -1,9 +1,9 @@
 const express = require("express");
-const { catchErrors } = require("../handlers/errorHandlers");
-
 const router = express.Router();
-
+const { catchErrors } = require("../handlers/errorHandlers");
 const userController = require("../controllers/userController");
+const publicSpaceController = require('../controllers/publicSpaceController');
+const { isValidToken } = require("../controllers/authController");
 
 /**
  * @swagger
@@ -386,9 +386,6 @@ router
   .patch(catchErrors(userController.updatePassword));
 //list of users ends here
 
-//_______________________________ Public spaces management_______________________________
-
 //___________________________________ Review management _________________________________
-
 
 module.exports = router;
