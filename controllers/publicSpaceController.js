@@ -3,7 +3,10 @@ const PublicSpace = require('../models/PublicSpace');
 // Create a new public space
 exports.createPublicSpace = async (req, res) => {
     try {
-        const newSpace = new PublicSpace(req.body);
+        // Extract data from request body
+        const {name, category, locationDetails, imageUrl, description} = req.body;
+        
+        const newSpace = new PublicSpace({name, category, locationDetails, imageUrl, description});
         const savedSpace = await newSpace.save();
 
         //response with status code and data
