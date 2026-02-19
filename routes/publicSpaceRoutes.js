@@ -6,9 +6,19 @@ const { catchErrors } = require("../handlers/errorHandlers");
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     xAuthToken:
+ *       type: apiKey
+ *       in: header
+ *       name: xAuthToken
+ */
+
+/**
+ * @swagger
  * tags:
- * name: Public Spaces
- * description: API endpoints for managing public spaces like malls, parks, etc.
+ *   - name: Public Spaces
+ *     description: API endpoints for managing public spaces
  */
 
 /**
@@ -17,6 +27,8 @@ const { catchErrors } = require("../handlers/errorHandlers");
  *   post:
  *     summary: Create a new public space
  *     tags: [Public Spaces]
+ *     security:
+ *       - xAuthToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -65,6 +77,8 @@ router.get('/list', catchErrors(publicSpaceController.getAllPublicSpaces));
  *   patch:
  *     summary: Update an existing public space
  *     tags: [Public Spaces]
+ *     security:
+ *       - xAuthToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -93,6 +107,8 @@ router.patch('/update/:id', isValidToken, catchErrors(publicSpaceController.upda
  *   delete:
  *     summary: Delete a public space
  *     tags: [Public Spaces]
+ *     security:
+ *       - xAuthToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -113,6 +129,7 @@ router.delete('/delete/:id', isValidToken, catchErrors(publicSpaceController.del
  *   get:
  *     summary: Search public spaces by name (partial, case-insensitive)
  *     tags: [Public Spaces]
+ *     # No security: public search
  *     parameters:
  *       - in: path
  *         name: name
