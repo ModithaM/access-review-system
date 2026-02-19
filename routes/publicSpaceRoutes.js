@@ -53,6 +53,11 @@ const { catchErrors } = require("../handlers/errorHandlers");
  *                         type: number
  *                       lng: 
  *                         type: number
+ *              imageUrl:
+ *                type: string
+ *                example: "../public/uploads/publicSpaces/default-space.jpg"
+ *              description:
+ *                type: string
  *     responses:
  *       201:
  *         description: Space created
