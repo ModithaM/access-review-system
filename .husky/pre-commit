@@ -1,0 +1,17 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+pnpm format:check
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "🚨 CODE EKA FORMAT KARAPAN WHOTTO 🤠"
+  echo "Your formatting is wilder than production on Friday night."
+  echo ""
+  echo "✨ Run: pnpm format"
+  echo "Then try committing again."
+  echo ""
+  echo "Prettier is disappointed. And so am I."
+  echo ""
+  exit 1
+fi
