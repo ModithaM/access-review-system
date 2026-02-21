@@ -7,9 +7,10 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const promisify = require("es6-promisify");
 
-const apiRouter = require("./routes/api");
+const userApiRouter = require("./routes/userApi");
 const authApiRouter = require("./routes/authApi");
-const publicSpaceRouter = require("./routes/publicSpaceRoutes");
+const publicSpaceApiRouter = require("./routes/publicSpaceApi");
+const reviewApiRouter = require("./routes/reviewApi");
 
 const errorHandlers = require("./handlers/errorHandlers");
 
@@ -67,11 +68,9 @@ app.use(function (req, res, next) {
 });
 
 app.use("/api", authApiRouter);
-app.use("/api", isValidToken, apiRouter);
-
-//mount public space component
-app.use("/api/public-space", publicSpaceRouter);
-
+app.use("/api/user", isValidToken, userApiRouter);
+app.use("/api/public-space", publicSpaceApiRouter);
+app.use("/api/review", reviewApiRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // If that above routes didn't work, we 404 them and forward to error handler
