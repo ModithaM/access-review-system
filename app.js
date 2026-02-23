@@ -10,6 +10,7 @@ const promisify = require('es6-promisify');
 const userApiRouter = require('./routes/userApi');
 const authApiRouter = require('./routes/authApi');
 const publicSpaceApiRouter = require('./routes/publicSpaceApi');
+const accessFeatureApiRouter = require('./routes/accessFeatureApi');
 const reviewApiRouter = require('./routes/reviewApi');
 
 const errorHandlers = require('./handlers/errorHandlers');
@@ -69,6 +70,7 @@ app.use(function (req, res, next) {
 app.use('/api', authApiRouter);
 app.use('/api/user', isValidToken, userApiRouter);
 app.use('/api/public-space', publicSpaceApiRouter);
+app.use('/api/access-features', accessFeatureApiRouter);
 app.use('/api/review', reviewApiRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

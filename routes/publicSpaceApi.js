@@ -6,16 +6,6 @@ const { catchErrors } = require('../handlers/errorHandlers');
 
 /**
  * @swagger
- * components:
- *   securitySchemes:
- *     xAuthToken:
- *       type: apiKey
- *       in: header
- *       name: xAuthToken
- */
-
-/**
- * @swagger
  * tags:
  *   - name: Public Spaces
  *     description: API endpoints for managing public spaces
