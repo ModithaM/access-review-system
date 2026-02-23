@@ -1,7 +1,47 @@
 const mongoose = require('mongoose');
+const https = require('https');
+const AccessibilityReview = require('../models/AccessibilityReview');
+const PublicSpace = require('../models/PublicSpace');
 
-// Helper to get the model safely (avoids OverwriteModelError)
-const getModel = () => mongoose.model('AccessibilityReview');
+const { Types } = mongoose;
+
+const isValidObjectId = (id) => Types.ObjectId.isValid(id);
+
+const buildPagination = (req) => {
+  const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+  const limit = Math.max(parseInt(req.query.items, 10) || 10, 1);
+  const skip = page * limit - limit;
+  return { page, limit, skip };
+};
+
+const reviewPopulate = [
+  { path: 'userId', select: 'name surname email userType' },
+  { path: 'spaceId', select: 'name category locationDetails imageUrl description' },
+];
+
+const fetchJson = (url) =>
+  new Promise((resolve, reject) => {
+    https
+      .get(url, (response) => {
+        let rawData = '';
+
+        response.on('data', (chunk) => {
+          rawData += chunk;
+        });
+
+        response.on('end', () => {
+          try {
+            const parsed = JSON.parse(rawData || '{}');
+            resolve(parsed);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      })
+      .on('error', (err) => {
+        reject(err);
+      });
+  });
 
 /**
  *  Create a new accessibility review
@@ -10,10 +50,8 @@ const getModel = () => mongoose.model('AccessibilityReview');
  */
 exports.create = async (req, res) => {
   try {
-    const AccessibilityReview = getModel();
     const { spaceId, rating, comment, features, title } = req.body;
 
-    // Validate required fields
     if (!spaceId || !rating || !comment) {
       return res.status(400).json({
         success: false,
@@ -22,7 +60,14 @@ exports.create = async (req, res) => {
       });
     }
 
-    // Validate rating range
+    if (!isValidObjectId(spaceId)) {
+      return res.status(400).json({
+        success: false,
+        result: null,
+        message: 'Invalid spaceId.',
+      });
+    }
+
     if (rating < 1 || rating > 5) {
       return res.status(400).json({
         success: false,
@@ -31,10 +76,19 @@ exports.create = async (req, res) => {
       });
     }
 
-    // Create the review with the authenticated user's ID
+    const existingSpace = await PublicSpace.findById(spaceId).select('_id');
+
+    if (!existingSpace) {
+      return res.status(404).json({
+        success: false,
+        result: null,
+        message: 'No public space found by this id: ' + spaceId,
+      });
+    }
+
     const newReview = new AccessibilityReview({
       spaceId,
-      userId: req.user._id, // Set from JWT middleware
+      userId: req.user._id,
       rating,
       comment,
       features: features || [],
@@ -43,9 +97,8 @@ exports.create = async (req, res) => {
 
     const result = await newReview.save();
 
-    // Populate user info before returning
     const populatedResult = await AccessibilityReview.findById(result._id)
-      .populate('userId', 'name surname email')
+      .populate(reviewPopulate)
       .exec();
 
     return res.status(201).json({
@@ -61,6 +114,15 @@ exports.create = async (req, res) => {
         message: err.message,
       });
     }
+
+    if (err.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        result: null,
+        message: 'You have already submitted an active review for this public space.',
+      });
+    }
+
     return res.status(500).json({
       success: false,
       result: null,
@@ -74,12 +136,19 @@ exports.create = async (req, res) => {
  */
 exports.read = async (req, res) => {
   try {
-    const AccessibilityReview = getModel();
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        result: null,
+        message: 'Invalid review id.',
+      });
+    }
+
     const result = await AccessibilityReview.findOne({
       _id: req.params.id,
       removed: false,
     })
-      .populate('userId', 'name surname email')
+      .populate(reviewPopulate)
       .exec();
 
     if (!result) {
@@ -110,8 +179,14 @@ exports.read = async (req, res) => {
  */
 exports.update = async (req, res) => {
   try {
-    const AccessibilityReview = getModel();
-    // First, find the review to check ownership
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        result: null,
+        message: 'Invalid review id.',
+      });
+    }
+
     const existingReview = await AccessibilityReview.findOne({
       _id: req.params.id,
       removed: false,
@@ -125,7 +200,6 @@ exports.update = async (req, res) => {
       });
     }
 
-    // Check if the authenticated user is the owner of the review
     if (existingReview.userId.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
@@ -134,7 +208,6 @@ exports.update = async (req, res) => {
       });
     }
 
-    // Only allow updating specific fields (not userId or spaceId)
     const allowedUpdates = {};
     if (req.body.rating !== undefined) allowedUpdates.rating = req.body.rating;
     if (req.body.comment !== undefined) allowedUpdates.comment = req.body.comment;
@@ -149,7 +222,7 @@ exports.update = async (req, res) => {
         runValidators: true,
       },
     )
-      .populate('userId', 'name surname email')
+      .populate(reviewPopulate)
       .exec();
 
     return res.status(200).json({
@@ -179,7 +252,14 @@ exports.update = async (req, res) => {
  */
 exports.delete = async (req, res) => {
   try {
-    const AccessibilityReview = getModel();
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        result: null,
+        message: 'Invalid review id.',
+      });
+    }
+
     const existingReview = await AccessibilityReview.findOne({
       _id: req.params.id,
       removed: false,
@@ -193,7 +273,6 @@ exports.delete = async (req, res) => {
       });
     }
 
-    // Check if the user is the owner OR an admin
     const isOwner = existingReview.userId.toString() === req.user._id.toString();
     const isAdmin = req.user.userType === 'admin';
 
@@ -205,7 +284,6 @@ exports.delete = async (req, res) => {
       });
     }
 
-    // Soft delete
     const result = await AccessibilityReview.findOneAndUpdate(
       { _id: req.params.id },
       { removed: true },
@@ -231,30 +309,52 @@ exports.delete = async (req, res) => {
  *  Supports filtering by spaceId via query parameter
  */
 exports.list = async (req, res) => {
-  const page = req.query.page || 1;
-  const limit = parseInt(req.query.items) || 10;
-  const skip = page * limit - limit;
+  const { page, limit, skip } = buildPagination(req);
 
   try {
-    const AccessibilityReview = getModel();
-    // Build filter - always exclude soft-deleted reviews
     const filter = { removed: false };
 
-    // Optional: filter by spaceId
     if (req.query.spaceId) {
+      if (!isValidObjectId(req.query.spaceId)) {
+        return res.status(400).json({
+          success: false,
+          result: [],
+          message: 'Invalid spaceId filter.',
+        });
+      }
       filter.spaceId = req.query.spaceId;
     }
 
-    // Optional: filter by userId
     if (req.query.userId) {
+      if (!isValidObjectId(req.query.userId)) {
+        return res.status(400).json({
+          success: false,
+          result: [],
+          message: 'Invalid userId filter.',
+        });
+      }
       filter.userId = req.query.userId;
+    }
+
+    if (req.query.minRating) {
+      const minRating = parseFloat(req.query.minRating);
+      if (!Number.isNaN(minRating)) {
+        filter.rating = { ...(filter.rating || {}), $gte: minRating };
+      }
+    }
+
+    if (req.query.maxRating) {
+      const maxRating = parseFloat(req.query.maxRating);
+      if (!Number.isNaN(maxRating)) {
+        filter.rating = { ...(filter.rating || {}), $lte: maxRating };
+      }
     }
 
     const resultsPromise = AccessibilityReview.find(filter)
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: 'desc' })
-      .populate('userId', 'name surname email')
+      .populate(reviewPopulate)
       .exec();
 
     const countPromise = AccessibilityReview.countDocuments(filter);
@@ -300,16 +400,28 @@ exports.search = async (req, res) => {
   }
 
   try {
-    const AccessibilityReview = getModel();
     const searchRegex = new RegExp(req.query.q, 'i');
 
-    const results = await AccessibilityReview.find({
+    const query = {
       removed: false,
       $or: [{ comment: { $regex: searchRegex } }, { title: { $regex: searchRegex } }],
-    })
+    };
+
+    if (req.query.spaceId) {
+      if (!isValidObjectId(req.query.spaceId)) {
+        return res.status(400).json({
+          success: false,
+          result: [],
+          message: 'Invalid spaceId filter.',
+        });
+      }
+      query.spaceId = req.query.spaceId;
+    }
+
+    const results = await AccessibilityReview.find(query)
       .sort({ createdAt: 'desc' })
       .limit(10)
-      .populate('userId', 'name surname email')
+      .populate(reviewPopulate)
       .exec();
 
     if (results.length >= 1) {
@@ -338,19 +450,16 @@ exports.search = async (req, res) => {
  *  Get all reviews by the currently authenticated user
  */
 exports.myReviews = async (req, res) => {
-  const page = req.query.page || 1;
-  const limit = parseInt(req.query.items) || 10;
-  const skip = page * limit - limit;
+  const { page, limit, skip } = buildPagination(req);
 
   try {
-    const AccessibilityReview = getModel();
     const filter = { userId: req.user._id, removed: false };
 
     const resultsPromise = AccessibilityReview.find(filter)
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: 'desc' })
-      .populate('userId', 'name surname email')
+      .populate(reviewPopulate)
       .exec();
 
     const countPromise = AccessibilityReview.countDocuments(filter);
@@ -379,6 +488,187 @@ exports.myReviews = async (req, res) => {
       success: false,
       result: [],
       message: 'Oops there is an Error',
+    });
+  }
+};
+
+exports.listBySpace = async (req, res) => {
+  const { spaceId } = req.params;
+  const { page, limit, skip } = buildPagination(req);
+
+  try {
+    if (!isValidObjectId(spaceId)) {
+      return res.status(400).json({
+        success: false,
+        result: [],
+        message: 'Invalid space id.',
+      });
+    }
+
+    const existingSpace = await PublicSpace.findById(spaceId).select('_id');
+
+    if (!existingSpace) {
+      return res.status(404).json({
+        success: false,
+        result: [],
+        message: 'No public space found by this id: ' + spaceId,
+      });
+    }
+
+    const filter = { removed: false, spaceId };
+
+    const [result, count] = await Promise.all([
+      AccessibilityReview.find(filter)
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: 'desc' })
+        .populate(reviewPopulate)
+        .exec(),
+      AccessibilityReview.countDocuments(filter),
+    ]);
+
+    const pages = Math.ceil(count / limit);
+    const pagination = { page, pages, count };
+
+    return res.status(200).json({
+      success: true,
+      result,
+      pagination,
+      message: 'Successfully found reviews for the public space',
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      result: [],
+      message: 'Oops there is an Error',
+    });
+  }
+};
+
+exports.spaceSummary = async (req, res) => {
+  const { spaceId } = req.params;
+
+  try {
+    if (!isValidObjectId(spaceId)) {
+      return res.status(400).json({
+        success: false,
+        result: null,
+        message: 'Invalid space id.',
+      });
+    }
+
+    const existingSpace = await PublicSpace.findById(spaceId).select('_id name category');
+
+    if (!existingSpace) {
+      return res.status(404).json({
+        success: false,
+        result: null,
+        message: 'No public space found by this id: ' + spaceId,
+      });
+    }
+
+    const [summaryResult, ratingBreakdown] = await Promise.all([
+      AccessibilityReview.aggregate([
+        { $match: { spaceId: new Types.ObjectId(spaceId), removed: false } },
+        {
+          $group: {
+            _id: '$spaceId',
+            reviewsCount: { $sum: 1 },
+            averageRating: { $avg: '$rating' },
+          },
+        },
+      ]),
+      AccessibilityReview.aggregate([
+        { $match: { spaceId: new Types.ObjectId(spaceId), removed: false } },
+        { $group: { _id: '$rating', count: { $sum: 1 } } },
+        { $sort: { _id: 1 } },
+      ]),
+    ]);
+
+    const summary = summaryResult[0] || {
+      _id: new Types.ObjectId(spaceId),
+      reviewsCount: 0,
+      averageRating: 0,
+    };
+
+    return res.status(200).json({
+      success: true,
+      result: {
+        space: existingSpace,
+        reviewsCount: summary.reviewsCount,
+        averageRating: Number(summary.averageRating || 0).toFixed(2),
+        ratingBreakdown,
+      },
+      message: 'Successfully generated review summary for the public space',
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      result: null,
+      message: 'Oops there is an Error',
+    });
+  }
+};
+
+exports.spaceWeather = async (req, res) => {
+  const { spaceId } = req.params;
+
+  try {
+    if (!isValidObjectId(spaceId)) {
+      return res.status(400).json({
+        success: false,
+        result: null,
+        message: 'Invalid space id.',
+      });
+    }
+
+    const existingSpace = await PublicSpace.findById(spaceId).select(
+      '_id name locationDetails.coordinates category',
+    );
+
+    if (!existingSpace) {
+      return res.status(404).json({
+        success: false,
+        result: null,
+        message: 'No public space found by this id: ' + spaceId,
+      });
+    }
+
+    const lat = existingSpace.locationDetails?.coordinates?.lat;
+    const lng = existingSpace.locationDetails?.coordinates?.lng;
+
+    if (lat === undefined || lng === undefined) {
+      return res.status(400).json({
+        success: false,
+        result: null,
+        message: 'Public space coordinates are not available for weather lookup.',
+      });
+    }
+
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&timezone=auto`;
+
+    const weatherPayload = await fetchJson(weatherUrl);
+
+    return res.status(200).json({
+      success: true,
+      result: {
+        source: 'open-meteo',
+        space: {
+          _id: existingSpace._id,
+          name: existingSpace.name,
+          category: existingSpace.category,
+          coordinates: existingSpace.locationDetails.coordinates,
+        },
+        weather: weatherPayload.current || null,
+        units: weatherPayload.current_units || null,
+      },
+      message: 'Successfully fetched weather details for this public space.',
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      result: null,
+      message: 'Oops there is an Error while fetching weather details.',
     });
   }
 };
