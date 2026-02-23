@@ -76,6 +76,88 @@ router.route('/create').post(isValidToken, catchErrors(reviewController.create))
 
 /**
  * @swagger
+ * /review/space/{spaceId}:
+ *   get:
+ *     summary: List reviews for a specific public space
+ *     tags: [Accessibility Reviews]
+ *     parameters:
+ *       - in: path
+ *         name: spaceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *       - in: query
+ *         name: items
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *     responses:
+ *       200:
+ *         description: Reviews for the specified public space
+ *       400:
+ *         description: Invalid spaceId
+ *       404:
+ *         description: Public space not found
+ *       500:
+ *         description: Server error
+ */
+router.route('/space/:spaceId').get(catchErrors(reviewController.listBySpace));
+
+/**
+ * @swagger
+ * /review/space/{spaceId}/summary:
+ *   get:
+ *     summary: Get rating summary for a specific public space
+ *     tags: [Accessibility Reviews]
+ *     parameters:
+ *       - in: path
+ *         name: spaceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Summary generated successfully
+ *       400:
+ *         description: Invalid spaceId
+ *       404:
+ *         description: Public space not found
+ *       500:
+ *         description: Server error
+ */
+router.route('/space/:spaceId/summary').get(catchErrors(reviewController.spaceSummary));
+
+/**
+ * @swagger
+ * /review/space/{spaceId}/weather:
+ *   get:
+ *     summary: Get real-time weather context for a public space (third-party integration)
+ *     tags: [Accessibility Reviews]
+ *     parameters:
+ *       - in: path
+ *         name: spaceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Weather fetched successfully
+ *       400:
+ *         description: Invalid space id or missing coordinates
+ *       404:
+ *         description: Public space not found
+ *       500:
+ *         description: Server or third-party service error
+ */
+router.route('/space/:spaceId/weather').get(catchErrors(reviewController.spaceWeather));
+
+/**
+ * @swagger
  * /review/read/{id}:
  *   get:
  *     summary: Get a review by ID
@@ -231,8 +313,6 @@ router.route('/list').get(catchErrors(reviewController.list));
  *   get:
  *     summary: Search reviews by keyword
  *     tags: [Accessibility Reviews]
- *     security:
- *       - xAuthToken: []
  *     parameters:
  *       - in: query
  *         name: q
@@ -240,6 +320,11 @@ router.route('/list').get(catchErrors(reviewController.list));
  *         schema:
  *           type: string
  *         description: Search keyword
+ *       - in: query
+ *         name: spaceId
+ *         schema:
+ *           type: string
+ *         description: Optional filter by public space ID
  *     responses:
  *       200:
  *         description: Reviews found
@@ -248,7 +333,7 @@ router.route('/list').get(catchErrors(reviewController.list));
  *       500:
  *         description: Server error
  */
-router.route('/search').get(isValidToken, catchErrors(reviewController.search));
+router.route('/search').get(catchErrors(reviewController.search));
 
 /**
  * @swagger
