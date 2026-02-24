@@ -38,7 +38,13 @@ const publicSpaceSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
+
+publicSpaceSchema.virtual('accessibilityReviews', {
+  ref: 'AccessibilityReview',
+  localField: '_id',
+  foreignField: 'spaceId',
+});
 
 module.exports = mongoose.model('PublicSpace', publicSpaceSchema);
