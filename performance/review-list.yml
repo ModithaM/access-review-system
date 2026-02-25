@@ -1,0 +1,14 @@
+config:
+  target: 'http://localhost:8888'
+  phases:
+    - duration: 30
+      arrivalRate: 5
+    - duration: 30
+      arrivalRate: 15
+    - duration: 30
+      arrivalRate: 30
+scenarios:
+  - name: 'Review list endpoint load'
+    flow:
+      - get:
+          url: '/api/review/list?page=1&items=10'
