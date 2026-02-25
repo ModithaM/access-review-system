@@ -49,6 +49,16 @@ Implemented in:
 - `GET /api/review/space/:spaceId/summary`
 - `GET /api/review/space/:spaceId/weather` (third-party API integration via Open-Meteo)
 
+### Functional Components (project-level)
+
+This backend contains at least 4 clearly separated components:
+
+1. **Authentication & Authorization** (`routes/authApi.js`, `controllers/authController.js`)
+2. **Public Space Management** (`routes/publicSpaceApi.js`, `controllers/publicSpaceController.js`)
+3. **Access Feature Management** (`routes/accessFeatureApi.js`, `controllers/accessFeatureController.js`)
+4. **Accessibility Review Management** (`routes/reviewApi.js`, `controllers/reviewController.js`)
+5. **User Management** (`routes/userApi.js`, `controllers/userController.js`)
+
 ### Validation and Security
 
 - Review `rating` validation (1-5)
@@ -57,7 +67,44 @@ Implemented in:
 - Protected routes and ownership checks on update/delete
 - Duplicate active review prevention per user+space
 
-## 4) Testing Instructions (Current)
+## 4) Assignment Requirement Coverage (Accessibility Review Feature)
+
+### Backend Requirements Checklist
+
+- **RESTful CRUD endpoints + standard methods/statuses** ✅
+  - Create (`POST /review/create`), Read (`GET /review/read/:id`), Update (`PATCH /review/update/:id`), Delete (`DELETE /review/delete/:id`), List/Search/summary endpoints
+  - Standardized empty-list/search behavior to `200` with empty arrays
+- **Additional third-party API feature** ✅
+  - `GET /review/space/:spaceId/weather` using Open-Meteo API
+- **MongoDB integration** ✅
+  - Mongoose model, references (`spaceId`, `userId`), indexes, unique active review constraint
+- **Protected routes & role-based access** ✅
+  - JWT-protected create/update/delete/my-reviews
+  - Owner-only update, owner-or-admin delete
+- **Validation and error handling** ✅
+  - ObjectId checks, rating range checks, comment/rating schema validation, duplicate-key handling, standardized error responses
+- **Clean architecture & best practices** ✅
+  - Route/controller/model separation, soft-delete pattern, pagination, filtered queries, Swagger docs
+- **API documentation (Swagger/Postman)** ✅
+  - Swagger enabled at `/api-docs`, reusable schema definitions included
+
+## 5) Testing Instructions
+
+### Install test dependencies
+
+- `pnpm install`
+
+### Unit testing
+
+- `pnpm test:unit`
+
+### Integration testing
+
+- `pnpm test:integration`
+
+### Run all tests
+
+- `pnpm test`
 
 ### Integration Testing (manual/API smoke)
 
@@ -71,11 +118,18 @@ Use Swagger or Postman to verify this flow:
 6. Get Space Summary and Weather
 7. Delete Review and confirm read returns 404
 
-### Unit / Performance Testing
+### Performance testing (Artillery)
 
-Not yet automated in this repository.
+1. Start server:
+   - `pnpm start`
+2. Run load test:
+   - `pnpm test:performance`
 
-## 5) Deployment Checklist (for submission)
+Artillery scenario file:
+
+- `performance/review-list.yml`
+
+## 6) Deployment Checklist (for submission)
 
 For final README submission include:
 
@@ -85,7 +139,7 @@ For final README submission include:
 - API docs URL
 - Screenshots proving deployment and key endpoint responses
 
-## 6) Team
+## 7) Team
 
 - ModithaM
 - Moditha2003
