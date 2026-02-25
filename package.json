@@ -12,7 +12,7 @@
     "test": "jest --runInBand",
     "test:unit": "jest --runInBand tests/unit",
     "test:integration": "jest --runInBand --testTimeout=180000 --forceExit tests/integration",
-    "test:performance": "artillery run performance/review-list.yml",
+    "test:performance": "artillery run tests/performance/review-list.yml",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky"
