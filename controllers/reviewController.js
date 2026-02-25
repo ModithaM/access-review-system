@@ -9,7 +9,7 @@ const isValidObjectId = (id) => Types.ObjectId.isValid(id);
 
 const buildPagination = (req) => {
   const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
-  const limit = Math.max(parseInt(req.query.items, 10) || 10, 1);
+  const limit = Math.min(Math.max(parseInt(req.query.items, 10) || 10, 1), 100);
   const skip = page * limit - limit;
   return { page, limit, skip };
 };
@@ -372,18 +372,40 @@ exports.list = async (req, res) => {
       filter.userId = req.query.userId;
     }
 
-    if (req.query.minRating) {
+    if (req.query.minRating !== undefined) {
       const minRating = parseFloat(req.query.minRating);
-      if (!Number.isNaN(minRating)) {
-        filter.rating = { ...(filter.rating || {}), $gte: minRating };
+      if (Number.isNaN(minRating) || minRating < 1 || minRating > 5) {
+        return res.status(400).json({
+          success: false,
+          result: [],
+          message: 'minRating must be a number between 1 and 5.',
+        });
       }
+      filter.rating = { ...(filter.rating || {}), $gte: minRating };
     }
 
-    if (req.query.maxRating) {
+    if (req.query.maxRating !== undefined) {
       const maxRating = parseFloat(req.query.maxRating);
-      if (!Number.isNaN(maxRating)) {
-        filter.rating = { ...(filter.rating || {}), $lte: maxRating };
+      if (Number.isNaN(maxRating) || maxRating < 1 || maxRating > 5) {
+        return res.status(400).json({
+          success: false,
+          result: [],
+          message: 'maxRating must be a number between 1 and 5.',
+        });
       }
+      filter.rating = { ...(filter.rating || {}), $lte: maxRating };
+    }
+
+    if (
+      req.query.minRating !== undefined &&
+      req.query.maxRating !== undefined &&
+      parseFloat(req.query.minRating) > parseFloat(req.query.maxRating)
+    ) {
+      return res.status(400).json({
+        success: false,
+        result: [],
+        message: 'minRating cannot be greater than maxRating.',
+      });
     }
 
     const resultsPromise = AccessibilityReview.find(filter)
@@ -399,26 +421,17 @@ exports.list = async (req, res) => {
     const pages = Math.ceil(count / limit);
     const pagination = { page, pages, count };
 
-    if (count > 0) {
-      return res.status(200).json({
-        success: true,
-        result,
-        pagination,
-        message: 'Successfully found all reviews',
-      });
-    } else {
-      return res.status(203).json({
-        success: false,
-        result: [],
-        pagination,
-        message: 'No reviews found',
-      });
-    }
+    return res.status(200).json({
+      success: true,
+      result,
+      pagination,
+      message: count > 0 ? 'Successfully found all reviews' : 'No reviews found',
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
       result: [],
-      message: 'Oops there is an Error',
+      message: 'Oops there is an Error: ' + err.message,
     });
   }
 };
@@ -428,10 +441,10 @@ exports.list = async (req, res) => {
  */
 exports.search = async (req, res) => {
   if (req.query.q === undefined || req.query.q === '' || req.query.q === ' ') {
-    return res.status(202).json({
+    return res.status(400).json({
       success: false,
       result: [],
-      message: 'No document found by this request',
+      message: 'q is required and cannot be empty.',
     });
   }
 
@@ -460,24 +473,19 @@ exports.search = async (req, res) => {
       .populate(reviewPopulate)
       .exec();
 
-    if (results.length >= 1) {
-      return res.status(200).json({
-        success: true,
-        result: results,
-        message: 'Successfully found matching reviews',
-      });
-    } else {
-      return res.status(202).json({
-        success: false,
-        result: [],
-        message: 'No reviews found matching your search',
-      });
-    }
+    return res.status(200).json({
+      success: true,
+      result: results,
+      message:
+        results.length >= 1
+          ? 'Successfully found matching reviews'
+          : 'No reviews found matching your search',
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
       result: null,
-      message: 'Oops there is an Error',
+      message: 'Oops there is an Error: ' + err.message,
     });
   }
 };
