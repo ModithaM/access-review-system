@@ -3,12 +3,13 @@
 ## 1) Backend Setup
 
 1. Ensure `.variables.env` exists in this folder (copy from `sample.variables.env` if needed).
-2. Update `DATABASE` in `.variables.env` with your MongoDB connection string.
-3. Install dependencies:
+2. Ensure these keys exist in `.variables.env`: `DATABASE`, `JWT_SECRET`, `SECRET`, `KEY`.
+3. Update `DATABASE` in `.variables.env` with your MongoDB connection string.
+4. Install dependencies:
    - `pnpm install`
-4. Optional initial setup:
+5. Optional initial setup:
    - `pnpm setup`
-5. Start backend:
+6. Start backend:
    - `pnpm start`
 
 API base URL (local): `http://localhost:8888/api`
