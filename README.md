@@ -303,3 +303,30 @@ Validation rules include:
 - Uses timeout and response-size guards in controller logic.
 
 ---
+
+## 10) Response Patterns
+
+Most endpoints follow a consistent JSON pattern:
+
+```json
+{
+  "success": true,
+  "result": {},
+  "message": "..."
+}
+```
+
+Some module endpoints (public-space/access-features) use `data` instead of `result`.
+
+Typical HTTP status usage across modules:
+
+- `200` OK (read/list/update/delete success depending on endpoint)
+- `201` Created (create success)
+- `400` Validation/input errors
+- `401` Unauthorized
+- `403` Forbidden
+- `404` Not found
+- `409` Conflict (duplicate active review)
+- `500` Server/internal errors
+
+---
