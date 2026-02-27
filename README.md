@@ -410,7 +410,7 @@ Swagger configuration is in `docs/swagger.js`, with route annotations in `routes
 
 ---
 
-## 15) Team
+## 15) Team Members
 
 - https://github.com/ModithaM
 - https://github.com/anupaprabhasara
