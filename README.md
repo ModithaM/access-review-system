@@ -401,3 +401,11 @@ Swagger configuration is in `docs/swagger.js`, with route annotations in `routes
 | Format check     | `pnpm format:check`     | Prettier check         |
 
 ---
+
+## 14) Known Notes
+
+- Server enforces presence of `DATABASE`, `JWT_SECRET`, `SECRET`, and `KEY` at startup.
+- Application uses `.variables.env` (not `.env`) in current implementation.
+- `pnpm setup` currently references legacy setup logic (`setup/setup.js`) that expects a model not present in this codebase (`models/Admin`). Use regular register/login flow or custom seed scripts unless setup logic is updated.
+
+---
