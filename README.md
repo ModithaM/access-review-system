@@ -60,3 +60,22 @@ access-review-system/
 ```
 
 ---
+
+## 4) Environment Variables
+
+Create a file named `.variables.env` in the project root (copy from `sample.variables.env`).
+
+Required variables:
+
+| Variable     | Required | Description                                     |
+| ------------ | -------- | ----------------------------------------------- |
+| `DATABASE`   | Yes      | MongoDB connection string                       |
+| `JWT_SECRET` | Yes      | Secret key used to sign/verify JWT tokens       |
+| `SECRET`     | Yes      | Express session secret                          |
+| `KEY`        | Yes      | Session cookie key                              |
+| `PORT`       | No       | API port (default runtime uses `80` if missing) |
+| `NODE_ENV`   | No       | e.g. `development`, `production`, `test`        |
+
+Example is already provided in `sample.variables.env`.
+
+---
