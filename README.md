@@ -25,3 +25,16 @@ This API allows users to:
 5. Accessibility Review Management
 
 ---
+
+## 2) Tech Stack
+
+- Runtime: Node.js (package engine currently set to `14.x`)
+- Framework: Express
+- Database: MongoDB + Mongoose
+- Auth: JWT (`x-auth-token` header) + session middleware
+- Docs: Swagger UI (`swagger-jsdoc`, `swagger-ui-express`)
+- Testing: Jest, Supertest, mongodb-memory-server
+- Performance test: Artillery
+- Package manager: pnpm
+
+---
