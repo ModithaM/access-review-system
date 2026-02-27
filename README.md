@@ -385,3 +385,19 @@ After starting the server:
 Swagger configuration is in `docs/swagger.js`, with route annotations in `routes/*.js`.
 
 ---
+
+## 13) Scripts
+
+| Script           | Command                 | Purpose                |
+| ---------------- | ----------------------- | ---------------------- |
+| Start server     | `pnpm start`            | Run server             |
+| Dev server       | `pnpm dev`              | Run with nodemon       |
+| Setup            | `pnpm setup`            | Runs `setup/setup.js`  |
+| Test (all)       | `pnpm test`             | Jest all tests         |
+| Test unit        | `pnpm test:unit`        | Unit tests only        |
+| Test integration | `pnpm test:integration` | Integration tests only |
+| Test performance | `pnpm test:performance` | Artillery load test    |
+| Format           | `pnpm format`           | Prettier write         |
+| Format check     | `pnpm format:check`     | Prettier check         |
+
+---
