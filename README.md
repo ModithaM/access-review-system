@@ -133,3 +133,80 @@ Token middleware behavior (`isValidToken`):
 - Injects authenticated user into `req.user` on success.
 
 ---
+
+## 7) Data Models
+
+### 7.1 User (`models/User.js`)
+
+Key fields:
+
+- `email` (unique, required, lowercase/trimmed)
+- `password` (required)
+- `userType` (`admin` | `user` | `guest`, default `user`)
+- `name`, `surname` (required)
+- `removed` (default `false`)
+- `enabled` (default `true`)
+- `isLoggedIn` (boolean)
+- `createdAt`
+
+Helpers:
+
+- `generateHash(password)`
+- `validPassword(password)`
+
+Virtuals:
+
+- `accessibilityReviews` (inverse relation via `userId`)
+
+### 7.2 PublicSpace (`models/PublicSpace.js`)
+
+Key fields:
+
+- `name` (required)
+- `category` (`Mall` | `Park` | `Hospital` | `Station` | `Other`)
+- `locationDetails.address` (required)
+- `locationDetails.coordinates.lat/lng` (required)
+- `imageUrl` (default path)
+- `description`
+- `timestamps`
+
+Virtuals:
+
+- `accessibilityReviews` (inverse relation via `spaceId`)
+
+### 7.3 AccessFeature (`models/AccessFeatures.js`)
+
+Key fields:
+
+- `name` (required, unique)
+- `description` (required)
+- `category` (`Mobility` | `Visual` | `Auditory` | `Cognitive` | `Other`)
+- `isActive` (default `true`)
+- `createdBy` (required ref to `User`)
+- `timestamps`
+
+### 7.4 AccessibilityReview (`models/AccessibilityReview.js`)
+
+Key fields:
+
+- `spaceId` (required ref `PublicSpace`, indexed)
+- `userId` (required ref `User`, indexed)
+- `rating` (required number, 1-5)
+- `comment` (required, 10-1000 chars)
+- `title` (max 100)
+- `features[]` with:
+  - `featureName` (required)
+  - `available` (boolean)
+  - `condition` (`excellent` | `good` | `fair` | `poor` | `not_available`)
+- `removed` (soft delete flag)
+- timestamps
+
+Important indexes:
+
+- Unique partial index to prevent duplicate active reviews:
+  - `{ spaceId: 1, userId: 1 }` where `removed: false`
+- Listing indexes:
+  - `{ spaceId: 1, createdAt: -1 }`
+  - `{ userId: 1, createdAt: -1 }`
+
+---
