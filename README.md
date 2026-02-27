@@ -192,6 +192,11 @@ Coverage includes:
 - Environment file path used by app is `.variables.env`.
 - `pnpm setup` currently runs legacy code in `setup/setup.js` referencing `models/Admin`, which is not present in this repository.
 
+## 15) Team
+
+- ModithaM
+- Moditha2003
+
 ````
 
 Dev mode:
