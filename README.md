@@ -374,3 +374,14 @@ pnpm test:performance
 Uses Artillery scenario at `tests/performance/review-list.yml`.
 
 ---
+
+## 12) Swagger Documentation
+
+After starting the server:
+
+- Swagger UI: `/api-docs`
+- OpenAPI server base configured as `/api`
+
+Swagger configuration is in `docs/swagger.js`, with route annotations in `routes/*.js`.
+
+---
