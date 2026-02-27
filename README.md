@@ -111,3 +111,25 @@ pnpm dev
 ```
 
 ---
+
+## 6) Authentication Model
+
+The API uses JWT via custom header:
+
+- Header name: `x-auth-token`
+- Value: raw JWT token string
+
+How it works:
+
+1. Call `POST /api/login`.
+2. Receive `result.token`.
+3. Include that token in `x-auth-token` for protected endpoints.
+
+Token middleware behavior (`isValidToken`):
+
+- Rejects missing token (`401`).
+- Rejects invalid/expired token (`401`/`500` depending on failure path).
+- Rejects users not found or already logged out.
+- Injects authenticated user into `req.user` on success.
+
+---
