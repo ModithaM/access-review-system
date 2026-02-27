@@ -330,3 +330,47 @@ Typical HTTP status usage across modules:
 - `500` Server/internal errors
 
 ---
+
+## 11) Testing
+
+### Unit tests
+
+```bash
+pnpm test:unit
+```
+
+Includes model validation tests for:
+
+- `User`
+- `AccessibilityReview`
+
+### Integration tests
+
+```bash
+pnpm test:integration
+```
+
+Includes review API integration scenarios with in-memory MongoDB:
+
+- Auth enforcement for review creation
+- Successful review creation
+- Duplicate active review conflict
+- Owner-only update restrictions
+- Admin delete permission
+- Query validation checks
+
+### All tests
+
+```bash
+pnpm test
+```
+
+### Performance test
+
+```bash
+pnpm test:performance
+```
+
+Uses Artillery scenario at `tests/performance/review-list.yml`.
+
+---
