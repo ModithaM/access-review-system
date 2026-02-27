@@ -1,145 +1,418 @@
-# SE3040 Backend - Public Space Accessibility Platform
+# Access Review System - Backend API
 
-## 1) Backend Setup
+Node.js + Express + MongoDB backend for a Public Space Accessibility platform.  
+The system supports authentication, user management, public-space management, access-feature cataloging, and accessibility reviews (including weather context from Open-Meteo).
 
-1. Ensure `.variables.env` exists in this folder (copy from `sample.variables.env` if needed).
-2. Ensure these keys exist in `.variables.env`: `DATABASE`, `JWT_SECRET`, `SECRET`, `KEY`.
-3. Update `DATABASE` in `.variables.env` with your MongoDB connection string.
-4. Install dependencies:
-   - `pnpm install`
-5. Optional initial setup:
-   - `pnpm setup`
-6. Start backend:
-   - `pnpm start`
+---
 
-API base URL (local): `http://localhost:8888/api`
+## 1) Project Overview
 
-## 2) API Documentation
+This API allows users to:
 
-Swagger UI:
+- Register and log in with JWT authentication.
+- Manage user accounts (read, update, password update, list/search).
+- Manage public spaces (create, list, update, delete, search by name).
+- Manage accessibility features (create, list, update, soft delete).
+- Create and manage accessibility reviews with validation, ownership checks, and analytics.
+- Retrieve weather context for a public space based on stored coordinates.
 
-- `http://localhost:8888/api-docs`
+### Core Modules
 
-## 3) Accessibility Review Component (Individual Task)
+1. Authentication & Authorization
+2. User Management
+3. Public Space Management
+4. Access Feature Management
+5. Accessibility Review Management
 
-Implemented in:
+---
 
-- `models/AccessibilityReview.js`
-- `controllers/reviewController.js`
-- `routes/reviewApi.js`
+## 2) Tech Stack
 
-### Relationship Mapping
+- Runtime: Node.js (package engine currently set to `14.x`)
+- Framework: Express
+- Database: MongoDB + Mongoose
+- Auth: JWT (`x-auth-token` header) + session middleware
+- Docs: Swagger UI (`swagger-jsdoc`, `swagger-ui-express`)
+- Testing: Jest, Supertest, mongodb-memory-server
+- Performance test: Artillery
+- Package manager: pnpm
 
-- `AccessibilityReview.spaceId -> PublicSpace`
-- `AccessibilityReview.userId -> User`
-- Virtual relations:
-  - `PublicSpace.accessibilityReviews`
-  - `User.accessibilityReviews`
+---
 
-### Endpoints
+## 3) Project Structure
 
-- `POST /api/review/create` (auth required)
-- `GET /api/review/read/:id`
-- `PATCH /api/review/update/:id` (owner only)
-- `DELETE /api/review/delete/:id` (owner/admin)
-- `GET /api/review/list`
-- `GET /api/review/search`
-- `GET /api/review/my-reviews` (auth required)
-- `GET /api/review/space/:spaceId`
-- `GET /api/review/space/:spaceId/summary`
-- `GET /api/review/space/:spaceId/weather` (third-party API integration via Open-Meteo)
+```text
+access-review-system/
+├─ app.js
+├─ server.js
+├─ docs/swagger.js
+├─ controllers/
+├─ routes/
+├─ models/
+├─ handlers/
+├─ tests/
+│  ├─ unit/
+│  ├─ integration/
+│  └─ performance/
+├─ seeder/
+├─ setup/
+└─ public/uploads/
+```
 
-### Functional Components (project-level)
+---
 
-This backend contains at least 4 clearly separated components:
+## 4) Environment Variables
 
-1. **Authentication & Authorization** (`routes/authApi.js`, `controllers/authController.js`)
-2. **Public Space Management** (`routes/publicSpaceApi.js`, `controllers/publicSpaceController.js`)
-3. **Access Feature Management** (`routes/accessFeatureApi.js`, `controllers/accessFeatureController.js`)
-4. **Accessibility Review Management** (`routes/reviewApi.js`, `controllers/reviewController.js`)
-5. **User Management** (`routes/userApi.js`, `controllers/userController.js`)
+Create a file named `.variables.env` in the project root (copy from `sample.variables.env`).
 
-### Validation and Security
+Required variables:
 
-- Review `rating` validation (1-5)
-- `ObjectId` validation for route and query filters
-- Soft delete (`removed: true`) pattern
-- Protected routes and ownership checks on update/delete
-- Duplicate active review prevention per user+space
+| Variable     | Required | Description                                     |
+| ------------ | -------- | ----------------------------------------------- |
+| `DATABASE`   | Yes      | MongoDB connection string                       |
+| `JWT_SECRET` | Yes      | Secret key used to sign/verify JWT tokens       |
+| `SECRET`     | Yes      | Express session secret                          |
+| `KEY`        | Yes      | Session cookie key                              |
+| `PORT`       | No       | API port (default runtime uses `80` if missing) |
+| `NODE_ENV`   | No       | e.g. `development`, `production`, `test`        |
 
-## 4) Assignment Requirement Coverage (Accessibility Review Feature)
+Example is already provided in `sample.variables.env`.
 
-### Backend Requirements Checklist
+---
 
-- **RESTful CRUD endpoints + standard methods/statuses** ✅
-  - Create (`POST /review/create`), Read (`GET /review/read/:id`), Update (`PATCH /review/update/:id`), Delete (`DELETE /review/delete/:id`), List/Search/summary endpoints
-  - Standardized empty-list/search behavior to `200` with empty arrays
-- **Additional third-party API feature** ✅
-  - `GET /review/space/:spaceId/weather` using Open-Meteo API
-- **MongoDB integration** ✅
-  - Mongoose model, references (`spaceId`, `userId`), indexes, unique active review constraint
-- **Protected routes & role-based access** ✅
-  - JWT-protected create/update/delete/my-reviews
-  - Owner-only update, owner-or-admin delete
-- **Validation and error handling** ✅
-  - ObjectId checks, rating range checks, comment/rating schema validation, duplicate-key handling, standardized error responses
-- **Clean architecture & best practices** ✅
-  - Route/controller/model separation, soft-delete pattern, pagination, filtered queries, Swagger docs
-- **API documentation (Swagger/Postman)** ✅
-  - Swagger enabled at `/api-docs`, reusable schema definitions included
+## 5) Getting Started
 
-## 5) Testing Instructions
+### Prerequisites
 
-### Install test dependencies
+- Node.js + pnpm
+- MongoDB instance (local or cloud)
 
-- `pnpm install`
+### Install
 
-### Unit testing
+```bash
+pnpm install
+```
 
-- `pnpm test:unit`
+### Run (development / local)
 
-### Integration testing
+```bash
+pnpm start
+```
 
-- `pnpm test:integration`
+Default local URLs (based on current sample env):
 
-### Run all tests
+- API base: `http://localhost:8888/api`
+- Swagger docs: `http://localhost:8888/api-docs`
 
-- `pnpm test`
+### Development mode (auto-reload)
 
-### Integration Testing (manual/API smoke)
+```bash
+pnpm dev
+```
 
-Use Swagger or Postman to verify this flow:
+---
 
-1. Register/Login to get JWT
-2. Create Public Space
-3. Create Review
-4. List/Search/Read Review
-5. Update Review
-6. Get Space Summary and Weather
-7. Delete Review and confirm read returns 404
+## 6) Authentication Model
 
-### Performance testing (Artillery)
+The API uses JWT via custom header:
 
-1. Start server:
-   - `pnpm start`
-2. Run load test:
-   - `pnpm test:performance`
+- Header name: `x-auth-token`
+- Value: raw JWT token string
 
-Artillery scenario file:
+How it works:
 
-- `performance/review-list.yml`
+1. Call `POST /api/login`.
+2. Receive `result.token`.
+3. Include that token in `x-auth-token` for protected endpoints.
 
-## 6) Deployment Checklist (for submission)
+Token middleware behavior (`isValidToken`):
 
-For final README submission include:
+- Rejects missing token (`401`).
+- Rejects invalid/expired token (`401`/`500` depending on failure path).
+- Rejects users not found or already logged out.
+- Injects authenticated user into `req.user` on success.
 
-- Backend deployment platform + steps (Render/Railway/etc.)
-- Environment variable list (without secrets)
-- Live backend URL
-- API docs URL
-- Screenshots proving deployment and key endpoint responses
+---
 
-## 7) Team
+## 7) Data Models
 
-- ModithaM
-- Moditha2003
+### 7.1 User (`models/User.js`)
+
+Key fields:
+
+- `email` (unique, required, lowercase/trimmed)
+- `password` (required)
+- `userType` (`admin` | `user` | `guest`, default `user`)
+- `name`, `surname` (required)
+- `removed` (default `false`)
+- `enabled` (default `true`)
+- `isLoggedIn` (boolean)
+- `createdAt`
+
+Helpers:
+
+- `generateHash(password)`
+- `validPassword(password)`
+
+Virtuals:
+
+- `accessibilityReviews` (inverse relation via `userId`)
+
+### 7.2 PublicSpace (`models/PublicSpace.js`)
+
+Key fields:
+
+- `name` (required)
+- `category` (`Mall` | `Park` | `Hospital` | `Station` | `Other`)
+- `locationDetails.address` (required)
+- `locationDetails.coordinates.lat/lng` (required)
+- `imageUrl` (default path)
+- `description`
+- `timestamps`
+
+Virtuals:
+
+- `accessibilityReviews` (inverse relation via `spaceId`)
+
+### 7.3 AccessFeature (`models/AccessFeatures.js`)
+
+Key fields:
+
+- `name` (required, unique)
+- `description` (required)
+- `category` (`Mobility` | `Visual` | `Auditory` | `Cognitive` | `Other`)
+- `isActive` (default `true`)
+- `createdBy` (required ref to `User`)
+- `timestamps`
+
+### 7.4 AccessibilityReview (`models/AccessibilityReview.js`)
+
+Key fields:
+
+- `spaceId` (required ref `PublicSpace`, indexed)
+- `userId` (required ref `User`, indexed)
+- `rating` (required number, 1-5)
+- `comment` (required, 10-1000 chars)
+- `title` (max 100)
+- `features[]` with:
+  - `featureName` (required)
+  - `available` (boolean)
+  - `condition` (`excellent` | `good` | `fair` | `poor` | `not_available`)
+- `removed` (soft delete flag)
+- timestamps
+
+Important indexes:
+
+- Unique partial index to prevent duplicate active reviews:
+  - `{ spaceId: 1, userId: 1 }` where `removed: false`
+- Listing indexes:
+  - `{ spaceId: 1, createdAt: -1 }`
+  - `{ userId: 1, createdAt: -1 }`
+
+---
+
+## 8) API Reference (Complete)
+
+Base URL: `/api`
+
+### 8.1 Auth APIs
+
+| Method | Endpoint    | Auth | Description                         |
+| ------ | ----------- | ---- | ----------------------------------- |
+| POST   | `/login`    | No   | Login and receive JWT token         |
+| POST   | `/register` | No   | Register a new user                 |
+| POST   | `/logout`   | Yes  | Logout currently authenticated user |
+
+### 8.2 User APIs
+
+All `/api/user/*` routes are protected by token middleware at router mount level.
+
+| Method | Endpoint                                       | Description                     |
+| ------ | ---------------------------------------------- | ------------------------------- |
+| GET    | `/user/read/:id`                               | Get user by ID                  |
+| PATCH  | `/user/update/:id`                             | Update user fields              |
+| DELETE | `/user/delete/:id`                             | Delete user document            |
+| GET    | `/user/search?q=...&fields=name,surname,email` | Search users by selected fields |
+| GET    | `/user/list?page=1&items=10`                   | Paginated user list             |
+| PATCH  | `/user/password-update/:id`                    | Update password                 |
+
+### 8.3 Public Space APIs
+
+| Method | Endpoint                     | Auth | Description                                |
+| ------ | ---------------------------- | ---- | ------------------------------------------ |
+| POST   | `/public-space/create`       | Yes  | Create public space                        |
+| GET    | `/public-space/list`         | No   | List all public spaces                     |
+| PATCH  | `/public-space/update/:id`   | Yes  | Update public space                        |
+| DELETE | `/public-space/delete/:id`   | Yes  | Delete public space                        |
+| GET    | `/public-space/search/:name` | No   | Search by name (partial, case-insensitive) |
+
+### 8.4 Access Feature APIs
+
+| Method | Endpoint               | Auth | Description                                     |
+| ------ | ---------------------- | ---- | ----------------------------------------------- |
+| POST   | `/access-features`     | Yes  | Create access feature                           |
+| GET    | `/access-features`     | No   | List all features (`?activeOnly=true` optional) |
+| GET    | `/access-features/:id` | No   | Get one feature by ID                           |
+| PUT    | `/access-features/:id` | Yes  | Update feature                                  |
+| DELETE | `/access-features/:id` | Yes  | Soft delete (deactivate) feature                |
+
+### 8.5 Accessibility Review APIs
+
+| Method | Endpoint                         | Auth | Description                                   |
+| ------ | -------------------------------- | ---- | --------------------------------------------- |
+| POST   | `/review/create`                 | Yes  | Create review                                 |
+| GET    | `/review/read/:id`               | No   | Get review by ID                              |
+| PATCH  | `/review/update/:id`             | Yes  | Update review (owner only)                    |
+| DELETE | `/review/delete/:id`             | Yes  | Delete review (owner or admin, soft delete)   |
+| GET    | `/review/list`                   | No   | Paginated list with optional filters          |
+| GET    | `/review/search?q=...`           | No   | Search by title/comment (`spaceId` optional)  |
+| GET    | `/review/my-reviews`             | Yes  | Current user reviews                          |
+| GET    | `/review/space/:spaceId`         | No   | Reviews for one public space                  |
+| GET    | `/review/space/:spaceId/summary` | No   | Aggregate summary for a public space          |
+| GET    | `/review/space/:spaceId/weather` | No   | Weather integration for public space location |
+
+---
+
+## 9) API Usage Notes
+
+### Common pagination query params
+
+- `page` (default `1`)
+- `items` (default `10`, max `100` in review APIs)
+
+### Review list filters (`GET /api/review/list`)
+
+- `spaceId`
+- `userId`
+- `minRating` (1-5)
+- `maxRating` (1-5)
+
+Validation rules include:
+
+- ObjectId format checks for route/query IDs.
+- `minRating <= maxRating` enforcement.
+
+### Search behavior
+
+- `GET /api/review/search` requires `q`.
+- `GET /api/user/search` requires both `q` and `fields`.
+
+### Third-party API integration
+
+- `GET /api/review/space/:spaceId/weather` calls Open-Meteo API with space coordinates.
+- Uses timeout and response-size guards in controller logic.
+
+---
+
+## 10) Response Patterns
+
+Most endpoints follow a consistent JSON pattern:
+
+```json
+{
+  "success": true,
+  "result": {},
+  "message": "..."
+}
+```
+
+Some module endpoints (public-space/access-features) use `data` instead of `result`.
+
+Typical HTTP status usage across modules:
+
+- `200` OK (read/list/update/delete success depending on endpoint)
+- `201` Created (create success)
+- `400` Validation/input errors
+- `401` Unauthorized
+- `403` Forbidden
+- `404` Not found
+- `409` Conflict (duplicate active review)
+- `500` Server/internal errors
+
+---
+
+## 11) Testing
+
+### Unit tests
+
+```bash
+pnpm test:unit
+```
+
+Includes model validation tests for:
+
+- `User`
+- `AccessibilityReview`
+
+### Integration tests
+
+```bash
+pnpm test:integration
+```
+
+Includes review API integration scenarios with in-memory MongoDB:
+
+- Auth enforcement for review creation
+- Successful review creation
+- Duplicate active review conflict
+- Owner-only update restrictions
+- Admin delete permission
+- Query validation checks
+
+### All tests
+
+```bash
+pnpm test
+```
+
+### Performance test
+
+```bash
+pnpm test:performance
+```
+
+Uses Artillery scenario at `tests/performance/review-list.yml`.
+
+---
+
+## 12) Swagger Documentation
+
+After starting the server:
+
+- Swagger UI: `/api-docs`
+- OpenAPI server base configured as `/api`
+
+Swagger configuration is in `docs/swagger.js`, with route annotations in `routes/*.js`.
+
+---
+
+## 13) Scripts
+
+| Script           | Command                 | Purpose                |
+| ---------------- | ----------------------- | ---------------------- |
+| Start server     | `pnpm start`            | Run server             |
+| Dev server       | `pnpm dev`              | Run with nodemon       |
+| Setup            | `pnpm setup`            | Runs `setup/setup.js`  |
+| Test (all)       | `pnpm test`             | Jest all tests         |
+| Test unit        | `pnpm test:unit`        | Unit tests only        |
+| Test integration | `pnpm test:integration` | Integration tests only |
+| Test performance | `pnpm test:performance` | Artillery load test    |
+| Format           | `pnpm format`           | Prettier write         |
+| Format check     | `pnpm format:check`     | Prettier check         |
+
+---
+
+## 14) Known Notes
+
+- Server enforces presence of `DATABASE`, `JWT_SECRET`, `SECRET`, and `KEY` at startup.
+- Application uses `.variables.env` (not `.env`) in current implementation.
+- `pnpm setup` currently references legacy setup logic (`setup/setup.js`) that expects a model not present in this codebase (`models/Admin`). Use regular register/login flow or custom seed scripts unless setup logic is updated.
+
+---
+
+## 15) Team Members
+
+- https://github.com/ModithaM
+- https://github.com/anupaprabhasara
+- https://github.com/nipun-munasinghe
+- https://github.com/hasindu1998
