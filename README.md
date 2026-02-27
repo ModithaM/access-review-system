@@ -210,3 +210,65 @@ Important indexes:
   - `{ userId: 1, createdAt: -1 }`
 
 ---
+
+## 8) API Reference (Complete)
+
+Base URL: `/api`
+
+### 8.1 Auth APIs
+
+| Method | Endpoint    | Auth | Description                         |
+| ------ | ----------- | ---- | ----------------------------------- |
+| POST   | `/login`    | No   | Login and receive JWT token         |
+| POST   | `/register` | No   | Register a new user                 |
+| POST   | `/logout`   | Yes  | Logout currently authenticated user |
+
+### 8.2 User APIs
+
+All `/api/user/*` routes are protected by token middleware at router mount level.
+
+| Method | Endpoint                                       | Description                     |
+| ------ | ---------------------------------------------- | ------------------------------- |
+| GET    | `/user/read/:id`                               | Get user by ID                  |
+| PATCH  | `/user/update/:id`                             | Update user fields              |
+| DELETE | `/user/delete/:id`                             | Delete user document            |
+| GET    | `/user/search?q=...&fields=name,surname,email` | Search users by selected fields |
+| GET    | `/user/list?page=1&items=10`                   | Paginated user list             |
+| PATCH  | `/user/password-update/:id`                    | Update password                 |
+
+### 8.3 Public Space APIs
+
+| Method | Endpoint                     | Auth | Description                                |
+| ------ | ---------------------------- | ---- | ------------------------------------------ |
+| POST   | `/public-space/create`       | Yes  | Create public space                        |
+| GET    | `/public-space/list`         | No   | List all public spaces                     |
+| PATCH  | `/public-space/update/:id`   | Yes  | Update public space                        |
+| DELETE | `/public-space/delete/:id`   | Yes  | Delete public space                        |
+| GET    | `/public-space/search/:name` | No   | Search by name (partial, case-insensitive) |
+
+### 8.4 Access Feature APIs
+
+| Method | Endpoint               | Auth | Description                                     |
+| ------ | ---------------------- | ---- | ----------------------------------------------- |
+| POST   | `/access-features`     | Yes  | Create access feature                           |
+| GET    | `/access-features`     | No   | List all features (`?activeOnly=true` optional) |
+| GET    | `/access-features/:id` | No   | Get one feature by ID                           |
+| PUT    | `/access-features/:id` | Yes  | Update feature                                  |
+| DELETE | `/access-features/:id` | Yes  | Soft delete (deactivate) feature                |
+
+### 8.5 Accessibility Review APIs
+
+| Method | Endpoint                         | Auth | Description                                   |
+| ------ | -------------------------------- | ---- | --------------------------------------------- |
+| POST   | `/review/create`                 | Yes  | Create review                                 |
+| GET    | `/review/read/:id`               | No   | Get review by ID                              |
+| PATCH  | `/review/update/:id`             | Yes  | Update review (owner only)                    |
+| DELETE | `/review/delete/:id`             | Yes  | Delete review (owner or admin, soft delete)   |
+| GET    | `/review/list`                   | No   | Paginated list with optional filters          |
+| GET    | `/review/search?q=...`           | No   | Search by title/comment (`spaceId` optional)  |
+| GET    | `/review/my-reviews`             | Yes  | Current user reviews                          |
+| GET    | `/review/space/:spaceId`         | No   | Reviews for one public space                  |
+| GET    | `/review/space/:spaceId/summary` | No   | Aggregate summary for a public space          |
+| GET    | `/review/space/:spaceId/weather` | No   | Weather integration for public space location |
+
+---
