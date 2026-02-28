@@ -21,6 +21,8 @@ const reviewPopulate = [
 
 const REQUEST_TIMEOUT_MS = 5000; // 5 seconds
 const MAX_RESPONSE_SIZE_BYTES = 1024 * 1024; // 1 MB
+const WEATHER_API_BASE_URL =
+  process.env.WEATHER_API_BASE_URL || 'https://api.open-meteo.com/v1/forecast';
 
 const fetchJson = (url) =>
   new Promise((resolve, reject) => {
@@ -689,7 +691,7 @@ exports.spaceWeather = async (req, res) => {
       });
     }
 
-    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&timezone=auto`;
+    const weatherUrl = `${WEATHER_API_BASE_URL}?latitude=${lat}&longitude=${lng}&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&timezone=auto`;
 
     const weatherPayload = await fetchJson(weatherUrl);
 
