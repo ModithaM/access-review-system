@@ -1,5 +1,5 @@
 {
-  "name": "starter-crud-auth-api-express",
+  "name": "access-review-system",
   "version": "1.0.0",
   "engines": {
     "node": "14.x"
@@ -44,14 +44,14 @@
   "description": "Just you wait folks!",
   "main": "app.js",
   "keywords": [],
-  "author": "Salah Eddine Lalami",
+  "author": "Moditha,Nipun,Hasindu,Anupa",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/idurar/starter-antd-admin-crud-auth-mern.git"
+    "url": "git+https://github.com/ModithaM/access-review-system.git"
   },
   "bugs": {
-    "url": "https://github.com/idurar/starter-antd-admin-crud-auth-mern/issues"
+    "url": "https://github.com/ModithaM/access-review-system/issues"
   },
-  "homepage": "https://github.com/idurar/starter-antd-admin-crud-auth-mern#readme"
+  "homepage": "https://github.com/ModithaM/access-review-system"
 }
