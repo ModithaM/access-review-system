@@ -4,4 +4,4 @@ frontend/node_modules/
 .DS_Store
 .idea
 .variables.env
-
+.env
