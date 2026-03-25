@@ -73,18 +73,23 @@ export default function WhyAccessify() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full px-0 py-10 overflow-hidden">
+    <section ref={sectionRef} className="w-full -mt-25 px-0 pt-0 pb-2 overflow-hidden">
       <div
         className={[
           "transition-all duration-700 ease-out",
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6",
         ].join(" ")}
       >
+        <div className="w-full flex justify-center mb-6">
+          <h2 className="text-center text-[clamp(2.2rem,7vw,5.5rem)] font-black tracking-tight bg-gradient-to-r from-[#FF0080] via-[#7928CA] to-[#0070F3] bg-clip-text text-transparent">
+            Explore Features
+          </h2>
+        </div>
         {isVisible ? (
           <ThreeDHoverGallery
             items={features}
             defaultActiveIndex={0}
-            itemHeightVw={40}
+            itemHeightVw={35}
             itemActiveWidthVw={50}
           />
         ) : (

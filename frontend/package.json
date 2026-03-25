@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mawtech/glass-ui": "^0.2.1",
     "@radix-ui/react-slot": "^1.2.4",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "axios": "^1.13.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
