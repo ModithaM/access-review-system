@@ -1,6 +1,6 @@
 "use client";
 
-import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
+import ScrollStack, { ScrollStackItem } from "@/components/ui/ScrollStack";
 import ScrollFloat from "@/components/ui/ScrollFloat";
 import { motion } from "framer-motion";
 import {
