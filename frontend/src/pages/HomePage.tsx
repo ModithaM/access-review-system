@@ -19,7 +19,7 @@ export default function HomePage() {
         <div className="-mt-30">
           <About />
         </div>
-        <div className="-mt-30">
+        <div className="-mt-40">
           <Features />
         </div>
         <div className="-mt-120">

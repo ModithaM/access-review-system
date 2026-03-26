@@ -49,7 +49,7 @@ export function Hero() {
         {/* Heading */}
         <h1
           id="hero-heading"
-          className="text-[4vw] font-bold leading-[1.15] tracking-tight text-gray-900"
+          className="text-[5vw] font-bold leading-[1.15] tracking-tight text-gray-900"
         >
           {/* Mobile: "Making" alone */}
           <span className="block sm:hidden">Making</span>
