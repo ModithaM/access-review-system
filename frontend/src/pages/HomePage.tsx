@@ -22,7 +22,9 @@ export default function HomePage() {
         <div className="-mt-30">
           <Features />
         </div>
-        <Testimonials />
+        <div className="-mt-120">
+          <Testimonials />
+        </div>
       </main>
     </div>
   );
