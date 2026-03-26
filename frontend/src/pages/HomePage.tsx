@@ -3,7 +3,6 @@
 import { About } from "@/components/home/About";
 import Features from "@/components/home/Features";
 import { Hero } from "@/components/home/Hero";
-import Stats from "@/components/home/Stats";
 import Testimonials from "@/components/home/Testimonials";
 import Header01 from "@/components/shared/Header";
 import { AccessifyMarquee } from "@/components/shared/Marquee";
@@ -14,11 +13,18 @@ export default function HomePage() {
       <Header01 />
       <main className="relative w-full px-0">
         <Hero />
-        <AccessifyMarquee />
-        <About />
-        <Features />
-        <Testimonials />
-        <Stats />
+        <div className="-mt-10">
+          <AccessifyMarquee />
+        </div>
+        <div className="-mt-30">
+          <About />
+        </div>
+        <div className="-mt-40">
+          <Features />
+        </div>
+        <div className="-mt-120">
+          <Testimonials />
+        </div>
       </main>
     </div>
   );

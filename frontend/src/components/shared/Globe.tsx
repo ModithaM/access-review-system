@@ -12,24 +12,31 @@ const GLOBE_CONFIG: COBEOptions = {
   phi: 0,
   theta: 0.3,
   dark: 0,
-  diffuse: 0.4,
+  diffuse: 0.35,
   mapSamples: 16000,
-  mapBrightness: 1.2,
-  baseColor: [1, 1, 1],
-  markerColor: [251 / 255, 100 / 255, 21 / 255],
-  glowColor: [1, 1, 1],
+  mapBrightness: 1.1,
+  baseColor: [0.96, 0.95, 1.0],          // soft lavender-white base
+  markerColor: [255 / 255, 0 / 255, 128 / 255], // #FF0080 brand pink
+  glowColor: [0.82, 0.78, 1.0],           // soft purple glow to match #7928CA
   devicePixelRatio: 2,
   markers: [
-    { location: [14.5995, 120.9842], size: 0.03 },
-    { location: [19.076, 72.8777], size: 0.1 },
-    { location: [23.8103, 90.4125], size: 0.05 },
-    { location: [30.0444, 31.2357], size: 0.07 },
-    { location: [39.9042, 116.4074], size: 0.08 },
-    { location: [-23.5505, -46.6333], size: 0.1 },
-    { location: [19.4326, -99.1332], size: 0.1 },
-    { location: [40.7128, -74.006], size: 0.1 },
-    { location: [34.6937, 135.5022], size: 0.05 },
-    { location: [41.0082, 28.9784], size: 0.06 },
+    // Major accessibility-relevant cities around the world
+    { location: [14.5995, 120.9842], size: 0.04 },   // Manila
+    { location: [19.076, 72.8777], size: 0.08 },     // Mumbai
+    { location: [23.8103, 90.4125], size: 0.05 },    // Dhaka
+    { location: [30.0444, 31.2357], size: 0.06 },    // Cairo
+    { location: [39.9042, 116.4074], size: 0.08 },   // Beijing
+    { location: [-23.5505, -46.6333], size: 0.09 },  // São Paulo
+    { location: [19.4326, -99.1332], size: 0.08 },   // Mexico City
+    { location: [40.7128, -74.006], size: 0.09 },    // New York
+    { location: [34.6937, 135.5022], size: 0.05 },   // Osaka
+    { location: [41.0082, 28.9784], size: 0.06 },    // Istanbul
+    { location: [51.5074, -0.1278], size: 0.07 },    // London
+    { location: [48.8566, 2.3522], size: 0.06 },     // Paris
+    { location: [-33.8688, 151.2093], size: 0.05 },  // Sydney
+    { location: [37.7749, -122.4194], size: 0.07 },  // San Francisco
+    { location: [52.52, 13.405], size: 0.05 },       // Berlin
+    { location: [1.3521, 103.8198], size: 0.05 },    // Singapore
   ],
 }
 
@@ -112,12 +119,20 @@ export function Globe({
   return (
     <div
       className={cn(
-        'absolute inset-0 mx-auto aspect-square w-full max-w-[800px]',
+        'relative mx-auto aspect-square w-full max-w-[800px]',
         className,
       )}
     >
+      {/* Soft brand-colored glow behind the globe */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center"
+      >
+        <div className="h-2/3 w-2/3 rounded-full bg-[radial-gradient(circle,rgba(121,40,202,0.14)_0%,rgba(0,112,243,0.10)_45%,transparent_70%)] blur-3xl" />
+      </div>
+
       <canvas
-        className="size-full cursor-grab opacity-0 transition-opacity duration-500"
+        className="relative size-full cursor-grab opacity-0 transition-opacity duration-700"
         ref={canvasRef}
         onPointerDown={(e) => updatePointerInteraction(e.clientX)}
         onPointerUp={() => updatePointerInteraction(null)}
@@ -126,6 +141,8 @@ export function Globe({
         onTouchMove={(e) =>
           e.touches[0] && updateMovement(e.touches[0].clientX)
         }
+        aria-label="Interactive globe showing accessibility-reviewed public spaces worldwide"
+        role="img"
       />
     </div>
   )
