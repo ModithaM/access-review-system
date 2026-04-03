@@ -5,54 +5,65 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-14%2B-brightgreen.svg)](https://nodejs.org/)
 [![PNPM](https://img.shields.io/badge/pnpm-8.15%2B-yellow.svg)](https://pnpm.io/)
-![Status](https://img.shields.io/badge/status-active-success.svg)
+![Status](https://img.shields.io/badge/status-educational-informational.svg)
 
-A comprehensive platform for managing and reviewing the accessibility of public spaces with community-driven insights.
+**Academic Capstone Project** | Open Source | Full-Stack Web Application
 
-[Features](#features) • [Quick Start](#quick-start) • [Documentation](#documentation) • [Contributing](#contributing)
+A full-stack web application for managing and reviewing the accessibility of public spaces, built as an educational project to demonstrate modern web development practices.
+
+[Overview](#-overview) • [Features](#-features) • [Quick Start](#-quick-start) • [Contributing](#-contributing)
 
 </div>
 
 ---
 
-## 🎯 Overview
+## 📚 About This Project
 
-**Access Review System** is an open-source web application designed to help communities evaluate and improve the accessibility of public spaces. Users can submit detailed accessibility reviews for various locations, documenting available features, conditions, and recommendations. The platform provides administrators with tools to manage public spaces, accessibility features, and review moderation.
+**Access Review System** is an open-source academic project developed as a capstone/final year project to demonstrate comprehensive full-stack web development skills. The project showcases:
 
-**Use Cases:**
+- **Modern Architecture**: Monorepo structure with frontend and backend separation
+- **Best Practices**: Code quality, testing, documentation, and version control
+- **Real-World Concepts**: Authentication, authorization, database design, API development
+- **Scalable Design**: RESTful APIs, TypeScript, automated testing, CI/CD ready
 
-- Accessibility advocates cataloging wheelchair access in public spaces
-- Mobility organizations collecting data on facility conditions
-- City planners analyzing accessibility needs
-- Community members sharing accessibility experiences
+**Educational Goal**: This project demonstrates how to build, test, and deploy a production-ready web application following industry best practices.
 
 ---
 
-## ✨ Features
+## 🎓 Learning Outcomes
 
-### For Users
+Students working on this project learn:
 
-- 👤 **User Authentication**: Secure JWT-based authentication with role-based access control
-- 📝 **Submit Reviews**: Create detailed accessibility reviews with ratings and feature assessments
-- 🔍 **Search & Discover**: Find public spaces and read community accessibility reviews
-- 📊 **View Analytics**: See aggregated accessibility data for public spaces
-- ⛅ **Weather Context**: Reviews include weather information for better contextual analysis
+- **Backend Development**: Node.js, Express, MongoDB, RESTful API design
+- **Frontend Development**: React, TypeScript, Vite, component architecture
+- **Database Design**: Mongoose schemas, indexing, data relationships
+- **Testing**: Unit tests, integration tests, performance testing
+- **Authentication & Security**: JWT, password hashing, secure APIs
+- **DevOps & Git**: Monorepo setup, pre-commit hooks, branching strategies
+- **Documentation**: README, API docs, contributing guidelines
+- **Collaboration**: Code review, pull requests, team development
 
-### For Administrators
+---
 
-- 🏢 **Space Management**: Create, update, and manage public spaces
-- ✅ **Feature Catalog**: Define and manage accessibility features (mobility, visual, auditory, cognitive, etc.)
-- 🔧 **Review Moderation**: Moderate user-submitted reviews
-- 👥 **User Management**: Manage user accounts and permissions
-- 📈 **Analytics Dashboard**: Track accessibility coverage and trends
+## ✨ Key Features
 
-### Technical Features
+### Core Functionality
 
-- ✅ **Comprehensive Testing**: Unit, integration, and performance testing
-- 📚 **API Documentation**: Auto-generated Swagger UI documentation
-- 🎨 **Code Quality**: Prettier formatting with pre-commit hooks
-- 🏗️ **Monorepo Structure**: Seamlessly integrated frontend and backend
-- 🚀 **Modern Stack**: React + TypeScript frontend, Node.js + Express backend
+- 👤 **User Authentication & Authorization**: JWT-based authentication with role-based access control (RBAC)
+- 📝 **Review Management**: Create, read, update, delete (CRUD) operations for accessibility reviews
+- 🏢 **Space Management**: Manage public spaces with coordinates and categorization
+- ✅ **Feature Catalog**: Extensible accessibility features system
+- 📊 **Data Aggregation**: Compute accessibility summaries and statistics
+- ⛅ **Third-party Integration**: Weather API integration (Open-Meteo)
+
+### Technical Highlights
+
+- ✅ **Comprehensive Testing**: Unit, integration, and performance tests
+- 📚 **API Documentation**: Swagger/OpenAPI with auto-generated docs
+- 🎨 **Code Quality**: Prettier formatting with pre-commit hooks (Husky)
+- 🏗️ **Monorepo Architecture**: Unified workspace with frontend and backend
+- 🚀 **Modern Stack**: React + TypeScript (frontend), Node.js + Express (backend)
+- 📦 **Package Management**: PNPM workspace for efficient dependency management
 
 ---
 
@@ -447,30 +458,36 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 👥 Team
 
+**Developed by:** Computer Science Students (Capstone Project)
+
 <table>
 <tr>
 <td align="center">
   <a href="https://github.com/ModithaM">
-    <img src="https://avatars.githubusercontent.com/u/59629234?v=4" width="80" alt="Moditha"/>
-    <br><b>Moditha M</b>
+    <img src="https://avatars.githubusercontent.com/ModithaM?v=4" width="80" alt="Moditha"/>
+    <br><b>Moditha Marasingha</b>
+    <br>Full-Stack Developer
   </a>
 </td>
 <td align="center">
   <a href="https://github.com/anupaprabhasara">
     <img src="https://avatars.githubusercontent.com/anupaprabhasara?v=4" width="80" alt="Anupa"/>
     <br><b>Anupa Prabhasara</b>
+    <br>Frontend Developer
   </a>
 </td>
 <td align="center">
   <a href="https://github.com/nipun-munasinghe">
     <img src="https://avatars.githubusercontent.com/nipun-munasinghe?v=4" width="80" alt="Nipun"/>
     <br><b>Nipun Munasinghe</b>
+    <br>Backend Developer
   </a>
 </td>
 <td align="center">
   <a href="https://github.com/hasindu1998">
     <img src="https://avatars.githubusercontent.com/hasindu1998?v=4" width="80" alt="Hasindu"/>
-    <br><b>Hasindu Wijesekara</b>
+    <br><b>Hasindu Sankalpa</b>
+    <br>DevOps & Testing
   </a>
 </td>
 </tr>
@@ -480,15 +497,20 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 🙏 Acknowledgments
 
+This project was developed as part of a Computer Science capstone course to demonstrate full-stack web development skills and best practices.
+
+**External Resources:**
+
 - [Open Meteo API](https://open-meteo.com/) - For weather data integration
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - Database hosting
 - [Swagger/OpenAPI](https://swagger.io/) - API documentation
+- [OWASP](https://owasp.org/) - Security best practices
 
 ---
 
-## 📞 Support
+## 📞 Support & Questions
 
-Need help?
+For questions about the project:
 
 - 📖 Check our [documentation](backend/README.md)
 - 🔍 Search [existing issues](https://github.com/ModithaM/access-review-system/issues)
@@ -498,8 +520,10 @@ Need help?
 
 <div align="center">
 
-Made with ❤️ by the Access Review System team
+**Educational Project** | Open Source | MIT License
 
-⭐ If you find this project helpful, please consider giving us a star!
+Made with ❤️ by Computer Science students
+
+⭐ If you find this project useful for learning, please consider giving us a star!
 
 </div>
