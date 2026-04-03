@@ -126,7 +126,6 @@
 }
 
 @keyframes neon-bounce {
-
   0%,
   100% {
     transform: translateY(0);
@@ -176,7 +175,7 @@
 /* Animated Gradient Border Button Property and Animation */
 /* @property MUST be defined at the global scope, not inside a rule */
 @property --border-angle {
-  syntax: "<angle>";
+  syntax: '<angle>';
   inherits: true;
   initial-value: 0turn;
 }
@@ -226,7 +225,6 @@
 }
 
 @keyframes AnimatedCartBtnbox {
-
   0%,
   40% {
     top: -20%;
@@ -256,7 +254,6 @@
 }
 
 @keyframes AnimatedCartBtntxt2 {
-
   0%,
   80% {
     opacity: 0;
@@ -358,7 +355,7 @@ body {
 
 .command-dialog-open::after,
 .popover-open::after {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   z-index: 39;
@@ -492,11 +489,14 @@ body {
   --border-angle: 0turn;
   background:
     conic-gradient(from var(--border-angle), #000, #000) padding-box,
-    conic-gradient(from var(--border-angle),
-      transparent 25%,
-      #08f,
-      rgb(1, 206, 46) 99%,
-      transparent) border-box;
+    conic-gradient(
+        from var(--border-angle),
+        transparent 25%,
+        #08f,
+        rgb(1, 206, 46) 99%,
+        transparent
+      )
+      border-box;
   animation: bg-spin 3s linear infinite;
   border: 1px solid transparent;
   background-origin: border-box;

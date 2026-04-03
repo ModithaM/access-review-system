@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Shield, X, LogOut, User } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Menu, Shield, X, LogOut, User } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { Button } from "@/components/shared/Button";
-import { AuroraText } from "./AuroraText";
-import AuthService from "@/services/auth.service";
+import { Button } from '@/components/shared/Button';
+import { AuroraText } from './AuroraText';
+import AuthService from '@/services/auth.service';
 
 const navigation = [
-  { name: "Home", href: "/" },
-  { name: "Explore Spaces", href: "#" },
-  { name: "Reviews", href: "#" },
-  { name: "Accessibility Features", href: "#" },
+  { name: 'Home', href: '/' },
+  { name: 'Explore Spaces', href: '#' },
+  { name: 'Reviews', href: '#' },
+  { name: 'Accessibility Features', href: '#' },
 ] as const;
 
 export default function Header() {
@@ -23,14 +23,14 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    
+    window.addEventListener('scroll', handleScroll);
+
     // Check login state
     const user = AuthService.getCurrentUser();
     setIsLoggedIn(!!user?.token);
     setUserName(user?.user?.name || null);
-    
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleLogout = () => {
@@ -38,29 +38,32 @@ export default function Header() {
     setIsLoggedIn(false);
     setUserName(null);
     setIsOpen(false);
-    navigate("/");
+    navigate('/');
   };
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "py-4" : "py-8"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? 'py-4' : 'py-8'
+      }`}
     >
       <div className="container mx-auto px-4">
         <div
-          className={`relative flex w-full items-center p-2 rounded-[2rem] transition-all duration-500 ${scrolled
-              ? "bg-white/80 backdrop-blur-xl shadow-2xl"
-              : "bg-white/80 backdrop-blur-xl dark:bg-transparent dark:backdrop-blur-none shadow-none"
-            }`}
+          className={`relative flex w-full items-center p-2 rounded-[2rem] transition-all duration-500 ${
+            scrolled
+              ? 'bg-white/80 backdrop-blur-xl shadow-2xl'
+              : 'bg-white/80 backdrop-blur-xl dark:bg-transparent dark:backdrop-blur-none shadow-none'
+          }`}
         >
           <div className="mr-auto flex shrink-0 items-center gap-3 px-4">
-            <Link to="/" className="flex h-10 w-10 items-center justify-center rounded-xl bg-black shadow-lg shadow-black/20">
+            <Link
+              to="/"
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-black shadow-lg shadow-black/20"
+            >
               <Shield className="h-6 w-6 text-white" />
             </Link>
             <Link to="/" className="no-underline">
-              <AuroraText className="text-xl font-black tracking-tighter">
-                ACCESSIFY
-              </AuroraText>
+              <AuroraText className="text-xl font-black tracking-tighter">ACCESSIFY</AuroraText>
             </Link>
           </div>
 
@@ -72,7 +75,7 @@ export default function Header() {
                 asChild
                 className="h-10 shrink-0 rounded-full px-3 text-[10px] text-black font-bold uppercase tracking-widest hover:bg-gray-100 sm:px-4 sm:text-[11px]"
               >
-                {item.href.startsWith("/") ? (
+                {item.href.startsWith('/') ? (
                   <Link to={item.href}>{item.name}</Link>
                 ) : (
                   <a href={item.href}>{item.name}</a>
@@ -106,7 +109,7 @@ export default function Header() {
             onClick={() => setIsOpen(!isOpen)}
             className="ml-2 h-12 w-12 shrink-0 rounded-xl bg-gray-100 text-black lg:ml-0 lg:hidden"
             aria-expanded={isOpen}
-            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
@@ -117,7 +120,7 @@ export default function Header() {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             className="container mx-auto mt-4 px-4 lg:hidden"
           >
@@ -125,7 +128,7 @@ export default function Header() {
               <nav className="flex flex-col gap-1" aria-label="Mobile">
                 {navigation.map((item) => (
                   <div key={item.name}>
-                    {item.href.startsWith("/") ? (
+                    {item.href.startsWith('/') ? (
                       <Link
                         to={item.href}
                         className="block rounded-xl px-2 py-3 text-lg font-black tracking-tight text-black transition-colors hover:bg-gray-100"
@@ -152,7 +155,11 @@ export default function Header() {
                       asChild
                       className="w-full h-12 rounded-xl border-2 border-black bg-white text-black text-center text-[11px] font-black uppercase tracking-widest"
                     >
-                      <Link to="/profile" onClick={() => setIsOpen(false)} className="flex items-center justify-center gap-2">
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center justify-center gap-2"
+                      >
                         <User className="h-4 w-4" />
                         Profile
                       </Link>

@@ -1,21 +1,21 @@
-import { Component } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import AuthService from "@/services/auth.service.ts";
-import { ArrowRight, Loader2, CheckCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Component } from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import AuthService from '@/services/auth.service.ts';
+import { ArrowRight, Loader2, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 type Props = {};
 
 type State = {
-  email: string,
-  name: string,
-  surname: string,
-  password: string,
-  passwordCheck: string,
-  successful: boolean,
-  message: string,
-  loading: boolean
+  email: string;
+  name: string;
+  surname: string;
+  password: string;
+  passwordCheck: string;
+  successful: boolean;
+  message: string;
+  loading: boolean;
 };
 
 export default class Register extends Component<Props, State> {
@@ -24,81 +24,74 @@ export default class Register extends Component<Props, State> {
     this.handleRegister = this.handleRegister.bind(this);
 
     this.state = {
-      email: "",
-      name: "",
-      surname: "",
-      password: "",
-      passwordCheck: "",
+      email: '',
+      name: '',
+      surname: '',
+      password: '',
+      passwordCheck: '',
       successful: false,
-      message: "",
-      loading: false
+      message: '',
+      loading: false,
     };
   }
 
   validationSchema() {
     return Yup.object().shape({
-      email: Yup.string()
-        .email("Please enter a valid email address")
-        .required("Email is required"),
+      email: Yup.string().email('Please enter a valid email address').required('Email is required'),
       name: Yup.string()
-        .min(2, "Name must be at least 2 characters")
-        .required("First name is required"),
+        .min(2, 'Name must be at least 2 characters')
+        .required('First name is required'),
       surname: Yup.string()
-        .min(2, "Surname must be at least 2 characters")
-        .required("Last name is required"),
+        .min(2, 'Surname must be at least 2 characters')
+        .required('Last name is required'),
       password: Yup.string()
         .test(
-          "len",
-          "Password must be between 6 and 40 characters",
-          (val: any) =>
-            val &&
-            val.toString().length >= 6 &&
-            val.toString().length <= 40
+          'len',
+          'Password must be between 6 and 40 characters',
+          (val: any) => val && val.toString().length >= 6 && val.toString().length <= 40,
         )
-        .required("Password is required"),
+        .required('Password is required'),
       passwordCheck: Yup.string()
-        .oneOf([Yup.ref("password")], "Passwords must match")
-        .required("Please confirm your password"),
+        .oneOf([Yup.ref('password')], 'Passwords must match')
+        .required('Please confirm your password'),
     });
   }
 
-  handleRegister(formValue: { email: string; name: string; surname: string; password: string; passwordCheck: string }) {
+  handleRegister(formValue: {
+    email: string;
+    name: string;
+    surname: string;
+    password: string;
+    passwordCheck: string;
+  }) {
     const { email, name, surname, password, passwordCheck } = formValue;
 
     this.setState({
-      message: "",
+      message: '',
       successful: false,
-      loading: true
+      loading: true,
     });
 
-    AuthService.register(
-      email,
-      surname,
-      password,
-      name,
-      passwordCheck
-    ).then(
-      response => {
+    AuthService.register(email, surname, password, name, passwordCheck).then(
+      (response) => {
         this.setState({
-          message: response.data.message || "Registration successful! You can now log in.",
+          message: response.data.message || 'Registration successful! You can now log in.',
           successful: true,
-          loading: false
+          loading: false,
         });
       },
-      error => {
+      (error) => {
         const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
+          (error.response && error.response.data && error.response.data.message) ||
           error.message ||
           error.toString();
 
         this.setState({
           successful: false,
           message: resMessage,
-          loading: false
+          loading: false,
         });
-      }
+      },
     );
   }
 
@@ -106,11 +99,11 @@ export default class Register extends Component<Props, State> {
     const { successful, message, loading } = this.state;
 
     const initialValues = {
-      email: "",
-      name: "",
-      surname: "",
-      password: "",
-      passwordCheck: "",
+      email: '',
+      name: '',
+      surname: '',
+      password: '',
+      passwordCheck: '',
     };
 
     return (
@@ -130,7 +123,9 @@ export default class Register extends Component<Props, State> {
                   <CheckCircle className="h-16 w-16 text-green-600" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-black tracking-tight mb-2">Registration Successful!</h2>
+                  <h2 className="text-2xl font-black tracking-tight mb-2">
+                    Registration Successful!
+                  </h2>
                   <p className="text-gray-600">{message}</p>
                 </div>
                 <Link
@@ -149,7 +144,10 @@ export default class Register extends Component<Props, State> {
               >
                 <Form className="space-y-5">
                   <div>
-                    <label htmlFor="email" className="block text-sm font-bold tracking-wide text-gray-900 mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-bold tracking-wide text-gray-900 mb-2"
+                    >
                       EMAIL
                     </label>
                     <Field
@@ -167,7 +165,10 @@ export default class Register extends Component<Props, State> {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-bold tracking-wide text-gray-900 mb-2">
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-bold tracking-wide text-gray-900 mb-2"
+                      >
                         FIRST NAME
                       </label>
                       <Field
@@ -184,7 +185,10 @@ export default class Register extends Component<Props, State> {
                     </div>
 
                     <div>
-                      <label htmlFor="surname" className="block text-sm font-bold tracking-wide text-gray-900 mb-2">
+                      <label
+                        htmlFor="surname"
+                        className="block text-sm font-bold tracking-wide text-gray-900 mb-2"
+                      >
                         LAST NAME
                       </label>
                       <Field
@@ -202,7 +206,10 @@ export default class Register extends Component<Props, State> {
                   </div>
 
                   <div>
-                    <label htmlFor="password" className="block text-sm font-bold tracking-wide text-gray-900 mb-2">
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-bold tracking-wide text-gray-900 mb-2"
+                    >
                       PASSWORD
                     </label>
                     <Field
@@ -219,7 +226,10 @@ export default class Register extends Component<Props, State> {
                   </div>
 
                   <div>
-                    <label htmlFor="passwordCheck" className="block text-sm font-bold tracking-wide text-gray-900 mb-2">
+                    <label
+                      htmlFor="passwordCheck"
+                      className="block text-sm font-bold tracking-wide text-gray-900 mb-2"
+                    >
                       CONFIRM PASSWORD
                     </label>
                     <Field

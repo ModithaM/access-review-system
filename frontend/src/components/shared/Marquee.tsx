@@ -1,14 +1,14 @@
-import { MapPin, Star, Users, Zap, ShieldCheck, Navigation, BadgeCheck } from "lucide-react";
-import { AuroraText } from "@/components/shared/AuroraText";
+import { MapPin, Star, Users, Zap, ShieldCheck, Navigation, BadgeCheck } from 'lucide-react';
+import { AuroraText } from '@/components/shared/AuroraText';
 
 const ITEMS = [
-  { label: "Accessible Spaces",   icon: MapPin       },
-  { label: "Inclusive Design",    icon: ShieldCheck  },
-  { label: "Smart Reviews",       icon: Star         },
-  { label: "Community Driven",    icon: Users        },
-  { label: "Real-Time Insights",  icon: Zap          },
-  { label: "Barrier-Free Access", icon: Navigation   },
-  { label: "Verified Locations",  icon: BadgeCheck   },
+  { label: 'Accessible Spaces', icon: MapPin },
+  { label: 'Inclusive Design', icon: ShieldCheck },
+  { label: 'Smart Reviews', icon: Star },
+  { label: 'Community Driven', icon: Users },
+  { label: 'Real-Time Insights', icon: Zap },
+  { label: 'Barrier-Free Access', icon: Navigation },
+  { label: 'Verified Locations', icon: BadgeCheck },
 ];
 
 function Separator() {
@@ -24,20 +24,19 @@ export function AccessifyMarquee() {
     <section className="w-full bg-white py-12 shadow-[0_2px_16px_0px_rgba(121,40,202,0.07),0_-2px_16px_0px_rgba(121,40,202,0.07)] sm:py-16">
       {/* Section label */}
       <p className="mb-6 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-400">
-        Everything you need with{" "}
-        <AuroraText>AccessAble</AuroraText>
+        Everything you need with <AuroraText>AccessAble</AuroraText>
       </p>
 
       {/* Scrolling track */}
       <div className="relative w-full overflow-hidden">
         <div
           className="flex w-max cursor-default"
-          style={{ animation: "marquee 28s linear infinite" }}
+          style={{ animation: 'marquee 28s linear infinite' }}
           onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLDivElement).style.animationPlayState = "paused")
+            ((e.currentTarget as HTMLDivElement).style.animationPlayState = 'paused')
           }
           onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLDivElement).style.animationPlayState = "running")
+            ((e.currentTarget as HTMLDivElement).style.animationPlayState = 'running')
           }
         >
           {track.map((item, i) => {

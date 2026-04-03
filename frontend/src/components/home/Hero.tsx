@@ -1,5 +1,5 @@
-import { AuroraText } from '@/components/shared/AuroraText'
-import { Globe } from '@/components/shared/Globe'
+import { AuroraText } from '@/components/shared/AuroraText';
+import { Globe } from '@/components/shared/Globe';
 
 export function Hero() {
   return (
@@ -34,7 +34,6 @@ export function Hero() {
 
       {/* ── Main content (above globe) ── */}
       <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-6 text-center">
-
         {/* Badge */}
         <div className="inline-flex items-center gap-2 rounded-full border border-[#7928CA]/20 bg-white/80 px-4 py-1.5 shadow-sm backdrop-blur-sm">
           <span
@@ -75,8 +74,8 @@ export function Hero() {
         {/* Subtitle */}
         <p className="max-w-lg text-base leading-relaxed text-gray-500 sm:text-lg">
           Discover, review, and improve accessibility in public spaces.{' '}
-          <strong className="font-semibold text-gray-700">Your voice</strong>{' '}
-          helps build a more inclusive world.
+          <strong className="font-semibold text-gray-700">Your voice</strong> helps build a more
+          inclusive world.
         </p>
 
         {/* CTA Buttons */}
@@ -108,5 +107,5 @@ export function Hero() {
         className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white via-white/60 to-transparent"
       />
     </section>
-  )
+  );
 }

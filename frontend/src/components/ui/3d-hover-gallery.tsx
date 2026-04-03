@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 const cn = (...classes: Array<string | false | null | undefined>) =>
-  classes.filter(Boolean).join(" ");
+  classes.filter(Boolean).join(' ');
 
 type GalleryIcon = React.ElementType;
 
@@ -15,7 +15,7 @@ export type ThreeDHoverGalleryItem = {
 };
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
-  const cleaned = hex.trim().replace(/^#/, "");
+  const cleaned = hex.trim().replace(/^#/, '');
 
   if (cleaned.length === 3) {
     const r = parseInt(cleaned[0] + cleaned[0], 16);
@@ -86,8 +86,9 @@ function TiltWrapper({
       }}
       onMouseLeave={() => setTilt({ rx: 0, ry: 0 })}
       style={{
-        transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateZ(${active ? translateZpx : 0
-          }px) scale(${active ? hoverScale : 1})`,
+        transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateZ(${
+          active ? translateZpx : 0
+        }px) scale(${active ? hoverScale : 1})`,
         transition: `transform ${transitionDurationMs}ms cubic-bezier(.2, .9, .2, 1)`,
       }}
     >
@@ -114,13 +115,12 @@ export default function ThreeDHoverGallery({
   style,
 }: ThreeDHoverGalleryProps) {
   const safeDefaultIndex = useMemo(
-    () =>
-      Math.min(Math.max(defaultActiveIndex, 0), Math.max(items.length - 1, 0)),
+    () => Math.min(Math.max(defaultActiveIndex, 0), Math.max(items.length - 1, 0)),
     [defaultActiveIndex, items.length],
   );
 
   const [viewportWidth, setViewportWidth] = useState<number>(() =>
-    typeof window !== "undefined" ? window.innerWidth : 1200,
+    typeof window !== 'undefined' ? window.innerWidth : 1200,
   );
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -132,13 +132,12 @@ export default function ThreeDHoverGallery({
   // Initialize hoverIndex to safeDefaultIndex so first card is expanded by default
   const [hoverIndex, setHoverIndex] = useState<number | null>(safeDefaultIndex);
 
-  const shouldShowDetails = (index: number) =>
-    pinnedIndex === index || hoverIndex === index;
+  const shouldShowDetails = (index: number) => pinnedIndex === index || hoverIndex === index;
 
   useEffect(() => {
     const onResize = () => setViewportWidth(window.innerWidth);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
   const vwToPx = (vw: number) => (vw / 100) * viewportWidth;
@@ -147,8 +146,7 @@ export default function ThreeDHoverGallery({
   const cardHeightPx = vwToPx(itemHeightVw);
   const gapPx = vwToPx(itemGapVw);
 
-  const totalRowWidthPx =
-    items.length * inactiveWidthPx + (items.length - 1) * gapPx;
+  const totalRowWidthPx = items.length * inactiveWidthPx + (items.length - 1) * gapPx;
   const overlayMode = totalRowWidthPx > viewportWidth * 0.98;
   const rowStartPx = (viewportWidth - totalRowWidthPx) / 2;
 
@@ -188,8 +186,8 @@ export default function ThreeDHoverGallery({
       height: cardHeightPx,
       zIndex: isExpanded ? 50 : 1,
       transition: `width ${transitionDurationMs}ms cubic-bezier(.2, .9, .2, 1)`,
-      willChange: "width",
-      outline: isFocused ? "2px solid rgba(56,189,248,0.9)" : "none",
+      willChange: 'width',
+      outline: isFocused ? '2px solid rgba(56,189,248,0.9)' : 'none',
       outlineOffset: isFocused ? 3 : undefined,
       borderRadius: 24,
       top: 0,
@@ -199,14 +197,14 @@ export default function ThreeDHoverGallery({
     if (overlayMode) {
       return {
         ...base,
-        position: "absolute",
+        position: 'absolute',
         left: rowStartPx + index * (inactiveWidthPx + gapPx),
       };
     }
 
     return {
       ...base,
-      position: "relative",
+      position: 'relative',
     };
   };
 
@@ -247,14 +245,14 @@ export default function ThreeDHoverGallery({
 
   return (
     <div
-      className={cn("w-full", className)}
-      style={{ ...style, overflow: overlayMode ? "visible" : "hidden" }}
+      className={cn('w-full', className)}
+      style={{ ...style, overflow: overlayMode ? 'visible' : 'hidden' }}
     >
       <div
         ref={containerRef}
         className={cn(
-          "relative items-stretch py-2",
-          overlayMode ? "" : "flex justify-center overflow-x-auto px-2",
+          'relative items-stretch py-2',
+          overlayMode ? '' : 'flex justify-center overflow-x-auto px-2',
         )}
         style={{
           perspective: `${perspectivePx}px`,
@@ -266,7 +264,7 @@ export default function ThreeDHoverGallery({
           const Icon = item.icon;
           const isPinned = pinnedIndex === index;
           const showDetails = shouldShowDetails(index);
-          const accentHex = item.accentHex ?? "#7928CA";
+          const accentHex = item.accentHex ?? '#7928CA';
 
           return (
             <button
@@ -300,16 +298,16 @@ export default function ThreeDHoverGallery({
               onKeyDown={(e) => {
                 if (!enableKeyboardNavigation) return;
                 switch (e.key) {
-                  case "Enter":
-                  case " ":
+                  case 'Enter':
+                  case ' ':
                     e.preventDefault();
                     handlePinToggle(index);
                     break;
-                  case "ArrowLeft":
+                  case 'ArrowLeft':
                     e.preventDefault();
                     handleArrowNav(index, -1);
                     break;
-                  case "ArrowRight":
+                  case 'ArrowRight':
                     e.preventDefault();
                     handleArrowNav(index, 1);
                     break;
@@ -331,26 +329,24 @@ export default function ThreeDHoverGallery({
                   <div
                     className="flex h-full flex-col items-center"
                     style={{
-                      justifyContent: showDetails ? "flex-start" : "center",
-                      padding: showDetails
-                        ? `${vwToPx(1.2)}px ${vwToPx(0.9)}px`
-                        : 0,
+                      justifyContent: showDetails ? 'flex-start' : 'center',
+                      padding: showDetails ? `${vwToPx(1.2)}px ${vwToPx(0.9)}px` : 0,
                     }}
                   >
                     <div
                       style={{
                         width: vwToPx(itemWidthVw),
                         height: vwToPx(itemWidthVw),
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       }}
                     >
                       <Icon
                         style={{
                           width: vwToPx(2.2),
                           height: vwToPx(2.2),
-                          color: "#ffffff",
+                          color: '#ffffff',
                         }}
                       />
                     </div>
@@ -359,19 +355,19 @@ export default function ThreeDHoverGallery({
                       className="w-full overflow-hidden transition-[max-height,opacity]"
                       style={{
                         transitionDuration: `${transitionDurationMs}ms`,
-                        transitionTimingFunction: "cubic-bezier(.2, .9, .2, 1)",
-                        maxHeight: showDetails ? `${cardHeightPx}px` : "0px",
+                        transitionTimingFunction: 'cubic-bezier(.2, .9, .2, 1)',
+                        maxHeight: showDetails ? `${cardHeightPx}px` : '0px',
                         opacity: showDetails ? 1 : 0,
                       }}
                     >
-                      <div style={{ textAlign: "center" }}>
+                      <div style={{ textAlign: 'center' }}>
                         <h3
                           style={{
                             fontSize: vwToPx(5),
                             lineHeight: 1.05,
-                            color: "#ffffff",
+                            color: '#ffffff',
                             fontWeight: 800,
-                            letterSpacing: "-0.01em",
+                            letterSpacing: '-0.01em',
                             marginBottom: vwToPx(2),
                           }}
                         >
@@ -381,11 +377,11 @@ export default function ThreeDHoverGallery({
                           style={{
                             fontSize: vwToPx(2),
                             lineHeight: 1.4,
-                            color: "rgba(255,255,255,0.95)",
-                            display: "-webkit-box",
-                            WebkitBoxOrient: "vertical",
+                            color: 'rgba(255,255,255,0.95)',
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
                             WebkitLineClamp: 3,
-                            overflow: "hidden",
+                            overflow: 'hidden',
                           }}
                         >
                           {item.desc}
@@ -394,10 +390,10 @@ export default function ThreeDHoverGallery({
                           style={{
                             marginTop: vwToPx(1),
                             fontSize: vwToPx(1.4),
-                            color: "rgba(255,255,255,0.9)",
+                            color: 'rgba(255,255,255,0.9)',
                           }}
                         >
-                          {isPinned ? "Click to collapse" : "Click to pin"}
+                          {isPinned ? 'Click to collapse' : 'Click to pin'}
                         </div>
                       </div>
                     </div>

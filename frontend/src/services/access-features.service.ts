@@ -1,5 +1,5 @@
-import axios from "axios";
-import authService from "./auth.service";
+import axios from 'axios';
+import authService from './auth.service';
 
 const API_URL = `${import.meta.env.VITE_API_URL}access-features`;
 
@@ -7,7 +7,7 @@ export interface AccessFeature {
   _id?: string;
   name: string;
   description: string;
-  category: "Mobility" | "Visual" | "Auditory" | "Cognitive" | "Other";
+  category: 'Mobility' | 'Visual' | 'Auditory' | 'Cognitive' | 'Other';
   isActive: boolean;
 }
 
@@ -15,23 +15,25 @@ const getHeaders = () => {
   const token = authService.getToken();
   return {
     headers: {
-      "x-auth-token": token ? token : "",
+      'x-auth-token': token ? token : '',
     },
   };
 };
 
 class AccessFeaturesService {
   getAllAccessFeatures(activeOnly = false) {
-    return axios.get<{ success: boolean; count: number; data: AccessFeature[] }>(
-      `${API_URL}${activeOnly ? "?activeOnly=true" : ""}`
-    );
+    return axios.get<{
+      success: boolean;
+      count: number;
+      data: AccessFeature[];
+    }>(`${API_URL}${activeOnly ? '?activeOnly=true' : ''}`);
   }
 
   getAccessFeatureById(id: string) {
     return axios.get<{ success: boolean; data: AccessFeature }>(`${API_URL}/${id}`);
   }
 
-  createAccessFeature(data: Omit<AccessFeature, "_id">) {
+  createAccessFeature(data: Omit<AccessFeature, '_id'>) {
     // The backend accepts is_active for creating from req.body
     const payload = {
       ...data,
@@ -46,14 +48,19 @@ class AccessFeaturesService {
       ...data,
       ...(data.isActive !== undefined ? { is_active: data.isActive } : {}),
     };
-    return axios.put<{ success: boolean; data: AccessFeature }>(`${API_URL}/${id}`, payload, getHeaders());
+    return axios.put<{ success: boolean; data: AccessFeature }>(
+      `${API_URL}/${id}`,
+      payload,
+      getHeaders(),
+    );
   }
 
   deleteAccessFeature(id: string) {
-    return axios.delete<{ success: boolean; message: string; data: AccessFeature }>(
-      `${API_URL}/${id}`,
-      getHeaders()
-    );
+    return axios.delete<{
+      success: boolean;
+      message: string;
+      data: AccessFeature;
+    }>(`${API_URL}/${id}`, getHeaders());
   }
 }
 

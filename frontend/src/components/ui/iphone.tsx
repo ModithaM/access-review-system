@@ -1,37 +1,30 @@
-import type { HTMLAttributes } from "react"
+import type { HTMLAttributes } from 'react';
 
-const PHONE_WIDTH = 433
-const PHONE_HEIGHT = 882
-const SCREEN_X = 21.25
-const SCREEN_Y = 19.25
-const SCREEN_WIDTH = 389.5
-const SCREEN_HEIGHT = 843.5
-const SCREEN_RADIUS = 55.75
+const PHONE_WIDTH = 433;
+const PHONE_HEIGHT = 882;
+const SCREEN_X = 21.25;
+const SCREEN_Y = 19.25;
+const SCREEN_WIDTH = 389.5;
+const SCREEN_HEIGHT = 843.5;
+const SCREEN_RADIUS = 55.75;
 
 // Calculated percentages
-const LEFT_PCT = (SCREEN_X / PHONE_WIDTH) * 100
-const TOP_PCT = (SCREEN_Y / PHONE_HEIGHT) * 100
-const WIDTH_PCT = (SCREEN_WIDTH / PHONE_WIDTH) * 100
-const HEIGHT_PCT = (SCREEN_HEIGHT / PHONE_HEIGHT) * 100
-const RADIUS_H = (SCREEN_RADIUS / SCREEN_WIDTH) * 100
-const RADIUS_V = (SCREEN_RADIUS / SCREEN_HEIGHT) * 100
+const LEFT_PCT = (SCREEN_X / PHONE_WIDTH) * 100;
+const TOP_PCT = (SCREEN_Y / PHONE_HEIGHT) * 100;
+const WIDTH_PCT = (SCREEN_WIDTH / PHONE_WIDTH) * 100;
+const HEIGHT_PCT = (SCREEN_HEIGHT / PHONE_HEIGHT) * 100;
+const RADIUS_H = (SCREEN_RADIUS / SCREEN_WIDTH) * 100;
+const RADIUS_V = (SCREEN_RADIUS / SCREEN_HEIGHT) * 100;
 
 export interface IphoneProps extends HTMLAttributes<HTMLDivElement> {
-  src?: string
-  videoSrc?: string
-  children?: React.ReactNode
+  src?: string;
+  videoSrc?: string;
+  children?: React.ReactNode;
 }
 
-export function Iphone({
-  src,
-  videoSrc,
-  children,
-  className,
-  style,
-  ...props
-}: IphoneProps) {
-  const hasVideo = !!videoSrc
-  const hasMedia = hasVideo || !!src
+export function Iphone({ src, videoSrc, children, className, style, ...props }: IphoneProps) {
+  const hasVideo = !!videoSrc;
+  const hasMedia = hasVideo || !!src;
 
   return (
     <div
@@ -76,11 +69,7 @@ export function Iphone({
             borderRadius: `${RADIUS_H}% / ${RADIUS_V}%`,
           }}
         >
-          <img
-            src={src}
-            alt=""
-            className="block size-full object-cover object-top"
-          />
+          <img src={src} alt="" className="block size-full object-cover object-top" />
         </div>
       )}
 
@@ -104,9 +93,9 @@ export function Iphone({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="absolute inset-0 size-full"
-        style={{ transform: "translateZ(0)" }}
+        style={{ transform: 'translateZ(0)' }}
       >
-        <g mask={hasMedia ? "url(#screenPunch)" : undefined}>
+        <g mask={hasMedia ? 'url(#screenPunch)' : undefined}>
           <path
             d="M2 73C2 32.6832 34.6832 0 75 0H357C397.317 0 430 32.6832 430 73V809C430 849.317 397.317 882 357 882H75C34.6832 882 2 849.317 2 809V73Z"
             className="fill-[#E5E5E5] dark:fill-[#404040]"
@@ -142,7 +131,7 @@ export function Iphone({
         <path
           d={`M${SCREEN_X} 75C${SCREEN_X} 44.2101 46.2101 ${SCREEN_Y} 77 ${SCREEN_Y}H355C385.79 ${SCREEN_Y} 410.75 44.2101 410.75 75V807C410.75 837.79 385.79 862.75 355 862.75H77C46.2101 862.75 ${SCREEN_X} 837.79 ${SCREEN_X} 807V75Z`}
           className="fill-[#E5E5E5] stroke-[#E5E5E5] stroke-[0.5] dark:fill-[#404040] dark:stroke-[#404040]"
-          mask={hasMedia ? "url(#screenPunch)" : undefined}
+          mask={hasMedia ? 'url(#screenPunch)' : undefined}
         />
 
         <path
@@ -160,13 +149,7 @@ export function Iphone({
 
         <defs>
           <mask id="screenPunch" maskUnits="userSpaceOnUse">
-            <rect
-              x="0"
-              y="0"
-              width={PHONE_WIDTH}
-              height={PHONE_HEIGHT}
-              fill="white"
-            />
+            <rect x="0" y="0" width={PHONE_WIDTH} height={PHONE_HEIGHT} fill="white" />
             <rect
               x={SCREEN_X}
               y={SCREEN_Y}
@@ -190,5 +173,5 @@ export function Iphone({
         </defs>
       </svg>
     </div>
-  )
+  );
 }

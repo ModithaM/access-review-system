@@ -17,10 +17,10 @@ export default function AdminLayout() {
         setCollapsed(false);
       }
     };
-    
+
     // Initial check
     handleResize();
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -52,14 +52,14 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-gray-950 flex font-sans text-gray-900 dark:text-white transition-colors duration-300">
-      <AdminSidebar 
-        activeItem={activeItem} 
-        onNavigate={(route) => navigate(route)} 
+      <AdminSidebar
+        activeItem={activeItem}
+        onNavigate={(route) => navigate(route)}
         collapsed={collapsed}
         onToggleCollapse={() => setCollapsed(!collapsed)}
       />
-      
-      <div 
+
+      <div
         className="flex-1 transition-all duration-300 ease-in-out flex flex-col min-w-0"
         style={{ marginLeft: collapsed ? '80px' : '280px' }}
       >

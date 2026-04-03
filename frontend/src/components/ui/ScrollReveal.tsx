@@ -28,7 +28,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   containerClassName = '',
   textClassName = '',
   rotationEnd = 'bottom bottom',
-  wordAnimationEnd = 'bottom bottom'
+  wordAnimationEnd = 'bottom bottom',
 }) => {
   const containerRef = useRef<HTMLHeadingElement>(null);
 
@@ -48,7 +48,8 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     const el = containerRef.current;
     if (!el) return;
 
-    const scroller = scrollContainerRef && scrollContainerRef.current ? scrollContainerRef.current : window;
+    const scroller =
+      scrollContainerRef && scrollContainerRef.current ? scrollContainerRef.current : window;
 
     gsap.fromTo(
       el,
@@ -61,9 +62,9 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           scroller,
           start: 'top bottom',
           end: rotationEnd,
-          scrub: true
-        }
-      }
+          scrub: true,
+        },
+      },
     );
 
     const wordElements = el.querySelectorAll<HTMLElement>('.word');
@@ -80,9 +81,9 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           scroller,
           start: 'top bottom-=20%',
           end: wordAnimationEnd,
-          scrub: true
-        }
-      }
+          scrub: true,
+        },
+      },
     );
 
     if (enableBlur) {
@@ -98,20 +99,30 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
             scroller,
             start: 'top bottom-=20%',
             end: wordAnimationEnd,
-            scrub: true
-          }
-        }
+            scrub: true,
+          },
+        },
       );
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
+  }, [
+    scrollContainerRef,
+    enableBlur,
+    baseRotation,
+    baseOpacity,
+    rotationEnd,
+    wordAnimationEnd,
+    blurStrength,
+  ]);
 
   return (
     <h2 ref={containerRef} className={`my-5 ${containerClassName}`}>
-      <p className={`text-[clamp(1.6rem,3vw,3rem)] leading-[1.5] font-semibold ${textClassName}`}>{splitText}</p>
+      <p className={`text-[clamp(1.6rem,3vw,3rem)] leading-[1.5] font-semibold ${textClassName}`}>
+        {splitText}
+      </p>
     </h2>
   );
 };

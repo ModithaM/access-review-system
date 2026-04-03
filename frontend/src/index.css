@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 @plugin 'lightswind/plugin';
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/geist';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -234,10 +234,10 @@ body {
 
 @layer utilities {
   .bg-brand-gradient {
-    background-image: linear-gradient(to right, #FF0080, #7928CA, #0070F3, #38bdf8);
+    background-image: linear-gradient(to right, #ff0080, #7928ca, #0070f3, #38bdf8);
   }
   .text-brand-gradient {
-    background-image: linear-gradient(to right, #FF0080, #7928CA, #0070F3, #38bdf8);
+    background-image: linear-gradient(to right, #ff0080, #7928ca, #0070f3, #38bdf8);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

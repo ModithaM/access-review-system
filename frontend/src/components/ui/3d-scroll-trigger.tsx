@@ -1,7 +1,7 @@
 // ThreeDScrollTrigger.tsx
-"use client";
+'use client';
 
-import React, { useRef, useEffect, useState, useMemo, useContext } from "react";
+import React, { useRef, useEffect, useState, useMemo, useContext } from 'react';
 import {
   motion,
   useAnimationFrame,
@@ -11,9 +11,9 @@ import {
   useSpring,
   useTransform,
   useVelocity,
-} from "framer-motion";
-import type { MotionValue } from "framer-motion";
-import { cn } from "@/lib/utils";
+} from 'framer-motion';
+import type { MotionValue } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 /* -------------------------
    Utility: wrap (unchanged)
@@ -26,8 +26,7 @@ export const wrap = (min: number, max: number, v: number) => {
 /* -----------------------------------
    Context to share velocity between rows
    ----------------------------------- */
-const ThreeDScrollTriggerContext =
-  React.createContext<MotionValue<number> | null>(null);
+const ThreeDScrollTriggerContext = React.createContext<MotionValue<number> | null>(null);
 
 /* --------------------------
    Container that provides velocity
@@ -53,7 +52,7 @@ export function ThreeDScrollTriggerContainer({
 
   return (
     <ThreeDScrollTriggerContext.Provider value={velocityFactor}>
-      <div className={cn("relative w-full", className)} {...props}>
+      <div className={cn('relative w-full', className)} {...props}>
         {children}
       </div>
     </ThreeDScrollTriggerContext.Provider>
@@ -66,12 +65,7 @@ export function ThreeDScrollTriggerContainer({
 export function ThreeDScrollTriggerRow(props: ThreeDScrollTriggerRowProps) {
   const sharedVelocityFactor = useContext(ThreeDScrollTriggerContext);
   if (sharedVelocityFactor) {
-    return (
-      <ThreeDScrollTriggerRowImpl
-        {...props}
-        velocityFactor={sharedVelocityFactor}
-      />
-    );
+    return <ThreeDScrollTriggerRowImpl {...props} velocityFactor={sharedVelocityFactor} />;
   }
   return <ThreeDScrollTriggerRowLocal {...props} />;
 }
@@ -110,14 +104,11 @@ function ThreeDScrollTriggerRowImpl({
   const baseXRef = useRef(0);
 
   // Memoized children
-  const childrenArray = useMemo(
-    () => React.Children.toArray(children),
-    [children],
-  );
+  const childrenArray = useMemo(() => React.Children.toArray(children), [children]);
 
   const BlockContent = useMemo(() => {
     return (
-      <div className="inline-flex shrink-0" style={{ contain: "paint" }}>
+      <div className="inline-flex shrink-0" style={{ contain: 'paint' }}>
         {childrenArray}
       </div>
     );
@@ -128,23 +119,18 @@ function ThreeDScrollTriggerRowImpl({
     const container = containerRef.current;
     if (!container) return;
 
-    const block = container.querySelector(
-      ".threed-scroll-trigger-block",
-    ) as HTMLElement;
+    const block = container.querySelector('.threed-scroll-trigger-block') as HTMLElement;
     if (block) {
       unitWidthRef.current = block.scrollWidth;
       // keep just enough to cover the viewport + 1
       const containerWidth = container.offsetWidth;
-      const needed = Math.max(
-        3,
-        Math.ceil(containerWidth / unitWidthRef.current) + 2,
-      );
+      const needed = Math.max(3, Math.ceil(containerWidth / unitWidthRef.current) + 2);
       setNumCopies(needed);
     }
   }, [childrenArray]);
 
   // Optimize: Check if container is in view
-  const isInView = useInView(containerRef, { margin: "20%" });
+  const isInView = useInView(containerRef, { margin: '20%' });
 
   // Animation loop
   useAnimationFrame((time) => {
@@ -163,8 +149,7 @@ function ThreeDScrollTriggerRowImpl({
     const currentDirection = direction * scrollDirection;
 
     const pixelsPerSecond = (unitWidth * baseVelocity) / 100;
-    const moveBy =
-      currentDirection * pixelsPerSecond * (1 + speedMultiplier) * dt;
+    const moveBy = currentDirection * pixelsPerSecond * (1 + speedMultiplier) * dt;
 
     const newX = baseXRef.current + moveBy;
 
@@ -188,7 +173,7 @@ function ThreeDScrollTriggerRowImpl({
   return (
     <div
       ref={containerRef}
-      className={cn("w-full overflow-hidden whitespace-nowrap", className)}
+      className={cn('w-full overflow-hidden whitespace-nowrap', className)}
       {...props}
     >
       <motion.div
@@ -198,10 +183,7 @@ function ThreeDScrollTriggerRowImpl({
         {Array.from({ length: numCopies }).map((_, i) => (
           <div
             key={i}
-            className={cn(
-              "inline-flex shrink-0",
-              i === 0 ? "threed-scroll-trigger-block" : "",
-            )}
+            className={cn('inline-flex shrink-0', i === 0 ? 'threed-scroll-trigger-block' : '')}
           >
             {BlockContent}
           </div>
@@ -227,12 +209,7 @@ function ThreeDScrollTriggerRowLocal(props: ThreeDScrollTriggerRowProps) {
     return sign * magnitude;
   });
 
-  return (
-    <ThreeDScrollTriggerRowImpl
-      {...props}
-      velocityFactor={localVelocityFactor}
-    />
-  );
+  return <ThreeDScrollTriggerRowImpl {...props} velocityFactor={localVelocityFactor} />;
 }
 
 export default ThreeDScrollTriggerRow;

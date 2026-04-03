@@ -1,20 +1,20 @@
-import axios from "axios";
+import axios from 'axios';
 
 const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 export interface LoginResponse {
-    success: boolean;
-    result: {
-        token: string;
-        user: {
-            id: string;
-            name: string;
-            email?: string;
-            isLoggedIn: boolean;
-            userType: "user" | "admin" | "moderator";
-        };
+  success: boolean;
+  result: {
+    token: string;
+    user: {
+      id: string;
+      name: string;
+      email?: string;
+      isLoggedIn: boolean;
+      userType: 'user' | 'admin' | 'moderator';
     };
-    message: string;
+  };
+  message: string;
 }
 
 interface StoredUser {
@@ -31,17 +31,17 @@ interface StoredUser {
 class AuthService {
   login(username: string, password: string) {
     return axios
-      .post<LoginResponse>(API_URL + "login", {
+      .post<LoginResponse>(API_URL + 'login', {
         email: username,
-        password
+        password,
       })
-      .then(response => {
+      .then((response) => {
         if (response.data.success && response.data.result) {
           const userData: StoredUser = {
             token: response.data.result.token,
-            user: response.data.result.user
+            user: response.data.result.user,
           };
-          localStorage.setItem("user", JSON.stringify(userData));
+          localStorage.setItem('user', JSON.stringify(userData));
         }
 
         return response.data;
@@ -49,21 +49,27 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
   }
 
-  register(email: string, name: string, password: string, surname?: string, passwordCheck?: string) {
-    return axios.post(API_URL + "register", {
+  register(
+    email: string,
+    name: string,
+    password: string,
+    surname?: string,
+    passwordCheck?: string,
+  ) {
+    return axios.post(API_URL + 'register', {
       email,
       name,
       surname,
       password,
-      passwordCheck: passwordCheck || password
+      passwordCheck: passwordCheck || password,
     });
   }
 
   getCurrentUser(): StoredUser | null {
-    const userStr = localStorage.getItem("user");
+    const userStr = localStorage.getItem('user');
     if (userStr) {
       try {
         return JSON.parse(userStr);

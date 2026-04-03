@@ -1,10 +1,10 @@
-import { memo, type CSSProperties, type ReactNode } from 'react'
+import { memo, type CSSProperties, type ReactNode } from 'react';
 
 export interface AuroraTextProps {
-  children: ReactNode
-  className?: string
-  colors?: string[]
-  speed?: number
+  children: ReactNode;
+  className?: string;
+  colors?: string[];
+  speed?: number;
 }
 
 export const AuroraText = memo(
@@ -19,7 +19,7 @@ export const AuroraText = memo(
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
       animationDuration: `${10 / speed}s`,
-    }
+    };
 
     return (
       <span className={`relative inline-block ${className}`}>
@@ -32,8 +32,8 @@ export const AuroraText = memo(
           {children}
         </span>
       </span>
-    )
+    );
   },
-)
+);
 
-AuroraText.displayName = 'AuroraText'
+AuroraText.displayName = 'AuroraText';

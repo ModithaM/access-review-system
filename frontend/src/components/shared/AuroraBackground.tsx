@@ -1,13 +1,13 @@
 // components/ui/aurora-background.tsx
 
-import { memo, type CSSProperties, type ReactNode } from 'react'
+import { memo, type CSSProperties, type ReactNode } from 'react';
 
 export interface AuroraBackgroundProps {
-  children?: ReactNode
-  className?: string
-  colors?: string[]
-  speed?: number
-  blur?: number
+  children?: ReactNode;
+  className?: string;
+  colors?: string[];
+  speed?: number;
+  blur?: number;
 }
 
 export const AuroraBackground = memo(
@@ -26,7 +26,7 @@ export const AuroraBackground = memo(
       inset: '-100%',
       opacity: 0.9,
       animation: `aurora ${10 / speed}s linear infinite`,
-    }
+    };
 
     const overlayStyle: CSSProperties = {
       backgroundImage: `linear-gradient(135deg, ${colors.join(', ')}, ${colors[0]})`,
@@ -36,7 +36,7 @@ export const AuroraBackground = memo(
       opacity: 0.3,
       animation: `aurora ${10 / speed}s linear infinite`,
       mixBlendMode: 'screen',
-    }
+    };
 
     return (
       <div className={`relative overflow-hidden ${className}`}>
@@ -54,14 +54,10 @@ export const AuroraBackground = memo(
         {/* Sharp overlay layer to boost color intensity */}
         <div style={overlayStyle} aria-hidden={true} />
 
-        {children && (
-          <div style={{ position: 'relative', zIndex: 10 }}>
-            {children}
-          </div>
-        )}
+        {children && <div style={{ position: 'relative', zIndex: 10 }}>{children}</div>}
       </div>
-    )
+    );
   },
-)
+);
 
-AuroraBackground.displayName = 'AuroraBackground'
+AuroraBackground.displayName = 'AuroraBackground';

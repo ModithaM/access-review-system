@@ -8,13 +8,17 @@ export interface ScrollStackItemProps {
   children: ReactNode;
 }
 
-export const ScrollStackItem: React.FC<ScrollStackItemProps> = ({ children, itemClassName = '', style }) => (
+export const ScrollStackItem: React.FC<ScrollStackItemProps> = ({
+  children,
+  itemClassName = '',
+  style,
+}) => (
   <div
     className={`scroll-stack-card relative w-full h-80 my-8 p-12 rounded-[40px] shadow-[0_0_30px_rgba(0,0,0,0.1)] box-border origin-top will-change-transform ${itemClassName}`.trim()}
     style={{
       backfaceVisibility: 'hidden',
       transformStyle: 'preserve-3d',
-      ...style
+      ...style,
     }}
   >
     {children}
@@ -50,7 +54,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   rotationAmount = 0,
   blurAmount = 0,
   useWindowScroll = false,
-  onStackComplete
+  onStackComplete,
 }) => {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const stackCompletedRef = useRef(false);
@@ -78,14 +82,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       return {
         scrollTop: window.scrollY,
         containerHeight: window.innerHeight,
-        scrollContainer: document.documentElement
+        scrollContainer: document.documentElement,
       };
     } else {
       const scroller = scrollerRef.current;
       return {
         scrollTop: scroller ? scroller.scrollTop : 0,
         containerHeight: scroller ? scroller.clientHeight : 0,
-        scrollContainer: scroller
+        scrollContainer: scroller,
       };
     }
   }, [useWindowScroll]);
@@ -93,24 +97,21 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   // Cache original offsets to prevent layout thrashing and jitter during transforms
   const initialOffsetsRef = useRef<number[]>([]);
 
-  const getElementOffset = useCallback(
-    (element: HTMLElement, index?: number) => {
-      // If we have a cached offset for a card, use it! This prevents jitter caused by reading
-      // getBoundingClientRect while the element is actively being transformed.
-      if (index !== undefined && initialOffsetsRef.current[index] !== undefined) {
-        return initialOffsetsRef.current[index];
-      }
-      
-      let top = 0;
-      let curr: HTMLElement | null = element;
-      while (curr) {
-        top += curr.offsetTop;
-        curr = curr.offsetParent as HTMLElement;
-      }
-      return top;
-    },
-    []
-  );
+  const getElementOffset = useCallback((element: HTMLElement, index?: number) => {
+    // If we have a cached offset for a card, use it! This prevents jitter caused by reading
+    // getBoundingClientRect while the element is actively being transformed.
+    if (index !== undefined && initialOffsetsRef.current[index] !== undefined) {
+      return initialOffsetsRef.current[index];
+    }
+
+    let top = 0;
+    let curr: HTMLElement | null = element;
+    while (curr) {
+      top += curr.offsetTop;
+      curr = curr.offsetParent as HTMLElement;
+    }
+    return top;
+  }, []);
 
   const updateCardTransforms = useCallback(() => {
     if (!cardsRef.current.length || isUpdatingRef.current) return;
@@ -145,11 +146,11 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       if (blurAmount) {
         let topCardIndex = 0;
         for (let j = 0; j < cardsRef.current.length; j++) {
-           const jCardTop = getElementOffset(cardsRef.current[j], j);
-           const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
-           if (scrollTop >= jTriggerStart) {
-             topCardIndex = j;
-           }
+          const jCardTop = getElementOffset(cardsRef.current[j], j);
+          const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
+          if (scrollTop >= jTriggerStart) {
+            topCardIndex = j;
+          }
         }
 
         if (i < topCardIndex) {
@@ -171,7 +172,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         translateY,
         scale,
         rotation,
-        blur
+        blur,
       };
 
       const lastTransform = lastTransformsRef.current.get(i);
@@ -217,7 +218,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     calculateProgress,
     parsePercentage,
     getScrollData,
-    getElementOffset
+    getElementOffset,
   ]);
 
   const handleScroll = useCallback(() => {
@@ -228,14 +229,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     if (useWindowScroll) {
       const lenis = new Lenis({
         duration: 1.2,
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         touchMultiplier: 2,
         infinite: false,
         wheelMultiplier: 1,
         lerp: 0.1,
         syncTouch: true,
-        syncTouchLerp: 0.075
+        syncTouchLerp: 0.075,
       });
 
       lenis.on('scroll', handleScroll);
@@ -256,7 +257,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         wrapper: scroller,
         content: scroller.querySelector('.scroll-stack-inner') as HTMLElement,
         duration: 1.2,
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         touchMultiplier: 2,
         infinite: false,
@@ -264,7 +265,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         wheelMultiplier: 1,
         lerp: 0.1,
         syncTouch: true,
-        syncTouchLerp: 0.075
+        syncTouchLerp: 0.075,
       });
 
       lenis.on('scroll', handleScroll);
@@ -286,7 +287,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     const cards = Array.from(
       useWindowScroll
         ? document.querySelectorAll('.scroll-stack-card')
-        : (scrollerRef.current?.querySelectorAll('.scroll-stack-card') ?? [])
+        : (scrollerRef.current?.querySelectorAll('.scroll-stack-card') ?? []),
     ) as HTMLElement[];
     cardsRef.current = cards;
     const transformsCache = lastTransformsRef.current;
@@ -346,7 +347,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     useWindowScroll,
     onStackComplete,
     setupLenis,
-    updateCardTransforms
+    updateCardTransforms,
   ]);
 
   return (
@@ -359,7 +360,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         scrollBehavior: 'smooth',
         WebkitTransform: 'translateZ(0)',
         transform: 'translateZ(0)',
-        willChange: 'scroll-position'
+        willChange: 'scroll-position',
       }}
     >
       <div className="scroll-stack-inner pt-[20vh] px-20 pb-[50rem] min-h-screen">

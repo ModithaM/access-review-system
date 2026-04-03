@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthService from "@/services/auth.service";
-import { Button } from "@/components/shared/Button";
-import { LogOut, Home, CheckCircle, AlertCircle } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AuthService from '@/services/auth.service';
+import { Button } from '@/components/shared/Button';
+import { LogOut, Home, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface User {
   id: string;
@@ -18,19 +18,19 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const currentUser = AuthService.getCurrentUser();
-    
+
     if (!currentUser?.user || !currentUser?.token) {
-      navigate("/login");
+      navigate('/login');
       return;
     }
-    
+
     setUser(currentUser.user);
     setLoading(false);
   }, [navigate]);
 
   const handleLogout = () => {
     AuthService.logout();
-    navigate("/");
+    navigate('/');
   };
 
   if (loading) {
@@ -51,7 +51,7 @@ export default function ProfilePage() {
           <h1 className="text-4xl font-black tracking-tighter mb-4">Access Denied</h1>
           <p className="text-gray-600 mb-8">Unable to load profile information.</p>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
             className="px-8 py-3 rounded-xl bg-black text-white font-bold uppercase tracking-wider hover:opacity-90"
           >
             Go Home
@@ -115,7 +115,7 @@ export default function ProfilePage() {
           <div className="grid grid-cols-2 gap-4 pt-6 border-t border-gray-200">
             <Button
               className="h-12 rounded-xl bg-black text-white font-bold uppercase tracking-wider hover:opacity-90 flex items-center justify-center gap-2"
-              onClick={() => navigate("/")}
+              onClick={() => navigate('/')}
             >
               <Home className="h-4 w-4" />
               <span>Home</span>

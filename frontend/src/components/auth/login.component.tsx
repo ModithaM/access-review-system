@@ -1,18 +1,18 @@
-import { Component } from "react";
-import { Navigate, Link } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import AuthService from "@/services/auth.service.ts";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { Component } from 'react';
+import { Navigate, Link } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import AuthService from '@/services/auth.service.ts';
+import { ArrowRight, Loader2 } from 'lucide-react';
 
 type Props = {};
 
 type State = {
-  redirect: string | null,
-  username: string,
-  password: string,
-  loading: boolean,
-  message: string
+  redirect: string | null;
+  username: string;
+  password: string;
+  loading: boolean;
+  message: string;
 };
 
 export default class Login extends Component<Props, State> {
@@ -22,10 +22,10 @@ export default class Login extends Component<Props, State> {
 
     this.state = {
       redirect: null,
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       loading: false,
-      message: ""
+      message: '',
     };
   }
 
@@ -33,14 +33,14 @@ export default class Login extends Component<Props, State> {
     const currentUser = AuthService.getCurrentUser();
 
     if (currentUser) {
-      this.setState({ redirect: "/profile" });
+      this.setState({ redirect: '/profile' });
     }
   }
 
   validationSchema() {
     return Yup.object().shape({
-      username: Yup.string().required("Username is required"),
-      password: Yup.string().required("Password is required"),
+      username: Yup.string().required('Username is required'),
+      password: Yup.string().required('Password is required'),
     });
   }
 
@@ -48,42 +48,40 @@ export default class Login extends Component<Props, State> {
     const { username, password } = formValue;
 
     this.setState({
-      message: "",
-      loading: true
+      message: '',
+      loading: true,
     });
 
     AuthService.login(username, password).then(
       () => {
         this.setState({
-          redirect: "/profile"
+          redirect: '/profile',
         });
       },
-      error => {
+      (error) => {
         const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
+          (error.response && error.response.data && error.response.data.message) ||
           error.message ||
           error.toString();
 
         this.setState({
           loading: false,
-          message: resMessage
+          message: resMessage,
         });
-      }
+      },
     );
   }
 
   render() {
     if (this.state.redirect) {
-      return <Navigate to={this.state.redirect} />
+      return <Navigate to={this.state.redirect} />;
     }
 
     const { loading, message } = this.state;
 
     const initialValues = {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     };
 
     return (
@@ -104,7 +102,10 @@ export default class Login extends Component<Props, State> {
             >
               <Form className="space-y-6">
                 <div>
-                  <label htmlFor="username" className="block text-sm font-bold tracking-wide text-gray-900 mb-2">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-bold tracking-wide text-gray-900 mb-2"
+                  >
                     USERNAME
                   </label>
                   <Field
@@ -121,7 +122,10 @@ export default class Login extends Component<Props, State> {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-bold tracking-wide text-gray-900 mb-2">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-bold tracking-wide text-gray-900 mb-2"
+                  >
                     PASSWORD
                   </label>
                   <Field

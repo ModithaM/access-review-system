@@ -1,39 +1,39 @@
-"use client";
+'use client';
 
-import { CountUp } from "@/components/ui/count-up";
-import ScrollReveal from "@/components/ui/scroll-reveal";
-import ScrollFloat from "@/components/ui/ScrollFloat";
-import { AuroraText } from "@/components/shared/AuroraText";
-import AboutImage from "@/assets/about-image.png";
-import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { CountUp } from '@/components/ui/count-up';
+import ScrollReveal from '@/components/ui/scroll-reveal';
+import ScrollFloat from '@/components/ui/ScrollFloat';
+import { AuroraText } from '@/components/shared/AuroraText';
+import AboutImage from '@/assets/about-image.png';
+import { motion, useInView } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
 
 /* ─── Data ──────────────────────────────────────────────────── */
 
 const stats = [
   {
     value: 3800,
-    suffix: "+",
-    label: "Accessible locations listed",
-    sub: "spanning malls, transit hubs, parks, and public buildings",
+    suffix: '+',
+    label: 'Accessible locations listed',
+    sub: 'spanning malls, transit hubs, parks, and public buildings',
   },
   {
     value: 7500,
-    suffix: "+",
-    label: "Verified community reviews",
-    sub: "submitted by real people navigating everyday spaces",
+    suffix: '+',
+    label: 'Verified community reviews',
+    sub: 'submitted by real people navigating everyday spaces',
   },
   {
     value: 60,
-    suffix: "+",
-    label: "Cities covered",
-    sub: "and expanding as our global community grows",
+    suffix: '+',
+    label: 'Cities covered',
+    sub: 'and expanding as our global community grows',
   },
   {
     value: 120,
-    suffix: "+",
-    label: "Accessibility features tracked",
-    sub: "from ramps and lifts to tactile paths and quiet rooms",
+    suffix: '+',
+    label: 'Accessibility features tracked',
+    sub: 'from ramps and lifts to tactile paths and quiet rooms',
   },
 ];
 
@@ -59,18 +59,16 @@ function RatingBadge() {
 
       {/* Score */}
       <div className="flex items-baseline gap-1.5">
-        <span className="text-2xl font-black leading-none text-gray-900">
-          4.97
-        </span>
+        <span className="text-2xl font-black leading-none text-gray-900">4.97</span>
         <span className="text-xs font-medium text-gray-400">/5</span>
       </div>
 
       {/* Label */}
       <p className="text-[11px] leading-tight text-gray-400">
-        trusted by{" "}
+        trusted by{' '}
         <AuroraText
           className="text-[11px] font-semibold"
-          colors={["#FF0080", "#7928CA", "#0070F3"]}
+          colors={['#FF0080', '#7928CA', '#0070F3']}
           speed={0.6}
         >
           7,500+ reviewers
@@ -95,7 +93,7 @@ function RatingBadge() {
 
 function StatColumn({ stat }: { stat: (typeof stats)[0] }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, margin: "-60px" });
+  const isInView = useInView(ref, { once: false, margin: '-60px' });
   const [countKey, setCountKey] = useState(0);
 
   useEffect(() => {
@@ -111,7 +109,7 @@ function StatColumn({ stat }: { stat: (typeof stats)[0] }) {
     >
       <AuroraText
         className="text-[clamp(2.2rem,3.5vw,3rem)] font-black !leading-none tracking-tight"
-        colors={["#FF0080", "#7928CA", "#0070F3", "#38BDF8"]}
+        colors={['#FF0080', '#7928CA', '#0070F3', '#38BDF8']}
         speed={0.8}
       >
         <CountUp
@@ -123,12 +121,8 @@ function StatColumn({ stat }: { stat: (typeof stats)[0] }) {
           triggerOnView
         />
       </AuroraText>
-      <p className="mt-1.5 text-sm font-semibold leading-snug text-gray-700">
-        {stat.label}
-      </p>
-      <p className="max-w-[200px] text-xs leading-relaxed text-gray-400">
-        {stat.sub}
-      </p>
+      <p className="mt-1.5 text-sm font-semibold leading-snug text-gray-700">{stat.label}</p>
+      <p className="max-w-[200px] text-xs leading-relaxed text-gray-400">{stat.sub}</p>
     </div>
   );
 }
@@ -139,13 +133,10 @@ export function About() {
   return (
     <section className="w-full bg-white py-24 md:py-32 lg:py-36">
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-16">
-
         {/* ── Top: heading block + badge ───────────────────── */}
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
-
           {/* Left column */}
           <div className="flex flex-col md:max-w-[60%]">
-
             {/* Eyebrow */}
             <ScrollFloat
               containerClassName="!my-0 !overflow-visible"
@@ -164,19 +155,23 @@ export function About() {
               className="mt-5 text-[clamp(1.9rem,4vw,3.9rem)] font-black leading-[1.1] tracking-tight text-neutral-900"
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, margin: "-80px" }}
-              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+              viewport={{ once: false, margin: '-80px' }}
+              transition={{
+                duration: 1.4,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.2,
+              }}
             >
-              We are passionate about{" "}
+              We are passionate about{' '}
               <AuroraText
                 className="font-extrabold"
-                colors={["#FF0080", "#7928CA", "#0070F3", "#38BDF8"]}
+                colors={['#FF0080', '#7928CA', '#0070F3', '#38BDF8']}
                 speed={0.8}
               >
                 empowering
-              </AuroraText>{" "}
+              </AuroraText>{' '}
               individuals to navigate
-              <br className="hidden sm:block" /> the world with{" "}
+              <br className="hidden sm:block" /> the world with{' '}
               <span className="italic text-neutral-400">confidence.</span>
             </motion.h2>
 
@@ -190,10 +185,9 @@ export function About() {
                 baseRotation={0}
                 blurStrength={3}
               >
-                AccessAble helps people share real accessibility experiences —
-                from ramps, lifts, and tactile paths to braille signage,
-                accessible entrances, and quiet rooms. Because navigating the
-                world should never require guesswork.
+                AccessAble helps people share real accessibility experiences — from ramps, lifts,
+                and tactile paths to braille signage, accessible entrances, and quiet rooms. Because
+                navigating the world should never require guesswork.
               </ScrollReveal>
             </div>
           </div>
@@ -205,8 +199,12 @@ export function About() {
               className="w-full overflow-hidden rounded-2xl border -ml-12 border-gray-100 shadow-[0_4px_24px_rgba(121,40,202,0.08)] md:w-[600px]"
               initial={{ opacity: 0, x: 48, scale: 0.97 }}
               whileInView={{ opacity: 1, x: 0, scale: 1 }}
-              viewport={{ once: false, margin: "-80px" }}
-              transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+              viewport={{ once: false, margin: '-80px' }}
+              transition={{
+                duration: 1.6,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.4,
+              }}
             >
               <img
                 src={AboutImage}
@@ -226,7 +224,6 @@ export function About() {
             <StatColumn key={i} stat={stat} />
           ))}
         </div>
-
       </div>
     </section>
   );
