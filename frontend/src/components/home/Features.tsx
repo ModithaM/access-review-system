@@ -237,8 +237,8 @@ const featureCards = [
 
         <p className="text-gray-500 text-xl leading-relaxed max-w-2xl">
           AccessAble helps you discover, review, and truly understand the
-          accessibility of public spaces — powered by community-driven
-          insights and meaningful real-world data.
+          accessibility of public spaces — powered by community-driven insights
+          and meaningful real-world data.
         </p>
       </div>
     ),
@@ -356,7 +356,10 @@ const featureCards = [
     content: (
       <div className="flex flex-col lg:flex-row gap-10 h-full items-center">
         <div className="flex-1 flex flex-col justify-center">
-          <div className="w-18 h-18 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-8" style={{ width: 72, height: 72 }}>
+          <div
+            className="w-18 h-18 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-8"
+            style={{ width: 72, height: 72 }}
+          >
             <Accessibility size={34} className="text-white" />
           </div>
           <h3 className="text-4xl font-black tracking-tight text-white mb-5 leading-tight">

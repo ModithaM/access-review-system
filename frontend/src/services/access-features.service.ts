@@ -22,13 +22,17 @@ const getHeaders = () => {
 
 class AccessFeaturesService {
   getAllAccessFeatures(activeOnly = false) {
-    return axios.get<{ success: boolean; count: number; data: AccessFeature[] }>(
-      `${API_URL}${activeOnly ? "?activeOnly=true" : ""}`
-    );
+    return axios.get<{
+      success: boolean;
+      count: number;
+      data: AccessFeature[];
+    }>(`${API_URL}${activeOnly ? "?activeOnly=true" : ""}`);
   }
 
   getAccessFeatureById(id: string) {
-    return axios.get<{ success: boolean; data: AccessFeature }>(`${API_URL}/${id}`);
+    return axios.get<{ success: boolean; data: AccessFeature }>(
+      `${API_URL}/${id}`,
+    );
   }
 
   createAccessFeature(data: Omit<AccessFeature, "_id">) {
@@ -37,7 +41,11 @@ class AccessFeaturesService {
       ...data,
       is_active: data.isActive,
     };
-    return axios.post<{ success: boolean; data: AccessFeature }>(API_URL, payload, getHeaders());
+    return axios.post<{ success: boolean; data: AccessFeature }>(
+      API_URL,
+      payload,
+      getHeaders(),
+    );
   }
 
   updateAccessFeature(id: string, data: Partial<AccessFeature>) {
@@ -46,14 +54,19 @@ class AccessFeaturesService {
       ...data,
       ...(data.isActive !== undefined ? { is_active: data.isActive } : {}),
     };
-    return axios.put<{ success: boolean; data: AccessFeature }>(`${API_URL}/${id}`, payload, getHeaders());
+    return axios.put<{ success: boolean; data: AccessFeature }>(
+      `${API_URL}/${id}`,
+      payload,
+      getHeaders(),
+    );
   }
 
   deleteAccessFeature(id: string) {
-    return axios.delete<{ success: boolean; message: string; data: AccessFeature }>(
-      `${API_URL}/${id}`,
-      getHeaders()
-    );
+    return axios.delete<{
+      success: boolean;
+      message: string;
+      data: AccessFeature;
+    }>(`${API_URL}/${id}`, getHeaders());
   }
 }
 

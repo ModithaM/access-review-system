@@ -1,42 +1,42 @@
 // components/ui/aurora-background.tsx
 
-import { memo, type CSSProperties, type ReactNode } from 'react'
+import { memo, type CSSProperties, type ReactNode } from "react";
 
 export interface AuroraBackgroundProps {
-  children?: ReactNode
-  className?: string
-  colors?: string[]
-  speed?: number
-  blur?: number
+  children?: ReactNode;
+  className?: string;
+  colors?: string[];
+  speed?: number;
+  blur?: number;
 }
 
 export const AuroraBackground = memo(
   ({
     children,
-    className = '',
-    colors = ['#FF0080', '#7928CA', '#0070F3'],
+    className = "",
+    colors = ["#FF0080", "#7928CA", "#0070F3"],
     speed = 1,
     blur = 40,
   }: AuroraBackgroundProps) => {
     const gradientStyle: CSSProperties = {
-      backgroundImage: `linear-gradient(135deg, ${colors.join(', ')}, ${colors[0]})`,
-      backgroundSize: '300% 300%',
+      backgroundImage: `linear-gradient(135deg, ${colors.join(", ")}, ${colors[0]})`,
+      backgroundSize: "300% 300%",
       filter: `blur(${blur}px)`,
-      position: 'absolute',
-      inset: '-100%',
+      position: "absolute",
+      inset: "-100%",
       opacity: 0.9,
       animation: `aurora ${10 / speed}s linear infinite`,
-    }
+    };
 
     const overlayStyle: CSSProperties = {
-      backgroundImage: `linear-gradient(135deg, ${colors.join(', ')}, ${colors[0]})`,
-      backgroundSize: '300% 300%',
-      position: 'absolute',
+      backgroundImage: `linear-gradient(135deg, ${colors.join(", ")}, ${colors[0]})`,
+      backgroundSize: "300% 300%",
+      position: "absolute",
       inset: 0,
       opacity: 0.3,
       animation: `aurora ${10 / speed}s linear infinite`,
-      mixBlendMode: 'screen',
-    }
+      mixBlendMode: "screen",
+    };
 
     return (
       <div className={`relative overflow-hidden ${className}`}>
@@ -55,13 +55,11 @@ export const AuroraBackground = memo(
         <div style={overlayStyle} aria-hidden={true} />
 
         {children && (
-          <div style={{ position: 'relative', zIndex: 10 }}>
-            {children}
-          </div>
+          <div style={{ position: "relative", zIndex: 10 }}>{children}</div>
         )}
       </div>
-    )
+    );
   },
-)
+);
 
-AuroraBackground.displayName = 'AuroraBackground'
+AuroraBackground.displayName = "AuroraBackground";

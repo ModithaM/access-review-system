@@ -24,12 +24,12 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    
+
     // Check login state
     const user = AuthService.getCurrentUser();
     setIsLoggedIn(!!user?.token);
     setUserName(user?.user?.name || null);
-    
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -43,18 +43,23 @@ export default function Header() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "py-4" : "py-8"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? "py-4" : "py-8"
+      }`}
     >
       <div className="container mx-auto px-4">
         <div
-          className={`relative flex w-full items-center p-2 rounded-[2rem] transition-all duration-500 ${scrolled
+          className={`relative flex w-full items-center p-2 rounded-[2rem] transition-all duration-500 ${
+            scrolled
               ? "bg-white/80 backdrop-blur-xl shadow-2xl"
               : "bg-white/80 backdrop-blur-xl dark:bg-transparent dark:backdrop-blur-none shadow-none"
-            }`}
+          }`}
         >
           <div className="mr-auto flex shrink-0 items-center gap-3 px-4">
-            <Link to="/" className="flex h-10 w-10 items-center justify-center rounded-xl bg-black shadow-lg shadow-black/20">
+            <Link
+              to="/"
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-black shadow-lg shadow-black/20"
+            >
               <Shield className="h-6 w-6 text-white" />
             </Link>
             <Link to="/" className="no-underline">
@@ -152,7 +157,11 @@ export default function Header() {
                       asChild
                       className="w-full h-12 rounded-xl border-2 border-black bg-white text-black text-center text-[11px] font-black uppercase tracking-widest"
                     >
-                      <Link to="/profile" onClick={() => setIsOpen(false)} className="flex items-center justify-center gap-2">
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center justify-center gap-2"
+                      >
                         <User className="h-4 w-4" />
                         Profile
                       </Link>

@@ -86,8 +86,9 @@ function TiltWrapper({
       }}
       onMouseLeave={() => setTilt({ rx: 0, ry: 0 })}
       style={{
-        transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateZ(${active ? translateZpx : 0
-          }px) scale(${active ? hoverScale : 1})`,
+        transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateZ(${
+          active ? translateZpx : 0
+        }px) scale(${active ? hoverScale : 1})`,
         transition: `transform ${transitionDurationMs}ms cubic-bezier(.2, .9, .2, 1)`,
       }}
     >

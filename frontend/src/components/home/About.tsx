@@ -139,13 +139,10 @@ export function About() {
   return (
     <section className="w-full bg-white py-24 md:py-32 lg:py-36">
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-16">
-
         {/* ── Top: heading block + badge ───────────────────── */}
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
-
           {/* Left column */}
           <div className="flex flex-col md:max-w-[60%]">
-
             {/* Eyebrow */}
             <ScrollFloat
               containerClassName="!my-0 !overflow-visible"
@@ -165,7 +162,11 @@ export function About() {
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-80px" }}
-              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+              transition={{
+                duration: 1.4,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.2,
+              }}
             >
               We are passionate about{" "}
               <AuroraText
@@ -206,7 +207,11 @@ export function About() {
               initial={{ opacity: 0, x: 48, scale: 0.97 }}
               whileInView={{ opacity: 1, x: 0, scale: 1 }}
               viewport={{ once: false, margin: "-80px" }}
-              transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+              transition={{
+                duration: 1.6,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.4,
+              }}
             >
               <img
                 src={AboutImage}
@@ -226,7 +231,6 @@ export function About() {
             <StatColumn key={i} stat={stat} />
           ))}
         </div>
-
       </div>
     </section>
   );

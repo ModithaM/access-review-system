@@ -70,7 +70,8 @@ export function ScrollReveal({
   staggerDelay = 0.05,
   threshold = 0.5,
   duration = 0.8,
-  springConfig = { // Default spring config is always good to have
+  springConfig = {
+    // Default spring config is always good to have
     damping: 25,
     stiffness: 100,
     mass: 1,
@@ -82,35 +83,39 @@ export function ScrollReveal({
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, {
     amount: threshold,
-    once: false
+    once: false,
   });
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
   // Transform rotation based on scroll
   const rotation = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    [baseRotation, 0, 0]
+    [baseRotation, 0, 0],
   );
 
   // Split text into words and spaces, ensuring each part is an object
-  const splitText = useMemo(() => { // Using useMemo is good here
+  const splitText = useMemo(() => {
+    // Using useMemo is good here
     const text = typeof children === "string" ? children : "";
     // Split by spaces, keeping the spaces as separate elements in the array.
     // Each 'part' will either be a word or a sequence of spaces.
-    return text.split(/(\s+)/).map((part, index) => {
-      // Return an object for both words and spaces, with a 'type' property
-      // to differentiate them in the rendering loop.
-      return {
-        value: part,
-        isSpace: part.match(/^\s+$/) && part.length > 0, // Check if it's a non-empty string of only whitespace
-        originalIndex: index, // Keep original index for stable keys
-      };
-    }).filter(item => item.value.length > 0); // Filter out any empty strings that might result from split
+    return text
+      .split(/(\s+)/)
+      .map((part, index) => {
+        // Return an object for both words and spaces, with a 'type' property
+        // to differentiate them in the rendering loop.
+        return {
+          value: part,
+          isSpace: part.match(/^\s+$/) && part.length > 0, // Check if it's a non-empty string of only whitespace
+          originalIndex: index, // Keep original index for stable keys
+        };
+      })
+      .filter((item) => item.value.length > 0); // Filter out any empty strings that might result from split
   }, [children]);
 
   const containerVariants = {
@@ -147,10 +152,7 @@ export function ScrollReveal({
     <motion.div
       ref={containerRef}
       style={{ rotate: rotation }}
-      className={cn(
-        "my-5 transform-gpu",
-        containerClassName
-      )}
+      className={cn("my-5 transform-gpu", containerClassName)}
     >
       <motion.p
         className={cn(
@@ -158,28 +160,31 @@ export function ScrollReveal({
           sizeClasses[size],
           alignClasses[align],
           variantClasses[variant],
-          textClassName
+          textClassName,
         )}
         variants={containerVariants}
         initial="hidden"
         // Changed to `isInView` to match the behavior of triggering on view
         animate={isInView ? "visible" : "hidden"}
       >
-        {splitText.map((item) => ( // Map over 'item' directly as it's always an object
-          item.isSpace ? (
-            // Render spaces as a regular span
-            <span key={`space-${item.originalIndex}`}>{item.value}</span>
-          ) : (
-            // Render words as motion.span for animation
-            <motion.span
-              key={`word-${item.originalIndex}`} // Use originalIndex for stable keys
-              className="inline-block"
-              variants={wordVariants}
-            >
-              {item.value}
-            </motion.span>
-          )
-        ))}
+        {splitText.map(
+          (
+            item, // Map over 'item' directly as it's always an object
+          ) =>
+            item.isSpace ? (
+              // Render spaces as a regular span
+              <span key={`space-${item.originalIndex}`}>{item.value}</span>
+            ) : (
+              // Render words as motion.span for animation
+              <motion.span
+                key={`word-${item.originalIndex}`} // Use originalIndex for stable keys
+                className="inline-block"
+                variants={wordVariants}
+              >
+                {item.value}
+              </motion.span>
+            ),
+        )}
       </motion.p>
     </motion.div>
   );

@@ -8,11 +8,11 @@ import { ArrowRight, Loader2 } from "lucide-react";
 type Props = {};
 
 type State = {
-  redirect: string | null,
-  username: string,
-  password: string,
-  loading: boolean,
-  message: string
+  redirect: string | null;
+  username: string;
+  password: string;
+  loading: boolean;
+  message: string;
 };
 
 export default class Login extends Component<Props, State> {
@@ -25,7 +25,7 @@ export default class Login extends Component<Props, State> {
       username: "",
       password: "",
       loading: false,
-      message: ""
+      message: "",
     };
   }
 
@@ -49,16 +49,16 @@ export default class Login extends Component<Props, State> {
 
     this.setState({
       message: "",
-      loading: true
+      loading: true,
     });
 
     AuthService.login(username, password).then(
       () => {
         this.setState({
-          redirect: "/profile"
+          redirect: "/profile",
         });
       },
-      error => {
+      (error) => {
         const resMessage =
           (error.response &&
             error.response.data &&
@@ -68,15 +68,15 @@ export default class Login extends Component<Props, State> {
 
         this.setState({
           loading: false,
-          message: resMessage
+          message: resMessage,
         });
-      }
+      },
     );
   }
 
   render() {
     if (this.state.redirect) {
-      return <Navigate to={this.state.redirect} />
+      return <Navigate to={this.state.redirect} />;
     }
 
     const { loading, message } = this.state;
@@ -93,7 +93,9 @@ export default class Login extends Component<Props, State> {
             <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-4 bg-gradient-to-b from-black to-gray-400 bg-clip-text text-transparent">
               Welcome Back
             </h1>
-            <p className="text-lg text-gray-600">Sign in to your account to continue</p>
+            <p className="text-lg text-gray-600">
+              Sign in to your account to continue
+            </p>
           </div>
 
           <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-xl">
@@ -104,7 +106,10 @@ export default class Login extends Component<Props, State> {
             >
               <Form className="space-y-6">
                 <div>
-                  <label htmlFor="username" className="block text-sm font-bold tracking-wide text-gray-900 mb-2">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-bold tracking-wide text-gray-900 mb-2"
+                  >
                     USERNAME
                   </label>
                   <Field
@@ -121,7 +126,10 @@ export default class Login extends Component<Props, State> {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-bold tracking-wide text-gray-900 mb-2">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-bold tracking-wide text-gray-900 mb-2"
+                  >
                     PASSWORD
                   </label>
                   <Field
@@ -139,7 +147,9 @@ export default class Login extends Component<Props, State> {
 
                 {message && (
                   <div className="rounded-xl bg-red-50 border border-red-200 p-4">
-                    <p className="text-sm font-medium text-red-800">{message}</p>
+                    <p className="text-sm font-medium text-red-800">
+                      {message}
+                    </p>
                   </div>
                 )}
 
@@ -166,7 +176,9 @@ export default class Login extends Component<Props, State> {
                     <div className="w-full border-t border-gray-200"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-600">New user?</span>
+                    <span className="px-2 bg-white text-gray-600">
+                      New user?
+                    </span>
                   </div>
                 </div>
 

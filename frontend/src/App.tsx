@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Login from "./components/auth/login.component";
 import Register from "./components/auth/register.component";
@@ -41,8 +46,18 @@ function App() {
           <Route path="features" element={<AccessFeaturesPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="users" element={<UsersPage />} />
-          <Route path="analytics" element={<div className="p-8 font-medium">Analytics (Coming Soon)</div>} />
-          <Route path="settings" element={<div className="p-8 font-medium">Settings (Coming Soon)</div>} />
+          <Route
+            path="analytics"
+            element={
+              <div className="p-8 font-medium">Analytics (Coming Soon)</div>
+            }
+          />
+          <Route
+            path="settings"
+            element={
+              <div className="p-8 font-medium">Settings (Coming Soon)</div>
+            }
+          />
         </Route>
       </Routes>
     </Router>

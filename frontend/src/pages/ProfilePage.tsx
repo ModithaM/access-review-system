@@ -18,12 +18,12 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const currentUser = AuthService.getCurrentUser();
-    
+
     if (!currentUser?.user || !currentUser?.token) {
       navigate("/login");
       return;
     }
-    
+
     setUser(currentUser.user);
     setLoading(false);
   }, [navigate]);
@@ -48,8 +48,12 @@ export default function ProfilePage() {
     return (
       <div className="min-h-screen bg-white pt-32 pb-12">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-black tracking-tighter mb-4">Access Denied</h1>
-          <p className="text-gray-600 mb-8">Unable to load profile information.</p>
+          <h1 className="text-4xl font-black tracking-tighter mb-4">
+            Access Denied
+          </h1>
+          <p className="text-gray-600 mb-8">
+            Unable to load profile information.
+          </p>
           <button
             onClick={() => navigate("/")}
             className="px-8 py-3 rounded-xl bg-black text-white font-bold uppercase tracking-wider hover:opacity-90"
@@ -68,22 +72,34 @@ export default function ProfilePage() {
           <h1 className="text-5xl md:text-6xl font-black tracking-tighter bg-gradient-to-b from-black to-gray-400 bg-clip-text text-transparent">
             Welcome, {user.name}
           </h1>
-          <p className="text-lg text-gray-600 mt-2">Manage your account and access reviews</p>
+          <p className="text-lg text-gray-600 mt-2">
+            Manage your account and access reviews
+          </p>
         </div>
 
         <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-xl space-y-6">
           <div className="border-b border-gray-200 pb-6">
-            <p className="text-sm text-gray-500 font-bold tracking-wide mb-2">NAME</p>
-            <p className="text-2xl font-black tracking-tight text-gray-900">{user.name}</p>
+            <p className="text-sm text-gray-500 font-bold tracking-wide mb-2">
+              NAME
+            </p>
+            <p className="text-2xl font-black tracking-tight text-gray-900">
+              {user.name}
+            </p>
           </div>
 
           <div className="border-b border-gray-200 pb-6">
-            <p className="text-sm text-gray-500 font-bold tracking-wide mb-2">USER ID</p>
-            <p className="text-lg font-mono text-gray-700 break-all">{user.id}</p>
+            <p className="text-sm text-gray-500 font-bold tracking-wide mb-2">
+              USER ID
+            </p>
+            <p className="text-lg font-mono text-gray-700 break-all">
+              {user.id}
+            </p>
           </div>
 
           <div className="border-b border-gray-200 pb-6">
-            <p className="text-sm text-gray-500 font-bold tracking-wide mb-2">ACCOUNT TYPE</p>
+            <p className="text-sm text-gray-500 font-bold tracking-wide mb-2">
+              ACCOUNT TYPE
+            </p>
             <div className="inline-block">
               <span className="px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-bold uppercase tracking-wider">
                 {user.userType}
@@ -92,7 +108,9 @@ export default function ProfilePage() {
           </div>
 
           <div>
-            <p className="text-sm text-gray-500 font-bold tracking-wide mb-2">LOGIN STATUS</p>
+            <p className="text-sm text-gray-500 font-bold tracking-wide mb-2">
+              LOGIN STATUS
+            </p>
             <div className="flex items-center gap-2">
               {user.isLoggedIn ? (
                 <>

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Search, Bell, Moon, Sun } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Search, Bell, Moon, Sun } from "lucide-react";
 
 interface NavbarProps {
   title: string;
@@ -10,26 +10,28 @@ export default function AdminNavbar({ title }: NavbarProps) {
 
   useEffect(() => {
     // Determine default mode based on localStorage or browser preference
-    const storedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
+    const storedTheme = localStorage.getItem("theme");
+    const systemPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+
+    if (storedTheme === "dark" || (!storedTheme && systemPrefersDark)) {
       setIsDark(true);
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     } else {
       setIsDark(false);
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 
   const toggleDarkMode = () => {
     if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
       setIsDark(false);
     } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
       setIsDark(true);
     }
   };
@@ -39,21 +41,21 @@ export default function AdminNavbar({ title }: NavbarProps) {
       <h1 className="text-2xl font-bold bg-brand-gradient text-transparent bg-clip-text">
         {title}
       </h1>
-      
+
       <div className="flex items-center space-x-6">
         <div className="relative group hidden md:block">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <Search className="h-4 w-4 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
           </div>
-          <input 
-            type="text" 
-            placeholder="Search..." 
+          <input
+            type="text"
+            placeholder="Search..."
             className="pl-10 pr-4 py-2 w-64 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all focus:w-80 focus:bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:bg-gray-700"
           />
         </div>
-        
+
         <div className="flex items-center space-x-2">
-          <button 
+          <button
             onClick={toggleDarkMode}
             className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
