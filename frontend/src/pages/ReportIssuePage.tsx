@@ -79,7 +79,9 @@ export default function ReportIssuePage() {
           severity: values.severity as 'Low' | 'Medium' | 'High' | 'Critical',
           category: values.category,
         });
-        showSuccessToast('Issue reported successfully! Thank you for helping us improve accessibility.');
+        showSuccessToast(
+          'Issue reported successfully! Thank you for helping us improve accessibility.',
+        );
         formik.resetForm();
       } catch (error) {
         const apiError = error as { response?: { data?: { message?: string } } };

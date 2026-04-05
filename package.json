@@ -10,8 +10,5 @@
   "devDependencies": {
     "husky": "^9.1.7",
     "prettier": "^3.8.1"
-  },
-  "dependencies": {
-    "react-toastify": "^11.0.5"
   }
 }
