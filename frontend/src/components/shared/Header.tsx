@@ -12,6 +12,7 @@ const navigation = [
   { name: 'Explore Spaces', href: '#' },
   { name: 'Reviews', href: '#' },
   { name: 'Accessibility Features', href: '#' },
+  { name: 'Report Issue', href: '/report-issue' },
 ] as const;
 
 export default function Header() {

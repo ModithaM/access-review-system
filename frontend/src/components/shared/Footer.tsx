@@ -1,4 +1,3 @@
-import React from 'react';
 import { AuroraText } from './AuroraText';
 
 const Footer = () => {

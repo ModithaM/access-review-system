@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   LogOut,
   User,
+  AlertCircle,
 } from 'lucide-react';
 import authService from '../../services/auth.service';
 
@@ -39,6 +40,12 @@ const MENU_ITEMS = [
   },
   { id: 'reviews', label: 'Reviews', icon: Star, route: '/admin/reviews' },
   { id: 'users', label: 'Users', icon: UserRound, route: '/admin/users' },
+  {
+    id: 'issues',
+    label: 'Reported Issues',
+    icon: AlertCircle,
+    route: '/admin/issues',
+  },
   {
     id: 'analytics',
     label: 'Analytics',

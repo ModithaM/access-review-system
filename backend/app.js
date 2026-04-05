@@ -12,6 +12,7 @@ const authApiRouter = require('./routes/authApi');
 const publicSpaceApiRouter = require('./routes/publicSpaceApi');
 const accessFeatureApiRouter = require('./routes/accessFeatureApi');
 const reviewApiRouter = require('./routes/reviewApi');
+const issueApiRouter = require('./routes/issueApi');
 
 const errorHandlers = require('./handlers/errorHandlers');
 
@@ -72,6 +73,7 @@ app.use('/api/user', isValidToken, userApiRouter);
 app.use('/api/public-space', publicSpaceApiRouter);
 app.use('/api/access-features', accessFeatureApiRouter);
 app.use('/api/review', reviewApiRouter);
+app.use('/api/issue', issueApiRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // If that above routes didn't work, we 404 them and forward to error handler
