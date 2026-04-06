@@ -15,6 +15,7 @@ interface DataTableProps {
   onEdit?: (row: any) => void;
   onDelete?: (row: any) => void;
   onView?: (row: any) => void;
+  toolbarActions?: React.ReactNode;
 }
 
 export default function DataTable({
@@ -24,6 +25,7 @@ export default function DataTable({
   onEdit,
   onDelete,
   onView,
+  toolbarActions,
 }: DataTableProps) {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -52,6 +54,7 @@ export default function DataTable({
           <Button variant="outline" className="shrink-0 p-2 h-9 w-9">
             <Filter className="h-4 w-4" />
           </Button>
+          {toolbarActions} 
         </div>
       </div>
 
