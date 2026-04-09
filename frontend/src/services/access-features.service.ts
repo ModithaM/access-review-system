@@ -9,6 +9,8 @@ export interface AccessFeature {
   description: string;
   category: 'Mobility' | 'Visual' | 'Auditory' | 'Cognitive' | 'Other';
   isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 const getHeaders = () => {

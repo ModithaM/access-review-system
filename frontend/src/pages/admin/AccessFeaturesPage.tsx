@@ -14,6 +14,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../../components/admin/Button';
 import DataTable, { type Column } from '../../components/admin/DataTable';
 import accessFeaturesService, { type AccessFeature } from '../../services/access-features.service';
+import GenerateReportButton from '@/components/admin/access-features/GenerateReportButton';
+import GenerateReportModal from '@/components/admin/access-features/GenerateReportModal';
 
 const ACCESS_FEATURE_CATEGORIES: AccessFeature['category'][] = [
   'Mobility',
@@ -44,6 +46,7 @@ export default function AccessFeaturesPage() {
     isActive: true,
   });
   const [submitting, setSubmitting] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const fetchFeatures = async () => {
     try {
@@ -318,10 +321,13 @@ export default function AccessFeaturesPage() {
             </div>
           )}
         </div>
-        <Button variant="primary" gradient onClick={() => handleOpenModal()}>
-          <Plus size={18} className="mr-2" />
-          Add Feature
-        </Button>
+        <div className="flex items-center gap-3">
+          <GenerateReportButton onClick={() => setIsReportModalOpen(true)} />
+          <Button variant="primary" gradient onClick={() => handleOpenModal()}>
+            <Plus size={18} className="mr-2" />
+            Add Feature
+          </Button>
+        </div>
       </div>
 
       {loading ? (
@@ -570,6 +576,12 @@ export default function AccessFeaturesPage() {
           </>
         )}
       </AnimatePresence>
+
+      <GenerateReportModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        features={features}
+      />
     </motion.div>
   );
 }
