@@ -64,7 +64,7 @@ export default function AdminLayout() {
 
       <div
         className="flex-1 transition-all duration-300 ease-in-out flex flex-col min-w-0"
-        style={{ marginLeft: collapsed ? '80px' : '280px' }}
+        style={{ marginLeft: collapsed ? '72px' : '248px' }}
       >
         <AdminNavbar title={title} />
         <main className="flex-1 p-6 lg:p-10 overflow-x-hidden">

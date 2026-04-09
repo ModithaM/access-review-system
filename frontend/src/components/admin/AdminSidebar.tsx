@@ -94,11 +94,11 @@ export default function AdminSidebar({
 
   return (
     <motion.aside
-      animate={{ width: collapsed ? 80 : 280 }}
+      animate={{ width: collapsed ? 72 : 248 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
       className="fixed left-0 top-0 h-screen bg-white dark:bg-gray-900 shadow-xl shadow-gray-200/50 dark:shadow-none z-50 flex flex-col rounded-r-3xl border-r border-gray-100 dark:border-gray-800 transition-colors duration-300"
     >
-      <div className="flex items-center justify-between p-6 h-20">
+      <div className="flex items-center justify-between p-5 h-20">
         {!collapsed && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -117,7 +117,7 @@ export default function AdminSidebar({
       </div>
 
       <nav
-        className="flex-1 px-4 py-6 space-y-2 overflow-y-auto"
+        className="flex-1 px-3 py-5 space-y-2 overflow-y-auto"
         style={{ scrollbarWidth: 'none' }}
       >
         {MENU_ITEMS.map((item) => {
@@ -152,7 +152,7 @@ export default function AdminSidebar({
               )}
 
               {collapsed && (
-                <div className="absolute left-16 bg-gray-900 dark:bg-gray-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap z-50">
+                <div className="absolute left-14 bg-gray-900 dark:bg-gray-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap z-50">
                   {item.label}
                 </div>
               )}
