@@ -42,6 +42,9 @@ export default function AdminLayout() {
   } else if (path.includes('/users')) {
     activeItem = 'users';
     title = 'Users';
+  } else if (path.includes('/issues')) {
+    activeItem = 'issues';
+    title = 'Reported Issues';
   } else if (path.includes('/analytics')) {
     activeItem = 'analytics';
     title = 'Analytics';

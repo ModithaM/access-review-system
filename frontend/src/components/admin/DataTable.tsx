@@ -28,8 +28,9 @@ export default function DataTable({
   toolbarActions,
 }: DataTableProps) {
   const [searchTerm, setSearchTerm] = useState('');
+  const safeData = Array.isArray(data) ? data : [];
 
-  const filteredData = data.filter((row) =>
+  const filteredData = safeData.filter((row) =>
     Object.values(row).some((val) => String(val).toLowerCase().includes(searchTerm.toLowerCase())),
   );
 

@@ -4,15 +4,15 @@ import { Globe } from '@/components/shared/Globe';
 export function Hero() {
   return (
     <section
-      className="relative flex min-h-dvh w-full flex-col items-center justify-center overflow-hidden bg-white px-4 pt-24 sm:pt-28 md:pt-32"
+      className="relative flex min-h-dvh w-full flex-col items-center justify-center overflow-hidden bg-white px-4 pt-24 transition-colors duration-300 dark:bg-slate-950 sm:pt-28 md:pt-32"
       aria-labelledby="hero-heading"
     >
       {/* ── Decorative background blobs ── */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 h-[480px] w-[480px] -translate-x-1/2 rounded-full bg-[#7928CA]/10 blur-3xl" />
-        <div className="absolute top-32 -left-32 h-80 w-80 rounded-full bg-[#0070F3]/10 blur-3xl" />
-        <div className="absolute top-48 -right-32 h-80 w-80 rounded-full bg-[#FF0080]/8 blur-3xl" />
-        <div className="absolute bottom-0 left-1/2 h-72 w-[700px] -translate-x-1/2 rounded-full bg-[#38BDF8]/12 blur-3xl" />
+        <div className="absolute -top-40 left-1/2 h-[480px] w-[480px] -translate-x-1/2 rounded-full bg-[#7928CA]/10 blur-3xl dark:bg-[#7928CA]/18" />
+        <div className="absolute top-32 -left-32 h-80 w-80 rounded-full bg-[#0070F3]/10 blur-3xl dark:bg-[#0070F3]/18" />
+        <div className="absolute top-48 -right-32 h-80 w-80 rounded-full bg-[#FF0080]/8 blur-3xl dark:bg-[#FF0080]/14" />
+        <div className="absolute bottom-0 left-1/2 h-72 w-[700px] -translate-x-1/2 rounded-full bg-[#38BDF8]/12 blur-3xl dark:bg-[#38BDF8]/18" />
       </div>
 
       {/* ── Globe in background ── */}
@@ -29,18 +29,18 @@ export function Hero() {
       {/* ── Radial overlay to keep text readable over the globe ── */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_70%_at_50%_50%,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.6)_50%,transparent_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_70%_at_50%_50%,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.6)_50%,transparent_100%)] dark:bg-[radial-gradient(ellipse_60%_70%_at_50%_50%,rgba(2,6,23,0.92)_0%,rgba(2,6,23,0.7)_48%,transparent_100%)]"
       />
 
       {/* ── Main content (above globe) ── */}
       <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-6 text-center">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#7928CA]/20 bg-white/80 px-4 py-1.5 shadow-sm backdrop-blur-sm">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#7928CA]/20 bg-white/80 px-4 py-1.5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/8">
           <span
             aria-hidden="true"
             className="h-1.5 w-1.5 animate-pulse rounded-full bg-gradient-to-r from-[#FF0080] to-[#7928CA]"
           />
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-[#7928CA]">
+          <span className="text-[11px] font-semibold uppercase tracking-widest text-[#7928CA] dark:text-[#b9a5ff]">
             Accessibility Review Platform
           </span>
         </div>
@@ -48,7 +48,7 @@ export function Hero() {
         {/* Heading */}
         <h1
           id="hero-heading"
-          className="text-[5vw] font-bold leading-[1.15] tracking-tight text-gray-900"
+          className="text-[5vw] font-bold leading-[1.15] tracking-tight text-gray-900 dark:text-white"
         >
           {/* Mobile: "Making" alone */}
           <span className="block sm:hidden">Making</span>
@@ -72,10 +72,10 @@ export function Hero() {
         </h1>
 
         {/* Subtitle */}
-        <p className="max-w-lg text-base leading-relaxed text-gray-500 sm:text-lg">
+        <p className="max-w-lg text-base leading-relaxed text-gray-500 dark:text-slate-300 sm:text-lg">
           Discover, review, and improve accessibility in public spaces.{' '}
-          <strong className="font-semibold text-gray-700">Your voice</strong> helps build a more
-          inclusive world.
+          <strong className="font-semibold text-gray-700 dark:text-white">Your voice</strong> helps
+          build a more inclusive world.
         </p>
 
         {/* CTA Buttons */}
@@ -88,23 +88,23 @@ export function Hero() {
           </button>
           <button
             type="button"
-            className="rounded-2xl border border-gray-200 bg-white/80 px-8 py-3.5 text-sm font-semibold text-gray-600 shadow-sm backdrop-blur-sm transition-all duration-200 hover:border-[#7928CA]/30 hover:bg-[#7928CA]/5 hover:text-[#7928CA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7928CA] focus-visible:ring-offset-2"
+            className="rounded-2xl border border-gray-200 bg-white/80 px-8 py-3.5 text-sm font-semibold text-gray-600 shadow-sm backdrop-blur-sm transition-all duration-200 hover:border-[#7928CA]/30 hover:bg-[#7928CA]/5 hover:text-[#7928CA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7928CA] focus-visible:ring-offset-2 dark:border-white/10 dark:bg-white/8 dark:text-slate-200 dark:hover:bg-white/12 dark:hover:text-white"
           >
             Write a Review
           </button>
         </div>
 
         {/* Trust signal */}
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-400 dark:text-slate-400">
           Trusted by communities across{' '}
-          <span className="font-medium text-gray-500">50+ countries</span>
+          <span className="font-medium text-gray-500 dark:text-slate-200">50+ countries</span>
         </p>
       </div>
 
       {/* ── Bottom fade ── */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white via-white/60 to-transparent"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white via-white/60 to-transparent dark:from-slate-950 dark:via-slate-950/70"
       />
     </section>
   );
