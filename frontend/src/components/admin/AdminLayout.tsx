@@ -38,7 +38,7 @@ export default function AdminLayout() {
     title = 'Access Features';
   } else if (path.includes('/reviews')) {
     activeItem = 'reviews';
-    title = 'Reviews';
+    title = 'Accessibility Reviews';
   } else if (path.includes('/users')) {
     activeItem = 'users';
     title = 'Users';
