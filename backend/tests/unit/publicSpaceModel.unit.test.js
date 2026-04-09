@@ -185,6 +185,7 @@ describe('PublicSpace model unit validations', () => {
   });
 
   it('accepts a valid public space payload', () => {
+    const featureId = new mongoose.Types.ObjectId();
     const space = new PublicSpace({
       name: 'Central Park',
       category: 'Park',
@@ -197,10 +198,13 @@ describe('PublicSpace model unit validations', () => {
       },
       imageUrl: '/uploads/park.jpg',
       description: 'A famous park in NYC.',
+      accessFeatures: [featureId],
     });
 
     const error = space.validateSync();
 
     expect(error).toBeUndefined();
+    expect(space.accessFeatures).toHaveLength(1);
+    expect(space.accessFeatures[0].toString()).toBe(featureId.toString());
   });
 });

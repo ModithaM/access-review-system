@@ -48,6 +48,11 @@ const { catchErrors } = require('../handlers/errorHandlers');
  *                 example: "../public/uploads/publicSpaces/default-space.jpg"
  *               description:
  *                 type: string
+ *               accessFeatures:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Selected access feature IDs for this public space
  *     responses:
  *       201:
  *         description: Space created
@@ -88,6 +93,11 @@ router.get('/list', catchErrors(publicSpaceController.getAllPublicSpaces));
  *           schema:
  *             type: object
  *             description: Fields to update on the public space
+ *             properties:
+ *               accessFeatures:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       200:
  *         description: Updated successfully

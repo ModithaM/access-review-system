@@ -1,5 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Plus, Download, Loader2, X, MapPin, Tag, FileText, Image, Navigation } from 'lucide-react';
+import {
+  Plus,
+  Download,
+  Loader2,
+  X,
+  MapPin,
+  Tag,
+  FileText,
+  Image,
+  Navigation,
+  ListChecks,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -8,12 +19,14 @@ import autoTable from 'jspdf-autotable';
 
 import Button from '../../components/admin/Button';
 import DataTable, { type Column } from '../../components/admin/DataTable';
+import accessFeaturesService, { type AccessFeature } from '../../services/access-features.service';
 import publicSpaceService from '../../services/public-space.service';
 import { useToast } from '../../hooks/useToast';
 import type { PublicSpace, SpaceCategory } from '../../types/publicSpace.type';
 
 // types
 type ModalMode = 'add' | 'edit' | 'view' | null;
+type FeatureCategoryFilter = AccessFeature['category'] | 'All';
 
 interface FormValues {
   name: string;
@@ -23,9 +36,18 @@ interface FormValues {
   lng: string;
   imageUrl: string;
   description: string;
+  accessFeatures: string[];
 }
 
 const CATEGORIES: SpaceCategory[] = ['Mall', 'Park', 'Hospital', 'Station', 'Other'];
+const FEATURE_CATEGORY_OPTIONS: FeatureCategoryFilter[] = [
+  'All',
+  'Mobility',
+  'Visual',
+  'Auditory',
+  'Cognitive',
+  'Other',
+];
 
 const CATEGORY_COLORS: Record<SpaceCategory, string> = {
   Mall: 'text-purple-400',
@@ -60,6 +82,7 @@ const validationSchema = Yup.object({
     .max(180, 'Longitude must be between -180 and 180'),
   imageUrl: Yup.string().url('Must be a valid URL').optional(),
   description: Yup.string().max(500, 'Description must not exceed 500 characters').optional(),
+  accessFeatures: Yup.array().of(Yup.string().trim()),
 });
 
 const blankValues = (): FormValues => ({
@@ -70,6 +93,7 @@ const blankValues = (): FormValues => ({
   lng: '',
   imageUrl: '',
   description: '',
+  accessFeatures: [],
 });
 
 const spaceToFormValues = (space: PublicSpace): FormValues => ({
@@ -80,6 +104,7 @@ const spaceToFormValues = (space: PublicSpace): FormValues => ({
   lng: String(space.locationDetails.coordinates.lng),
   imageUrl: space.imageUrl ?? '',
   description: space.description ?? '',
+  accessFeatures: space.accessFeatures?.map((feature) => feature._id) ?? [],
 });
 
 //PDF Download───
@@ -113,10 +138,18 @@ function downloadPDF(spaces: PublicSpace[]) {
 
 //Shared input
 const inputCls = (invalid: boolean) =>
-  `w-full px-3.5 py-2.5 rounded-lg text-sm text-white bg-gray-700/70 border transition-all
-   focus:outline-none focus:ring-2 focus:ring-purple-500/40
-   placeholder:text-gray-500
-   ${invalid ? 'border-red-500/70' : 'border-gray-600/60 focus:border-purple-500/60'}`;
+  `w-full rounded-xl border bg-gray-50 px-4 py-3 text-sm text-gray-900 transition-all duration-200
+   placeholder:text-gray-400 hover:bg-white focus:bg-white focus:outline-none focus:ring-2
+   dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500
+   dark:hover:bg-gray-700 dark:focus:bg-gray-800
+   focus:ring-[#7928CA]/20 focus:border-[#7928CA]
+   ${invalid ? 'border-red-300 focus:border-red-400 focus:ring-red-200 dark:border-red-500/60' : 'border-gray-200'}`;
+
+const featurePickerInputCls =
+  'w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 ' +
+  'transition-all duration-200 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 ' +
+  'focus:ring-[#7928CA]/20 focus:border-[#7928CA] dark:border-gray-700 dark:bg-gray-800 ' +
+  'dark:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-800';
 
 export default function PublicSpacesPage() {
   const { success: showSuccess, error: showError } = useToast();
@@ -127,6 +160,10 @@ export default function PublicSpacesPage() {
   const [selectedSpace, setSelectedSpace] = useState<PublicSpace | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<PublicSpace | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [featureCatalog, setFeatureCatalog] = useState<AccessFeature[]>([]);
+  const [featureLoading, setFeatureLoading] = useState(true);
+  const [selectedFeatureCategory, setSelectedFeatureCategory] =
+    useState<FeatureCategoryFilter>('All');
 
   //  Fetch all spaces
   const fetchSpaces = useCallback(async () => {
@@ -144,6 +181,22 @@ export default function PublicSpacesPage() {
   useEffect(() => {
     fetchSpaces();
   }, [fetchSpaces]);
+
+  const fetchAccessFeatures = useCallback(async () => {
+    try {
+      setFeatureLoading(true);
+      const response = await accessFeaturesService.getAllAccessFeatures();
+      setFeatureCatalog(response.data.data);
+    } catch {
+      showError('Failed to load access features.');
+    } finally {
+      setFeatureLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAccessFeatures();
+  }, [fetchAccessFeatures]);
 
   const formik = useFormik<FormValues>({
     initialValues: blankValues(),
@@ -163,6 +216,7 @@ export default function PublicSpacesPage() {
         },
         imageUrl: values.imageUrl.trim() || undefined,
         description: values.description.trim() || undefined,
+        accessFeatures: values.accessFeatures,
       };
 
       try {
@@ -184,12 +238,14 @@ export default function PublicSpacesPage() {
 
   const openAdd = () => {
     formik.resetForm({ values: blankValues() });
+    setSelectedFeatureCategory('All');
     setSelectedSpace(null);
     setModalMode('add');
   };
 
   const openEdit = (space: PublicSpace) => {
     formik.resetForm({ values: spaceToFormValues(space) });
+    setSelectedFeatureCategory('All');
     setSelectedSpace(space);
     setModalMode('edit');
   };
@@ -202,6 +258,7 @@ export default function PublicSpacesPage() {
   const closeModal = () => {
     setModalMode(null);
     setSelectedSpace(null);
+    setSelectedFeatureCategory('All');
     formik.resetForm();
   };
 
@@ -261,12 +318,49 @@ export default function PublicSpacesPage() {
         </span>
       ),
     },
+    {
+      key: 'accessFeatures',
+      header: 'Access Features',
+      render: (row: PublicSpace) => {
+        const features = row.accessFeatures ?? [];
+
+        if (features.length === 0) {
+          return <span className="text-gray-500 text-xs">None selected</span>;
+        }
+
+        const featureList = features.map((feature) => feature.name).join(', ');
+
+        return (
+          <span className="text-gray-300 text-xs max-w-56 truncate block" title={featureList}>
+            {featureList}
+          </span>
+        );
+      },
+    },
   ];
 
   const fieldErr = (k: keyof FormValues) =>
     formik.touched[k] && formik.errors[k] ? formik.errors[k] : undefined;
 
   const isInvalid = (k: keyof FormValues) => !!(formik.touched[k] && formik.errors[k]);
+
+  const toggleFeatureSelection = (featureId: string) => {
+    const isSelected = formik.values.accessFeatures.includes(featureId);
+    const nextSelected = isSelected
+      ? formik.values.accessFeatures.filter((id) => id !== featureId)
+      : [...formik.values.accessFeatures, featureId];
+
+    formik.setFieldValue('accessFeatures', nextSelected);
+  };
+
+  const filteredFeatureCatalog = featureCatalog.filter(
+    (feature) =>
+      selectedFeatureCategory === 'All' || feature.category === selectedFeatureCategory,
+  );
+
+  const selectedFeatureDetails = formik.values.accessFeatures
+    .map((featureId) => featureCatalog.find((feature) => feature._id === featureId))
+    .filter((feature): feature is AccessFeature & { _id: string } => Boolean(feature?._id));
 
   //PDF download button (passed as toolbarActions to DataTable)
   const pdfButton = (
@@ -330,189 +424,311 @@ export default function PublicSpacesPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
               onClick={closeModal}
             />
 
             {/* Modal panel */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              initial={{ opacity: 0, scale: 0.96, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 16 }}
-              transition={{ duration: 0.22 }}
-              className="relative z-10 w-full max-w-lg bg-gray-800 border border-gray-700/60 rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto"
+              exit={{ opacity: 0, scale: 0.96, y: 20 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+              className="relative z-10 w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-900"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700/50">
-                <h2 className="text-base font-semibold text-white">
+              <div className="flex items-center justify-between border-b border-gray-100 px-8 pb-4 pt-8 dark:border-gray-800 md:px-10">
+                <h2 className="text-2xl font-black text-gray-900 dark:text-white">
                   {modalMode === 'add' ? 'Add New Public Space' : 'Edit Public Space'}
                 </h2>
                 <button
                   onClick={closeModal}
-                  className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                  className="rounded-full p-2 text-gray-400 transition-all duration-200 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
                 >
                   <X size={16} />
                 </button>
               </div>
 
               {/* Form */}
-              <form onSubmit={formik.handleSubmit} className="px-6 py-5 space-y-4">
-                {/* Space Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                    Space Name <span className="text-red-400">*</span>
-                  </label>
-                  <div className="relative">
-                    <Tag
-                      size={14}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-                    />
-                    <input
-                      type="text"
-                      {...formik.getFieldProps('name')}
-                      placeholder="e.g., City Mall"
-                      className={`${inputCls(isInvalid('name'))} pl-9`}
-                    />
-                  </div>
-                  {fieldErr('name') && (
-                    <p className="mt-1 text-xs text-red-400">{fieldErr('name')}</p>
-                  )}
-                </div>
-
-                {/* Category */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                    Category <span className="text-red-400">*</span>
-                  </label>
-                  <select
-                    {...formik.getFieldProps('category')}
-                    className={inputCls(isInvalid('category'))}
-                  >
-                    {CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat} className="bg-gray-800">
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
-                  {fieldErr('category') && (
-                    <p className="mt-1 text-xs text-red-400">{fieldErr('category')}</p>
-                  )}
-                </div>
-
-                {/* Address */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                    Address <span className="text-red-400">*</span>
-                  </label>
-                  <div className="relative">
-                    <MapPin
-                      size={14}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-                    />
-                    <input
-                      type="text"
-                      {...formik.getFieldProps('address')}
-                      placeholder="e.g., No. 01, Galle Road, Colombo 03"
-                      className={`${inputCls(isInvalid('address'))} pl-9`}
-                    />
-                  </div>
-                  {fieldErr('address') && (
-                    <p className="mt-1 text-xs text-red-400">{fieldErr('address')}</p>
-                  )}
-                </div>
-
-                {/* Coordinates row */}
-                <div className="grid grid-cols-2 gap-3">
+              <form onSubmit={formik.handleSubmit} className="space-y-6 px-8 py-8 md:px-10 md:py-10">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                  {/* Space Name */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                      Latitude <span className="text-red-400">*</span>
+                    <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Space Name <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
-                      <Navigation
+                      <Tag
                         size={14}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
                       />
                       <input
-                        type="number"
-                        step="any"
-                        {...formik.getFieldProps('lat')}
-                        placeholder="6.9271"
-                        className={`${inputCls(isInvalid('lat'))} pl-9`}
+                        type="text"
+                        {...formik.getFieldProps('name')}
+                        placeholder="e.g., City Mall"
+                        className={`${inputCls(isInvalid('name'))} pl-11`}
                       />
                     </div>
-                    {fieldErr('lat') && (
-                      <p className="mt-1 text-xs text-red-400">{fieldErr('lat')}</p>
+                    {fieldErr('name') && (
+                      <p className="mt-1 text-xs text-red-400">{fieldErr('name')}</p>
                     )}
                   </div>
+
+                  {/* Category */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                      Longitude <span className="text-red-400">*</span>
+                    <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Category <span className="text-red-400">*</span>
+                    </label>
+                    <select
+                      {...formik.getFieldProps('category')}
+                      className={inputCls(isInvalid('category'))}
+                    >
+                      {CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat} className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+                    {fieldErr('category') && (
+                      <p className="mt-1 text-xs text-red-400">{fieldErr('category')}</p>
+                    )}
+                  </div>
+
+                  {/* Address */}
+                  <div className="lg:col-span-2">
+                    <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Address <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
-                      <Navigation
+                      <MapPin
                         size={14}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none rotate-90"
+                        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
                       />
                       <input
-                        type="number"
-                        step="any"
-                        {...formik.getFieldProps('lng')}
-                        placeholder="79.8612"
-                        className={`${inputCls(isInvalid('lng'))} pl-9`}
+                        type="text"
+                        {...formik.getFieldProps('address')}
+                        placeholder="e.g., No. 01, Galle Road, Colombo 03"
+                        className={`${inputCls(isInvalid('address'))} pl-11`}
                       />
                     </div>
-                    {fieldErr('lng') && (
-                      <p className="mt-1 text-xs text-red-400">{fieldErr('lng')}</p>
+                    {fieldErr('address') && (
+                      <p className="mt-1 text-xs text-red-400">{fieldErr('address')}</p>
+                    )}
+                  </div>
+
+                  {/* Coordinates row */}
+                  <div className="grid grid-cols-2 gap-4 lg:col-span-2">
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Latitude <span className="text-red-400">*</span>
+                      </label>
+                      <div className="relative">
+                        <Navigation
+                          size={14}
+                          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                        />
+                        <input
+                          type="number"
+                          step="any"
+                          {...formik.getFieldProps('lat')}
+                          placeholder="6.9271"
+                          className={`${inputCls(isInvalid('lat'))} pl-11`}
+                        />
+                      </div>
+                      {fieldErr('lat') && (
+                        <p className="mt-1 text-xs text-red-400">{fieldErr('lat')}</p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Longitude <span className="text-red-400">*</span>
+                      </label>
+                      <div className="relative">
+                        <Navigation
+                          size={14}
+                          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 rotate-90 text-gray-400"
+                        />
+                        <input
+                          type="number"
+                          step="any"
+                          {...formik.getFieldProps('lng')}
+                          placeholder="79.8612"
+                          className={`${inputCls(isInvalid('lng'))} pl-11`}
+                        />
+                      </div>
+                      {fieldErr('lng') && (
+                        <p className="mt-1 text-xs text-red-400">{fieldErr('lng')}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Image URL */}
+                  <div>
+                    <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Image URL <span className="text-xs font-normal text-gray-500">(optional)</span>
+                    </label>
+                    <div className="relative">
+                      <Image
+                        size={14}
+                        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                      />
+                      <input
+                        type="url"
+                        {...formik.getFieldProps('imageUrl')}
+                        placeholder="https://example.com/image.jpg"
+                        className={`${inputCls(isInvalid('imageUrl'))} pl-11`}
+                      />
+                    </div>
+                    {fieldErr('imageUrl') && (
+                      <p className="mt-1 text-xs text-red-400">{fieldErr('imageUrl')}</p>
+                    )}
+                  </div>
+
+                  {/* Description */}
+                  <div>
+                    <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Description{' '}
+                      <span className="text-xs font-normal text-gray-500">
+                        ({formik.values.description.length}/500, optional)
+                      </span>
+                    </label>
+                    <div className="relative">
+                      <FileText
+                        size={14}
+                        className="pointer-events-none absolute left-4 top-3.5 text-gray-400"
+                      />
+                      <textarea
+                        rows={3}
+                        {...formik.getFieldProps('description')}
+                        placeholder="Brief description of the space..."
+                        className={`${inputCls(isInvalid('description'))} resize-none pl-11`}
+                      />
+                    </div>
+                    {fieldErr('description') && (
+                      <p className="mt-1 text-xs text-red-400">{fieldErr('description')}</p>
                     )}
                   </div>
                 </div>
 
-                {/* Image URL */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                    Image URL <span className="text-gray-500 text-xs font-normal">(optional)</span>
-                  </label>
-                  <div className="relative">
-                    <Image
-                      size={14}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-                    />
-                    <input
-                      type="url"
-                      {...formik.getFieldProps('imageUrl')}
-                      placeholder="https://example.com/image.jpg"
-                      className={`${inputCls(isInvalid('imageUrl'))} pl-9`}
-                    />
-                  </div>
-                  {fieldErr('imageUrl') && (
-                    <p className="mt-1 text-xs text-red-400">{fieldErr('imageUrl')}</p>
-                  )}
-                </div>
-
-                {/* Description */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                    Description{' '}
-                    <span className="text-gray-500 text-xs font-normal">
-                      ({formik.values.description.length}/500, optional)
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Access Features
+                    </label>
+                    <span className="text-sm text-gray-400 dark:text-gray-500">
+                      {formik.values.accessFeatures.length} selected
                     </span>
-                  </label>
-                  <div className="relative">
-                    <FileText
-                      size={14}
-                      className="absolute left-3 top-3 text-gray-400 pointer-events-none"
-                    />
-                    <textarea
-                      rows={3}
-                      {...formik.getFieldProps('description')}
-                      placeholder="Brief description of the space..."
-                      className={`${inputCls(isInvalid('description'))} pl-9 resize-none`}
-                    />
                   </div>
-                  {fieldErr('description') && (
-                    <p className="mt-1 text-xs text-red-400">{fieldErr('description')}</p>
-                  )}
+                  <div className="rounded-2xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-800/60">
+                    <div className="flex items-start gap-2 text-sm text-gray-500 dark:text-gray-400">
+                      <ListChecks size={14} className="mt-0.5 shrink-0 text-[#0070F3]" />
+                      <p>Filter by category, then add the relevant accessibility features.</p>
+                    </div>
+
+                    {featureLoading ? (
+                      <div className="flex items-center gap-2 py-4 text-sm text-gray-500 dark:text-gray-400">
+                        <Loader2 size={14} className="animate-spin text-[#0070F3]" />
+                        Loading access features...
+                      </div>
+                    ) : featureCatalog.length === 0 ? (
+                      <p className="mt-4 rounded-xl border border-dashed border-gray-200 bg-white px-4 py-4 text-center text-sm text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-500">
+                        No access features have been created yet.
+                      </p>
+                    ) : (
+                      <div className="mt-4 space-y-4">
+                        <div className="flex flex-col gap-3 md:flex-row">
+                          <div>
+                            <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                              Category
+                            </label>
+                            <select
+                              value={selectedFeatureCategory}
+                              onChange={(e) =>
+                                setSelectedFeatureCategory(
+                                  e.target.value as FeatureCategoryFilter,
+                                )
+                              }
+                              className={`${featurePickerInputCls} min-w-[220px]`}
+                            >
+                              {FEATURE_CATEGORY_OPTIONS.map((category) => (
+                                <option
+                                  key={category}
+                                  value={category}
+                                  className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
+                                >
+                                  {category === 'All' ? 'All categories' : category}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div className="flex-1">
+                            <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                              Access Feature
+                            </label>
+                            <select
+                              value=""
+                              onChange={(e) => {
+                                const featureId = e.target.value;
+                                if (!featureId) return;
+                                if (!formik.values.accessFeatures.includes(featureId)) {
+                                  toggleFeatureSelection(featureId);
+                                }
+                                e.target.value = '';
+                              }}
+                              className={featurePickerInputCls}
+                            >
+                              <option value="" className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                {filteredFeatureCatalog.length > 0
+                                  ? 'Select an access feature'
+                                  : 'No features in this category'}
+                              </option>
+                              {filteredFeatureCatalog.map((feature) => (
+                                <option
+                                  key={feature._id ?? feature.name}
+                                  value={feature._id}
+                                  className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
+                                >
+                                  {feature.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        {selectedFeatureDetails.length > 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {selectedFeatureDetails.map((feature) => (
+                              <button
+                                key={feature._id}
+                                type="button"
+                                onClick={() => toggleFeatureSelection(feature._id)}
+                                className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs text-gray-700 transition-all duration-200 hover:border-[#7928CA]/30 hover:bg-[#7928CA]/5 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-[#7928CA]/10"
+                                title={feature.description}
+                              >
+                                <span>{feature.name}</span>
+                                <span className="text-gray-400 dark:text-gray-500">
+                                  ({feature.category})
+                                </span>
+                                <X size={12} />
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="rounded-xl border border-dashed border-gray-200 bg-white px-4 py-4 text-center text-sm text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-500">
+                            No access features selected yet.
+                          </p>
+                        )}
+
+                        {filteredFeatureCatalog.length === 0 && (
+                          <p className="text-sm text-amber-500 dark:text-amber-300">
+                            No access features match the selected category.
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Actions */}
@@ -520,17 +736,14 @@ export default function PublicSpacesPage() {
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="px-4 py-2 text-sm rounded-lg border border-gray-600 text-gray-300
-                               hover:bg-gray-700 transition-colors"
+                    className="rounded-xl bg-gray-100 px-5 py-3 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={formik.isSubmitting}
-                    className="flex items-center gap-2 px-5 py-2 text-sm rounded-lg font-medium text-white
-                               bg-linear-to-r from-pink-500 via-purple-600 to-blue-500
-                               hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+                    className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#FF0080] via-[#7928CA] to-[#0070F3] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:scale-[1.01] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {formik.isSubmitting && <Loader2 size={14} className="animate-spin" />}
                     {modalMode === 'add' ? 'Create' : 'Save Changes'}
@@ -609,6 +822,25 @@ export default function PublicSpacesPage() {
                   {selectedSpace.description && (
                     <DetailRow label="Description" value={selectedSpace.description} />
                   )}
+                  <DetailRow
+                    label="Access Features"
+                    value={
+                      selectedSpace.accessFeatures && selectedSpace.accessFeatures.length > 0 ? (
+                        <div className="flex flex-wrap gap-2">
+                          {selectedSpace.accessFeatures.map((feature) => (
+                            <span
+                              key={feature._id}
+                              className="rounded-full border border-purple-500/20 bg-purple-500/10 px-2.5 py-1 text-xs text-purple-200"
+                            >
+                              {feature.name}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        'None selected'
+                      )
+                    }
+                  />
                   {selectedSpace.createdAt && (
                     <DetailRow
                       label="Added"
