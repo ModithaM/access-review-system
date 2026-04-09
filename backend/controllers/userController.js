@@ -193,7 +193,7 @@ exports.update = async (req, res) => {
     }
 
     let updates = {
-      role: req.body.role,
+      userType: req.body.userType || req.body.role,
       email: req.body.email,
       name: req.body.name,
       surname: req.body.surname,
@@ -223,6 +223,7 @@ exports.update = async (req, res) => {
         email: result.email,
         name: result.name,
         surname: result.surname,
+        userType: result.userType,
       },
       message: 'we update this document by this id: ' + req.params.id,
     });
