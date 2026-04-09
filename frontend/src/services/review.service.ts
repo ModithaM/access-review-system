@@ -1,20 +1,17 @@
 import axios from 'axios';
-import authService from './auth.service';
 import type {
   AccessibilityReview,
   ReviewListResponse,
   ReviewResponse,
   ReviewSearchResponse,
 } from '../types/review.type';
+import authHeader from '@/services/auth-header.ts';
 
-const API_URL = `${import.meta.env.VITE_API_URL}review`;
+const API_URL = `${import.meta.env.VITE_API_URL}/review`;
 
 const getHeaders = () => {
-  const token = authService.getToken();
   return {
-    headers: {
-      'x-auth-token': token ? token : '',
-    },
+    headers: authHeader(),
   };
 };
 
