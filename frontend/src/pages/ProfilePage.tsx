@@ -238,6 +238,8 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isPasswordSaving, setIsPasswordSaving] = useState(false);
+  const [isPasswordFormOpen, setIsPasswordFormOpen] = useState(false);
   const navigate = useNavigate();
   const { success, error } = useToast();
 
@@ -310,6 +312,40 @@ export default function ProfilePage() {
         console.error(err);
       } finally {
         setIsSaving(false);
+      }
+    },
+  });
+
+  const passwordFormik = useFormik({
+    initialValues: {
+      password: '',
+      confirmPassword: '',
+    },
+    validationSchema: Yup.object({
+      password: Yup.string()
+        .min(8, 'Password must be at least 8 characters')
+        .required('Password is required'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password')], 'Passwords must match')
+        .required('Please confirm your password'),
+    }),
+    validateOnChange: true,
+    validateOnBlur: true,
+    onSubmit: async (values, helpers) => {
+      if (!user?.id) return;
+
+      setIsPasswordSaving(true);
+      try {
+        await UsersService.updatePassword(user.id, values.password);
+        success('Password updated successfully');
+        helpers.resetForm();
+        setIsPasswordFormOpen(false);
+      } catch (err) {
+        error('Failed to update password. Please try again.');
+        console.error(err);
+      } finally {
+        setIsPasswordSaving(false);
+        helpers.setSubmitting(false);
       }
     },
   });
@@ -529,12 +565,12 @@ export default function ProfilePage() {
                         <Mail className="h-4 w-4" />
                       </div>
                       <div>
-                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">Password Support</p>
+                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">Password Update</p>
                         <a
-                          href="mailto:support@accessable.app?subject=Password%20Reset"
+                          href="#profile-password"
                           className="mt-1 inline-block text-[12px] font-medium text-[#7928CA] transition hover:text-[#FF0080] dark:text-[#38BDF8]"
                         >
-                          Request password assistance
+                          Update your password below
                         </a>
                       </div>
                     </div>
@@ -572,56 +608,103 @@ export default function ProfilePage() {
               </ProfileCard>
 
               <ProfileCard
-                title="Activity & Impact"
-                description="A lightweight snapshot of your current profile health."
+                title="Security"
+                description="Update your password and keep your account secure."
               >
-                <div className="space-y-4">
-                  <div className="rounded-2xl border border-gray-200 bg-gray-50 p-3.5 dark:border-white/10 dark:bg-white/5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[13px] font-semibold text-gray-700 dark:text-slate-300">Identity coverage</span>
-                      <span className="text-[13px] font-semibold text-gray-900 dark:text-white">{profileCompletion}%</span>
-                    </div>
-                    <div className="mt-3 h-2 rounded-full bg-gray-200 dark:bg-white/10">
-                      <div
-                        className="h-2 rounded-full bg-gradient-to-r from-[#FF0080] via-[#7928CA] to-[#38BDF8]"
-                        style={{ width: `${profileCompletion}%` }}
-                      />
-                    </div>
-                  </div>
+                {isPasswordFormOpen ? (
+                  <form
+                    id="profile-password"
+                    onSubmit={passwordFormik.handleSubmit}
+                    className="space-y-4"
+                  >
+                    <ProfileField
+                      label="New Password"
+                      name="password"
+                      type="password"
+                      value={passwordFormik.values.password}
+                      onChange={passwordFormik.handleChange}
+                      onBlur={passwordFormik.handleBlur}
+                      placeholder="Enter a new password"
+                      touched={passwordFormik.touched.password}
+                      error={passwordFormik.errors.password}
+                    />
 
-                  <div className="grid gap-3">
-                    {[
-                      {
-                        label: 'Profile readiness',
-                        value: completionItems.filter((item) => item.complete).length,
-                        total: completionItems.length,
-                      },
-                      {
-                        label: 'Account access',
-                        value: user.isLoggedIn ? 1 : 0,
-                        total: 1,
-                      },
-                    ].map((item) => {
-                      const percent = Math.round((item.value / item.total) * 100);
-                      return (
-                        <div key={item.label} className="rounded-xl border border-gray-200 p-3.5 dark:border-white/10">
-                          <div className="flex items-center justify-between">
-                            <p className="text-[13px] font-semibold text-gray-900 dark:text-white">{item.label}</p>
-                            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-400 dark:text-slate-500">
-                              {percent}%
-                            </span>
-                          </div>
-                          <div className="mt-3 h-2 rounded-full bg-gray-100 dark:bg-white/8">
-                            <div
-                              className="h-2 rounded-full bg-gradient-to-r from-[#FF0080] via-[#7928CA] to-[#0070F3]"
-                              style={{ width: `${percent}%` }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
+                    <ProfileField
+                      label="Confirm Password"
+                      name="confirmPassword"
+                      type="password"
+                      value={passwordFormik.values.confirmPassword}
+                      onChange={passwordFormik.handleChange}
+                      onBlur={passwordFormik.handleBlur}
+                      placeholder="Re-enter your new password"
+                      touched={passwordFormik.touched.confirmPassword}
+                      error={passwordFormik.errors.confirmPassword}
+                    />
+
+                    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-3.5 dark:border-white/10 dark:bg-white/5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[13px] font-semibold text-gray-700 dark:text-slate-300">
+                          Password requirements
+                        </span>
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-400 dark:text-slate-500">
+                          8+ characters
+                        </span>
+                      </div>
+                      <div className="mt-3 space-y-1.5 text-[12px] text-gray-600 dark:text-slate-400">
+                        <p>Choose a password with at least 8 characters.</p>
+                        <p>Both password fields must match before saving.</p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-3 border-t border-gray-200 pt-4 dark:border-white/10">
+                      <Button
+                        type="submit"
+                        disabled={!passwordFormik.isValid || isPasswordSaving}
+                        className="h-10 rounded-xl bg-gradient-to-r from-[#FF0080] via-[#7928CA] to-[#0070F3] text-sm text-white shadow-[0_18px_40px_rgba(121,40,202,0.22)] transition-all duration-300 hover:scale-[1.01] disabled:opacity-50"
+                      >
+                        <Save className="mr-2 h-4 w-4" />
+                        {isPasswordSaving ? 'Updating...' : 'Update Password'}
+                      </Button>
+
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          passwordFormik.resetForm();
+                          setIsPasswordFormOpen(false);
+                        }}
+                        className="h-10 rounded-xl bg-gray-100 text-sm text-gray-700 transition-all duration-200 hover:bg-gray-200 dark:bg-white/8 dark:text-slate-200 dark:hover:bg-white/12"
+                      >
+                        <X className="mr-2 h-4 w-4" />
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-3.5 dark:border-white/10 dark:bg-white/5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[13px] font-semibold text-gray-700 dark:text-slate-300">
+                          Password protection
+                        </span>
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-400 dark:text-slate-500">
+                          Secure
+                        </span>
+                      </div>
+                      <div className="mt-3 space-y-1.5 text-[12px] text-gray-600 dark:text-slate-400">
+                        <p>Keep your account secure by updating your password when needed.</p>
+                        <p>Click below only if you want to change your current password.</p>
+                      </div>
+                    </div>
+
+                    <Button
+                      type="button"
+                      onClick={() => setIsPasswordFormOpen(true)}
+                      className="h-10 rounded-xl bg-gradient-to-r from-[#FF0080] via-[#7928CA] to-[#0070F3] text-sm text-white shadow-[0_18px_40px_rgba(121,40,202,0.22)] transition-all duration-300 hover:scale-[1.01] disabled:opacity-50"
+                    >
+                      Change Password
+                    </Button>
                   </div>
-                </div>
+                )}
               </ProfileCard>
             </div>
           </div>
