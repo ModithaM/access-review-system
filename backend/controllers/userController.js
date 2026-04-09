@@ -195,6 +195,8 @@ exports.update = async (req, res) => {
     let updates = {
       role: req.body.role,
       email: req.body.email,
+      name: req.body.name,
+      surname: req.body.surname,
     };
 
     // Find document by id and updates with the required fields
