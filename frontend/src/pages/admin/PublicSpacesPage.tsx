@@ -1,9 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Plus,
   Download,
   Loader2,
   X,
+  ChevronDown,
+  Check,
   MapPin,
   Tag,
   FileText,
@@ -145,11 +147,13 @@ const inputCls = (invalid: boolean) =>
    focus:ring-[#7928CA]/20 focus:border-[#7928CA]
    ${invalid ? 'border-red-300 focus:border-red-400 focus:ring-red-200 dark:border-red-500/60' : 'border-gray-200'}`;
 
-const featurePickerInputCls =
-  'w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 ' +
-  'transition-all duration-200 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 ' +
-  'focus:ring-[#7928CA]/20 focus:border-[#7928CA] dark:border-gray-700 dark:bg-gray-800 ' +
-  'dark:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-800';
+const selectTriggerCls = (invalid = false) =>
+  `h-11 w-full rounded-xl border bg-white/95 pl-4 pr-11 text-left text-sm text-gray-900 shadow-sm
+   transition-all duration-200 outline-none hover:border-[#7928CA]/40 hover:shadow-md
+   focus:border-[#0070F3] focus:ring-4 focus:ring-[#0070F3]/10
+   dark:bg-gray-800 dark:text-white dark:hover:border-[#38BDF8]/40 dark:focus:border-[#38BDF8]
+   dark:focus:ring-[#38BDF8]/10
+   ${invalid ? 'border-red-300 focus:border-red-400 focus:ring-red-200 dark:border-red-500/60' : 'border-gray-200 dark:border-gray-700'}`;
 
 export default function PublicSpacesPage() {
   const { success: showSuccess, error: showError } = useToast();
@@ -480,16 +484,15 @@ export default function PublicSpacesPage() {
                     <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
                       Category <span className="text-red-400">*</span>
                     </label>
-                    <select
-                      {...formik.getFieldProps('category')}
-                      className={inputCls(isInvalid('category'))}
-                    >
-                      {CATEGORIES.map((cat) => (
-                        <option key={cat} value={cat} className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
+                    <DropdownSelect
+                      value={formik.values.category}
+                      onChange={(value) => formik.setFieldValue('category', value)}
+                      options={CATEGORIES.map((category) => ({
+                        value: category,
+                        label: category,
+                      }))}
+                      invalid={isInvalid('category')}
+                    />
                     {fieldErr('category') && (
                       <p className="mt-1 text-xs text-red-400">{fieldErr('category')}</p>
                     )}
@@ -642,58 +645,41 @@ export default function PublicSpacesPage() {
                             <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
                               Category
                             </label>
-                            <select
+                            <DropdownSelect
                               value={selectedFeatureCategory}
-                              onChange={(e) =>
-                                setSelectedFeatureCategory(
-                                  e.target.value as FeatureCategoryFilter,
-                                )
+                              onChange={(value) =>
+                                setSelectedFeatureCategory(value as FeatureCategoryFilter)
                               }
-                              className={`${featurePickerInputCls} min-w-[220px]`}
-                            >
-                              {FEATURE_CATEGORY_OPTIONS.map((category) => (
-                                <option
-                                  key={category}
-                                  value={category}
-                                  className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
-                                >
-                                  {category === 'All' ? 'All categories' : category}
-                                </option>
-                              ))}
-                            </select>
+                              options={FEATURE_CATEGORY_OPTIONS.map((category) => ({
+                                value: category,
+                                label: category === 'All' ? 'All categories' : category,
+                              }))}
+                              className="min-w-[220px]"
+                            />
                           </div>
 
                           <div className="flex-1">
                             <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
                               Access Feature
                             </label>
-                            <select
+                            <DropdownSelect
                               value=""
-                              onChange={(e) => {
-                                const featureId = e.target.value;
-                                if (!featureId) return;
-                                if (!formik.values.accessFeatures.includes(featureId)) {
-                                  toggleFeatureSelection(featureId);
+                              onChange={(value) => {
+                                if (!value) return;
+                                if (!formik.values.accessFeatures.includes(value)) {
+                                  toggleFeatureSelection(value);
                                 }
-                                e.target.value = '';
                               }}
-                              className={featurePickerInputCls}
-                            >
-                              <option value="" className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                {filteredFeatureCatalog.length > 0
+                              placeholder={
+                                filteredFeatureCatalog.length > 0
                                   ? 'Select an access feature'
-                                  : 'No features in this category'}
-                              </option>
-                              {filteredFeatureCatalog.map((feature) => (
-                                <option
-                                  key={feature._id ?? feature.name}
-                                  value={feature._id}
-                                  className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
-                                >
-                                  {feature.name}
-                                </option>
-                              ))}
-                            </select>
+                                  : 'No features in this category'
+                              }
+                              options={filteredFeatureCatalog.map((feature) => ({
+                                value: feature._id ?? '',
+                                label: feature.name,
+                              }))}
+                            />
                           </div>
                         </div>
 
@@ -953,6 +939,104 @@ function DetailRow({ label, value }: { label: string; value: React.ReactNode }) 
     <div className="flex gap-3">
       <span className="text-xs font-medium text-gray-500 w-24 shrink-0 pt-0.5">{label}</span>
       <span className="text-sm text-gray-200 flex-1">{value}</span>
+    </div>
+  );
+}
+
+function DropdownSelect({
+  value,
+  onChange,
+  options,
+  placeholder = 'Select an option',
+  invalid = false,
+  className = '',
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  options: Array<{ value: string; label: string }>;
+  placeholder?: string;
+  invalid?: boolean;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handlePointerDown = (event: MouseEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, []);
+
+  const selectedOption = options.find((option) => option.value === value);
+
+  return (
+    <div ref={containerRef} className={`group relative ${className}`}>
+      <div className="pointer-events-none absolute inset-0 rounded-xl bg-linear-to-r from-[#FF0080]/10 via-[#7928CA]/10 to-[#38BDF8]/10 opacity-0 blur-xl transition-opacity duration-300 group-focus-within:opacity-100" />
+      <button
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((prev) => !prev)}
+        className={selectTriggerCls(invalid)}
+      >
+        <span className={selectedOption ? '' : 'text-gray-400 dark:text-gray-500'}>
+          {selectedOption?.label ?? placeholder}
+        </span>
+        <ChevronDown
+          size={16}
+          className={`pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition-all duration-200 group-hover:text-[#7928CA] group-focus-within:text-[#0070F3] dark:group-hover:text-[#38BDF8] dark:group-focus-within:text-[#38BDF8] ${
+            open ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-30 overflow-hidden rounded-2xl border border-gray-100 bg-white p-2 shadow-[0_20px_60px_rgba(0,0,0,0.12)] dark:border-gray-700 dark:bg-gray-900"
+          >
+            <div role="listbox" className="max-h-64 space-y-1 overflow-auto">
+              {options.length > 0 ? (
+                options.map((option) => {
+                  const selected = option.value === value;
+
+                  return (
+                    <button
+                      key={`${option.value}-${option.label}`}
+                      type="button"
+                      onClick={() => {
+                        onChange(option.value);
+                        setOpen(false);
+                      }}
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-200 ${
+                        selected
+                          ? 'bg-linear-to-r from-[#FF0080]/8 via-[#7928CA]/8 to-[#38BDF8]/10 text-[#0070F3] dark:text-[#38BDF8]'
+                          : 'text-gray-700 hover:bg-[#7928CA]/6 hover:text-[#7928CA] dark:text-gray-200 dark:hover:bg-[#38BDF8]/10 dark:hover:text-[#38BDF8]'
+                      }`}
+                    >
+                      <span>{option.label}</span>
+                      {selected && <Check size={15} className="shrink-0" />}
+                    </button>
+                  );
+                })
+              ) : (
+                <div className="rounded-xl border border-dashed border-gray-200 px-3 py-4 text-center text-sm text-gray-400 dark:border-gray-700 dark:text-gray-500">
+                  {placeholder}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
