@@ -69,13 +69,13 @@ export default function CtaSection() {
   };
 
   return (
-    <section className="w-full py-24 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden relative">
+    <section className="relative w-full overflow-hidden bg-white px-4 py-24 transition-colors duration-300 dark:bg-slate-950 sm:px-6 lg:px-8">
       {/* Decorative Blob */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-[#FF0080]/10 via-[#7928CA]/10 to-[#38BDF8]/10 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto">
         <motion.div
-          className="relative bg-white/60 backdrop-blur-xl border border-white/50 shadow-2xl shadow-[#7928CA]/5 rounded-[3rem] overflow-hidden"
+          className="relative overflow-hidden rounded-[3rem] border border-white/50 bg-white/60 shadow-2xl shadow-[#7928CA]/5 backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/75 dark:shadow-black/25"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
@@ -91,7 +91,7 @@ export default function CtaSection() {
             >
               <motion.div
                 variants={itemVariants}
-                className="inline-flex items-center space-x-2 bg-blue-50/80 border border-blue-100 px-4 py-2 rounded-full backdrop-blur-sm"
+                className="inline-flex items-center space-x-2 rounded-full border border-blue-100 bg-blue-50/80 px-4 py-2 backdrop-blur-sm dark:border-blue-400/20 dark:bg-blue-400/10"
               >
                 <Accessibility className="w-4 h-4 text-blue-600" />
                 <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
@@ -101,7 +101,7 @@ export default function CtaSection() {
 
               <motion.h2
                 variants={itemVariants}
-                className="text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.15] tracking-tight"
+                className="text-5xl font-extrabold leading-[1.15] tracking-tight text-gray-900 dark:text-white lg:text-6xl"
               >
                 Help Build More <br />
                 <span className="bg-brand-gradient text-transparent bg-clip-text pr-2">
@@ -111,7 +111,7 @@ export default function CtaSection() {
 
               <motion.p
                 variants={itemVariants}
-                className="text-lg text-gray-600 leading-relaxed max-w-xl"
+                className="max-w-xl text-lg leading-relaxed text-gray-600 dark:text-slate-300"
               >
                 Discover accessible places, share real experiences, and help others navigate public
                 spaces with confidence. Your review can make every journey easier.
@@ -133,7 +133,7 @@ export default function CtaSection() {
                   href="/write-review"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="inline-flex justify-center items-center px-8 py-4 text-base font-semibold text-gray-700 bg-white/80 border border-gray-200 hover:bg-gray-50 backdrop-blur-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 shadow-sm transition-all"
+                  className="inline-flex items-center justify-center rounded-full border border-gray-200 bg-white/80 px-8 py-4 text-base font-semibold text-gray-700 shadow-sm transition-all backdrop-blur-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 dark:border-white/10 dark:bg-white/8 dark:text-slate-100 dark:hover:bg-white/12"
                 >
                   Write a Review
                 </motion.a>
@@ -142,13 +142,13 @@ export default function CtaSection() {
               {/* Floating trust badges below */}
               <motion.div variants={itemVariants} className="flex items-center gap-6 pt-8 pb-2">
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold text-gray-900">1,200+</span>
-                  <span className="text-xs text-gray-500 font-medium">Real Reviews</span>
+                  <span className="text-2xl font-bold text-gray-900 dark:text-white">1,200+</span>
+                  <span className="text-xs font-medium text-gray-500 dark:text-slate-400">Real Reviews</span>
                 </div>
-                <div className="w-px h-10 bg-gray-200"></div>
+                <div className="h-10 w-px bg-gray-200 dark:bg-white/10"></div>
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold text-gray-900">250+</span>
-                  <span className="text-xs text-gray-500 font-medium">Accessible Spaces</span>
+                  <span className="text-2xl font-bold text-gray-900 dark:text-white">250+</span>
+                  <span className="text-xs font-medium text-gray-500 dark:text-slate-400">Accessible Spaces</span>
                 </div>
               </motion.div>
             </motion.div>
@@ -170,23 +170,23 @@ export default function CtaSection() {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className="absolute -left-16 lg:-left-24 top-24 lg:top-32 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl shadow-[#7928CA]/10 border border-white z-20 hidden md:flex items-center gap-4"
+                className="absolute top-24 -left-16 z-20 hidden items-center gap-4 rounded-2xl border border-white bg-white/90 p-4 shadow-xl shadow-[#7928CA]/10 backdrop-blur-md dark:border-white/10 dark:bg-slate-900/90 dark:shadow-black/20 md:flex lg:top-32 lg:-left-24"
               >
                 <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
                   JS
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">
                     "Perfect wheelchair access!"
                   </p>
-                  <p className="text-xs text-gray-500">Jane S. reviewed City Mall</p>
+                  <p className="text-xs text-gray-500 dark:text-slate-400">Jane S. reviewed City Mall</p>
                 </div>
               </motion.div>
 
               <div className="w-[280px] sm:w-[320px] lg:w-[340px] drop-shadow-2xl">
                 <Iphone className="w-full h-auto">
                   {/* Internal Phone App UI */}
-                  <div className="w-full h-full bg-[#f8fafc] flex flex-col pt-12 pb-6 px-4 overflow-hidden relative">
+                  <div className="relative flex h-full w-full flex-col overflow-hidden bg-[#f8fafc] px-4 pt-12 pb-6 dark:bg-slate-950">
                     <motion.div
                       initial="hidden"
                       animate="visible"
@@ -196,10 +196,10 @@ export default function CtaSection() {
                       {/* Search Bar */}
                       <motion.div
                         variants={phoneItemVariants}
-                        className="bg-white rounded-full p-3 flex items-center gap-3 shadow-sm border border-gray-100"
+                        className="flex items-center gap-3 rounded-full border border-gray-100 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-slate-900"
                       >
-                        <Search className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-400">Search accessible places...</span>
+                        <Search className="h-4 w-4 text-gray-400 dark:text-slate-500" />
+                        <span className="text-sm text-gray-400 dark:text-slate-500">Search accessible places...</span>
                       </motion.div>
 
                       {/* Animated Tag Row */}
@@ -210,10 +210,10 @@ export default function CtaSection() {
                         <span className="px-3 py-1 bg-brand-gradient text-white text-[10px] rounded-full font-medium whitespace-nowrap shadow-md shadow-pink-500/20">
                           All
                         </span>
-                        <span className="px-3 py-1 bg-white border border-gray-200 text-gray-600 text-[10px] rounded-full font-medium whitespace-nowrap">
+                        <span className="whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-1 text-[10px] font-medium text-gray-600 dark:border-white/10 dark:bg-slate-900 dark:text-slate-300">
                           Ramp
                         </span>
-                        <span className="px-3 py-1 bg-white border border-gray-200 text-gray-600 text-[10px] rounded-full font-medium whitespace-nowrap">
+                        <span className="whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-1 text-[10px] font-medium text-gray-600 dark:border-white/10 dark:bg-slate-900 dark:text-slate-300">
                           Braille
                         </span>
                       </motion.div>
@@ -221,7 +221,7 @@ export default function CtaSection() {
                       {/* Map Pin Pulse animation */}
                       <motion.div
                         variants={phoneItemVariants}
-                        className="w-full h-32 bg-blue-50/50 rounded-2xl relative overflow-hidden border border-blue-100 flex items-center justify-center"
+                        className="relative flex h-32 w-full items-center justify-center overflow-hidden rounded-2xl border border-blue-100 bg-blue-50/50 dark:border-blue-400/20 dark:bg-blue-400/8"
                       >
                         <div className="absolute inset-0 bg-[url('https://maps.gstatic.com/tactile/basemap/roadmap-2x.png')] bg-cover opacity-20 filter grayscale"></div>
 
@@ -243,7 +243,7 @@ export default function CtaSection() {
                           <motion.div
                             key={card.id}
                             variants={phoneItemVariants}
-                            className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-2 relative overflow-hidden group"
+                            className="group relative flex flex-col gap-2 overflow-hidden rounded-2xl border border-gray-100 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-slate-900"
                           >
                             {/* Shimmer effect inside phone */}
                             <motion.div
@@ -259,13 +259,13 @@ export default function CtaSection() {
 
                             <div className="flex justify-between items-start">
                               <div>
-                                <h4 className="text-sm font-bold text-gray-900 pb-1">
+                                <h4 className="pb-1 text-sm font-bold text-gray-900 dark:text-white">
                                   {card.name}
                                 </h4>
-                                <p className="text-[10px] text-gray-500">{card.distance} away</p>
+                                <p className="text-[10px] text-gray-500 dark:text-slate-400">{card.distance} away</p>
                               </div>
                               <div className="flex flex-col items-end">
-                                <span className="flex items-center text-[10px] font-bold text-gray-900 bg-amber-50 px-2 py-1 rounded-full text-amber-600">
+                                <span className="flex items-center rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold text-amber-600 text-gray-900 dark:bg-amber-500/12 dark:text-amber-300">
                                   {card.rating}{' '}
                                   <Star className="w-3 h-3 ml-1 fill-amber-400 text-amber-400" />
                                 </span>
@@ -276,7 +276,7 @@ export default function CtaSection() {
                               {card.tags.map((tag) => (
                                 <span
                                   key={tag}
-                                  className="text-[9px] px-2 py-0.5 bg-gray-50 text-gray-600 rounded-md border border-gray-100"
+                                  className="rounded-md border border-gray-100 bg-gray-50 px-2 py-0.5 text-[9px] text-gray-600 dark:border-white/10 dark:bg-slate-950 dark:text-slate-300"
                                 >
                                   {tag}
                                 </span>
@@ -285,7 +285,7 @@ export default function CtaSection() {
                                 <motion.span
                                   animate={{ opacity: [0.8, 1, 0.8] }}
                                   transition={{ duration: 2, repeat: Infinity }}
-                                  className="text-[9px] px-2 py-0.5 bg-indigo-50 text-indigo-700 font-semibold rounded-md border border-indigo-100 flex items-center"
+                                  className="flex items-center rounded-md border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-[9px] font-semibold text-indigo-700 dark:border-indigo-400/20 dark:bg-indigo-400/10 dark:text-indigo-300"
                                 >
                                   Verified Access
                                 </motion.span>

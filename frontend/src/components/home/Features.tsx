@@ -38,7 +38,7 @@ function MapMockup() {
 
   return (
     <div
-      className="relative w-full rounded-2xl overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 border border-gray-100 shadow-inner"
+      className="relative w-full overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-br from-slate-50 to-blue-50 shadow-inner dark:border-white/10 dark:from-slate-900 dark:to-slate-950"
       style={{ height: '220px' }}
     >
       <svg
@@ -89,7 +89,7 @@ function MapMockup() {
           }}
         >
           <div
-            className="w-7 h-7 rounded-full flex items-center justify-center shadow-lg text-white text-[10px] font-black ring-2 ring-white"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-black text-white shadow-lg ring-2 ring-white dark:ring-slate-950"
             style={{ backgroundColor: p.color }}
           >
             <MapPinned size={12} />
@@ -106,7 +106,7 @@ function MapMockup() {
         {features.map((f) => (
           <span
             key={f.label}
-            className="inline-flex items-center gap-1 bg-white/90 backdrop-blur-sm border border-gray-100 rounded-full px-2.5 py-1 text-[10px] font-semibold text-gray-700 shadow-sm"
+            className="inline-flex items-center gap-1 rounded-full border border-gray-100 bg-white/90 px-2.5 py-1 text-[10px] font-semibold text-gray-700 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-slate-900/85 dark:text-slate-200"
           >
             <span>{f.icon}</span> {f.label}
           </span>
@@ -126,7 +126,11 @@ function Stars({ rating }: { rating: number }) {
         <Star
           key={i}
           size={11}
-          className={i < rating ? 'fill-amber-400 text-amber-400' : 'text-gray-200 fill-gray-200'}
+          className={
+            i < rating
+              ? 'fill-amber-400 text-amber-400'
+              : 'text-gray-200 fill-gray-200 dark:text-slate-700 dark:fill-slate-700'
+          }
         />
       ))}
     </div>
@@ -140,10 +144,10 @@ const featureCards = [
   {
     id: 'header',
     content: (
-      <div className="flex flex-col items-center justify-center text-center h-full gap-7 max-w-4xl mx-auto">
+      <div className="mx-auto flex h-full max-w-4xl flex-col items-center justify-center gap-7 text-center">
         <ScrollFloat
           containerClassName="!my-0 !overflow-visible"
-          textClassName="!text-sm !leading-none uppercase tracking-[0.22em] text-gray-400 font-semibold"
+          textClassName="!text-sm !leading-none uppercase tracking-[0.22em] text-gray-400 dark:text-slate-400 font-semibold"
           animationDuration={0.85}
           ease="power2.out"
           stagger={0.012}
@@ -154,7 +158,7 @@ const featureCards = [
         </ScrollFloat>
 
         <h2
-          className="w-full font-black tracking-tight leading-[1.05] text-gray-900"
+          className="w-full font-black leading-[1.05] tracking-tight text-gray-900 dark:text-white"
           style={{ fontSize: 'clamp(2.8rem, 5vw, 6rem)' }}
         >
           Designed for{' '}
@@ -169,13 +173,13 @@ const featureCards = [
           Exploration
         </h2>
 
-        <p className="text-gray-500 text-xl leading-relaxed max-w-2xl">
+        <p className="max-w-2xl text-xl leading-relaxed text-gray-500 dark:text-slate-300">
           AccessAble helps you discover, review, and truly understand the accessibility of public
           spaces — powered by community-driven insights and meaningful real-world data.
         </p>
       </div>
     ),
-    itemClassName: 'bg-white border border-gray-100',
+    itemClassName: 'bg-white border border-gray-100 dark:border-white/10 dark:bg-slate-900/80',
   },
   {
     id: 'map',
@@ -193,15 +197,15 @@ const featureCards = [
               <Map size={34} style={{ color: '#FF0080' }} />
             </div>
             <div>
-              <p className="text-xs uppercase font-bold tracking-widest text-gray-400">
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-400">
                 Live Discovery
               </p>
-              <h3 className="text-4xl font-black tracking-tight text-gray-900">
+              <h3 className="text-4xl font-black tracking-tight text-gray-900 dark:text-white">
                 Interactive Map View
               </h3>
             </div>
           </div>
-          <p className="text-gray-500 text-lg leading-relaxed mb-8">
+          <p className="mb-8 text-lg leading-relaxed text-gray-500 dark:text-slate-300">
             Visualize accessible locations on a live, interactive map. Explore what's nearby, filter
             by facility type, and navigate every public space with total confidence.
           </p>
@@ -228,7 +232,7 @@ const featureCards = [
             ].map((loc) => (
               <div
                 key={loc.name}
-                className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3"
+                className="flex items-center gap-3 rounded-2xl border border-gray-100 bg-gray-50 px-5 py-3 dark:border-white/10 dark:bg-slate-950/70"
               >
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
@@ -237,7 +241,7 @@ const featureCards = [
                   <MapPinned size={16} style={{ color: loc.color }} />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-gray-900 leading-none mb-1">{loc.name}</p>
+                  <p className="mb-1 text-sm font-bold leading-none text-gray-900 dark:text-white">{loc.name}</p>
                   <Stars rating={loc.rating} />
                 </div>
                 <span
@@ -259,7 +263,7 @@ const featureCards = [
           <motion.div
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute -bottom-4 -right-2 z-10 bg-gray-900 text-white rounded-2xl px-5 py-3.5 shadow-2xl flex items-center gap-3 border border-white/10"
+            className="absolute -right-2 -bottom-4 z-10 flex items-center gap-3 rounded-2xl border border-white/10 bg-gray-900 px-5 py-3.5 text-white shadow-2xl dark:bg-slate-950"
           >
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -275,7 +279,7 @@ const featureCards = [
         </div>
       </div>
     ),
-    itemClassName: 'bg-white border border-gray-100',
+    itemClassName: 'bg-white border border-gray-100 dark:border-white/10 dark:bg-slate-900/80',
   },
   {
     id: 'accessibility',
@@ -341,10 +345,10 @@ const featureCards = [
           >
             <ShieldCheck size={34} style={{ color: '#38BDF8' }} />
           </div>
-          <h3 className="text-4xl font-black tracking-tight text-gray-900 mb-5 leading-tight">
+          <h3 className="mb-5 text-4xl font-black leading-tight tracking-tight text-gray-900 dark:text-white">
             Trusted & Inclusive Platform
           </h3>
-          <p className="text-gray-500 text-lg leading-relaxed">
+          <p className="text-lg leading-relaxed text-gray-500 dark:text-slate-300">
             Community-powered and built on transparency — giving everyone reliable information to
             move freely through the world.
           </p>
@@ -363,7 +367,7 @@ const featureCards = [
               <span className="text-5xl font-black leading-none" style={{ color }}>
                 {val}
               </span>
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-3">
+              <span className="mt-3 text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-400">
                 {label}
               </span>
             </div>
@@ -371,7 +375,7 @@ const featureCards = [
         </div>
       </div>
     ),
-    itemClassName: 'bg-white border border-gray-100',
+    itemClassName: 'bg-white border border-gray-100 dark:border-white/10 dark:bg-slate-900/80',
   },
   {
     id: 'discover',
@@ -384,10 +388,10 @@ const featureCards = [
           >
             <MapPinned size={34} style={{ color: '#FF0080' }} />
           </div>
-          <h3 className="text-4xl font-black tracking-tight text-gray-900 mb-5 leading-tight">
+          <h3 className="mb-5 text-4xl font-black leading-tight tracking-tight text-gray-900 dark:text-white">
             Discover Public Spaces
           </h3>
-          <p className="text-gray-500 text-lg leading-relaxed">
+          <p className="text-lg leading-relaxed text-gray-500 dark:text-slate-300">
             Find parks, malls, transit hubs, and buildings with community-verified accessibility
             details. Never second-guess a venue again.
           </p>
@@ -417,11 +421,11 @@ const featureCards = [
           ].map((item) => (
             <div
               key={item.label}
-              className="flex items-center justify-between bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4"
+              className="flex items-center justify-between rounded-2xl border border-gray-100 bg-gray-50 px-6 py-4 dark:border-white/10 dark:bg-slate-950/70"
             >
               <div className="flex items-center gap-4">
                 <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="text-base font-semibold text-gray-800">{item.label}</span>
+                <span className="text-base font-semibold text-gray-800 dark:text-slate-100">{item.label}</span>
               </div>
               <span
                 className="text-sm font-bold px-4 py-1.5 rounded-full"
@@ -437,7 +441,7 @@ const featureCards = [
         </div>
       </div>
     ),
-    itemClassName: 'bg-white border border-gray-100',
+    itemClassName: 'bg-white border border-gray-100 dark:border-white/10 dark:bg-slate-900/80',
   },
   {
     id: 'reviews',
@@ -450,10 +454,10 @@ const featureCards = [
           >
             <Star size={34} style={{ color: '#7928CA' }} />
           </div>
-          <h3 className="text-4xl font-black tracking-tight text-gray-900 mb-5 leading-tight">
+          <h3 className="mb-5 text-4xl font-black leading-tight tracking-tight text-gray-900 dark:text-white">
             Share Accessibility Reviews
           </h3>
-          <p className="text-gray-500 text-lg leading-relaxed">
+          <p className="text-lg leading-relaxed text-gray-500 dark:text-slate-300">
             Submit honest, experience-based reviews that help others navigate with confidence. Your
             voice makes every space more accessible.
           </p>
@@ -479,17 +483,17 @@ const featureCards = [
               tag: 'Quiet Zone ✓',
             },
           ].map((r) => (
-            <div key={r.name} className="bg-gray-50 border border-gray-100 rounded-2xl px-6 py-5">
+            <div key={r.name} className="rounded-2xl border border-gray-100 bg-gray-50 px-6 py-5 dark:border-white/10 dark:bg-slate-950/70">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7928CA] to-[#0070F3] flex items-center justify-center text-white text-sm font-black">
                     {r.name[0]}
                   </div>
-                  <span className="text-sm font-bold text-gray-900">{r.name}</span>
+                  <span className="text-sm font-bold text-gray-900 dark:text-white">{r.name}</span>
                 </div>
                 <Stars rating={r.stars} />
               </div>
-              <p className="text-sm text-gray-500 leading-relaxed mb-3">"{r.review}"</p>
+              <p className="mb-3 text-sm leading-relaxed text-gray-500 dark:text-slate-300">"{r.review}"</p>
               <span
                 className="text-xs font-bold px-3 py-1 rounded-full text-[#7928CA]"
                 style={{ backgroundColor: '#7928CA18' }}
@@ -501,7 +505,7 @@ const featureCards = [
         </div>
       </div>
     ),
-    itemClassName: 'bg-white border border-gray-100',
+    itemClassName: 'bg-white border border-gray-100 dark:border-white/10 dark:bg-slate-900/80',
   },
   {
     id: 'profile',
@@ -514,22 +518,22 @@ const featureCards = [
           >
             <UserRound size={34} style={{ color: '#0070F3' }} />
           </div>
-          <h3 className="text-4xl font-black tracking-tight text-gray-900 mb-5 leading-tight">
+          <h3 className="mb-5 text-4xl font-black leading-tight tracking-tight text-gray-900 dark:text-white">
             Personalised Profiles
           </h3>
-          <p className="text-gray-500 text-lg leading-relaxed">
+          <p className="text-lg leading-relaxed text-gray-500 dark:text-slate-300">
             Track your contributions, manage reviews, and bookmark favourite accessible places.
             Build your accessibility journey in one place.
           </p>
         </div>
-        <div className="flex-1 bg-gray-50 border border-gray-100 rounded-3xl p-8">
-          <div className="flex items-center gap-4 mb-7 pb-6 border-b border-gray-100">
+        <div className="flex-1 rounded-3xl border border-gray-100 bg-gray-50 p-8 dark:border-white/10 dark:bg-slate-950/70">
+          <div className="mb-7 flex items-center gap-4 border-b border-gray-100 pb-6 dark:border-white/10">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0070F3] to-[#7928CA] flex items-center justify-center text-white text-2xl font-black">
               A
             </div>
             <div>
-              <p className="text-lg font-black text-gray-900">Alex Johnson</p>
-              <p className="text-sm text-gray-400">Accessibility Advocate</p>
+              <p className="text-lg font-black text-gray-900 dark:text-white">Alex Johnson</p>
+              <p className="text-sm text-gray-400 dark:text-slate-400">Accessibility Advocate</p>
             </div>
             <span
               className="ml-auto text-xs font-bold px-3 py-1.5 rounded-full text-[#0070F3]"
@@ -552,28 +556,28 @@ const featureCards = [
                 <span className="text-2xl font-black" style={{ color }}>
                   {val}
                 </span>
-                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">
+                <span className="mt-1 text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-slate-400">
                   {label}
                 </span>
               </div>
             ))}
           </div>
-          <div className="text-sm text-gray-400 font-semibold mb-3">Recent Activity</div>
+          <div className="mb-3 text-sm font-semibold text-gray-400 dark:text-slate-400">Recent Activity</div>
           {['Reviewed City Mall', 'Bookmarked Central Park', 'Added Metro Hub lift info'].map(
             (a) => (
               <div
                 key={a}
-                className="flex items-center gap-3 py-2.5 border-b border-gray-100 last:border-0"
+                className="flex items-center gap-3 border-b border-gray-100 py-2.5 last:border-0 dark:border-white/10"
               >
                 <div className="w-2 h-2 rounded-full bg-[#0070F3]" />
-                <span className="text-sm text-gray-600">{a}</span>
+                <span className="text-sm text-gray-600 dark:text-slate-300">{a}</span>
               </div>
             ),
           )}
         </div>
       </div>
     ),
-    itemClassName: 'bg-white border border-gray-100',
+    itemClassName: 'bg-white border border-gray-100 dark:border-white/10 dark:bg-slate-900/80',
   },
 ];
 
@@ -582,7 +586,7 @@ const featureCards = [
 ───────────────────────────────────────────── */
 export default function FeaturesBento() {
   return (
-    <section className="relative w-full overflow-visible bg-white">
+    <section className="relative w-full overflow-visible bg-white transition-colors duration-300 dark:bg-slate-950">
       {/* Background blobs */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-[560px] w-[700px] rounded-full bg-gradient-to-br from-[#FF0080]/5 via-[#7928CA]/5 to-[#0070F3]/5 blur-3xl" />

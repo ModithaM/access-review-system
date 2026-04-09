@@ -4,15 +4,13 @@ import { About } from '@/components/home/About';
 import Features from '@/components/home/Features';
 import { Hero } from '@/components/home/Hero';
 import Testimonials from '@/components/home/Testimonials';
-import Header01 from '@/components/shared/Header';
 import { AccessifyMarquee } from '@/components/shared/Marquee';
 import CtaSection from '@/components/home/CtaSection';
 import Footer from '@/components/shared/Footer';
 
 export default function HomePage() {
   return (
-    <div className="min-h-dvh bg-white">
-      <Header01 />
+    <div className="min-h-dvh bg-white transition-colors duration-300 dark:bg-slate-950">
       <main className="relative w-full px-0">
         <Hero />
         <div className="-mt-10">

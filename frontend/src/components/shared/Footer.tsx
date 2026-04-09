@@ -3,7 +3,7 @@ import { AuroraText } from './AuroraText';
 const Footer = () => {
   return (
     <footer
-      className="relative overflow-hidden px-6 md:px-16 lg:px-24 xl:px-32 w-full text-sm text-gray-600 bg-white pt-10"
+      className="relative w-full overflow-hidden bg-white px-6 pt-10 text-sm text-gray-600 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-300 md:px-16 lg:px-24 xl:px-32"
       style={{
         backgroundImage:
           'radial-gradient(ellipse 80% 60% at 10% 110%, rgba(121,40,202,0.06) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 90% 100%, rgba(0,112,243,0.05) 0%, transparent 60%)',
@@ -39,7 +39,7 @@ const Footer = () => {
         {/* Brand / Logo Section */}
         <div className="sm:col-span-2 lg:col-span-1">
           <AuroraText className="text-xl font-black tracking-tighter">ACCESSIFY</AuroraText>
-          <p className="text-sm/7 mt-6 text-gray-600">
+          <p className="mt-6 text-sm/7 text-gray-600 dark:text-slate-300">
             Accessify is a platform that helps people discover, review, and understand the
             accessibility of public spaces through real community experiences.
           </p>
@@ -48,9 +48,9 @@ const Footer = () => {
         {/* Company Links Section */}
         <div className="flex flex-col lg:items-center lg:justify-center">
           <div className="flex flex-col text-sm space-y-2.5">
-            <h2 className="font-semibold mb-5 text-gray-900">Platform</h2>
+            <h2 className="mb-5 font-semibold text-gray-900 dark:text-white">Platform</h2>
             <a
-              className="text-gray-600 transition-colors duration-200"
+              className="text-gray-600 transition-colors duration-200 dark:text-slate-300"
               href="#"
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundImage = 'linear-gradient(90deg, #FF0080, #7928CA)';
@@ -65,7 +65,7 @@ const Footer = () => {
               About Us
             </a>
             <a
-              className="text-gray-600 transition-colors duration-200"
+              className="text-gray-600 transition-colors duration-200 dark:text-slate-300"
               href="#"
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundImage = 'linear-gradient(90deg, #7928CA, #0070F3)';
@@ -80,7 +80,7 @@ const Footer = () => {
               Explore Spaces
             </a>
             <a
-              className="text-gray-600 transition-colors duration-200"
+              className="text-gray-600 transition-colors duration-200 dark:text-slate-300"
               href="#"
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundImage = 'linear-gradient(90deg, #0070F3, #38BDF8)';
@@ -95,7 +95,7 @@ const Footer = () => {
               Accessibility Features
             </a>
             <a
-              className="text-gray-600 transition-colors duration-200"
+              className="text-gray-600 transition-colors duration-200 dark:text-slate-300"
               href="#"
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundImage = 'linear-gradient(90deg, #FF0080, #0070F3)';
@@ -110,7 +110,7 @@ const Footer = () => {
               Reviews
             </a>
             <a
-              className="text-gray-600 transition-colors duration-200"
+              className="text-gray-600 transition-colors duration-200 dark:text-slate-300"
               href="#"
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundImage = 'linear-gradient(90deg, #7928CA, #FF0080)';
@@ -129,14 +129,14 @@ const Footer = () => {
 
         {/* Newsletter Section */}
         <div>
-          <h2 className="font-semibold text-gray-900 mb-5">Stay Updated</h2>
+          <h2 className="mb-5 font-semibold text-gray-900 dark:text-white">Stay Updated</h2>
           <div className="text-sm space-y-6 max-w-sm">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-slate-300">
               Get updates about accessible locations, new features, and community insights.
             </p>
             <div className="flex items-center">
               <input
-                className="rounded-l-md bg-gray-50 border border-gray-200 border-r-0 outline-none focus:border-purple-300 focus:ring-2 focus:ring-purple-100 w-full max-w-64 h-11 px-3 text-gray-700 placeholder-gray-400 transition"
+                className="h-11 w-full max-w-64 rounded-l-md border border-r-0 border-gray-200 bg-gray-50 px-3 text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-purple-300 focus:ring-2 focus:ring-purple-100 dark:border-white/10 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
                 type="email"
                 placeholder="Enter your email"
               />
@@ -161,8 +161,8 @@ const Footer = () => {
       </div>
 
       {/* Bottom Copyright Row */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-4 border-t mt-6 border-gray-100">
-        <p className="text-center text-gray-400">
+      <div className="mt-6 flex flex-col items-center justify-between gap-4 border-t border-gray-100 py-4 dark:border-white/10 md:flex-row">
+        <p className="text-center text-gray-400 dark:text-slate-500">
           Copyright 2026 ©{' '}
           <a
             href="/"
@@ -180,7 +180,7 @@ const Footer = () => {
         <div className="flex items-center gap-4">
           <a
             href="/"
-            className="text-gray-400 transition-colors duration-200"
+            className="text-gray-400 transition-colors duration-200 dark:text-slate-500"
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundImage = 'linear-gradient(90deg, #FF0080, #7928CA)';
               e.currentTarget.style.webkitBackgroundClip = 'text';
@@ -195,7 +195,7 @@ const Footer = () => {
           </a>
           <a
             href="/"
-            className="text-gray-400 transition-colors duration-200"
+            className="text-gray-400 transition-colors duration-200 dark:text-slate-500"
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundImage = 'linear-gradient(90deg, #7928CA, #0070F3)';
               e.currentTarget.style.webkitBackgroundClip = 'text';
@@ -210,7 +210,7 @@ const Footer = () => {
           </a>
           <a
             href="/"
-            className="text-gray-400 transition-colors duration-200"
+            className="text-gray-400 transition-colors duration-200 dark:text-slate-500"
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundImage = 'linear-gradient(90deg, #0070F3, #38BDF8)';
               e.currentTarget.style.webkitBackgroundClip = 'text';

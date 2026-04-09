@@ -112,7 +112,7 @@ function Stars({ rating, max = 5 }: { rating: number; max?: number }) {
           key={i}
           className={cn(
             'w-3.5 h-3.5',
-            i < rating ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-200 text-gray-200',
+            i < rating ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-200 text-gray-200 dark:fill-slate-700 dark:text-slate-700',
           )}
         />
       ))}
@@ -126,10 +126,10 @@ function Stars({ rating, max = 5 }: { rating: number; max?: number }) {
 function SectionHeading() {
   return (
     <div className="mb-20 px-6 text-center">
-      <p className="mb-4 text-xs font-semibold uppercase tracking-[0.4em] text-gray-400">
+      <p className="mb-4 text-xs font-semibold uppercase tracking-[0.4em] text-gray-400 dark:text-slate-400">
         Real stories
       </p>
-      <h2 className="text-[clamp(2rem,5vw,4rem)] font-black uppercase leading-none tracking-tight text-gray-900">
+      <h2 className="text-[clamp(2rem,5vw,4rem)] font-black uppercase leading-none tracking-tight text-gray-900 dark:text-white">
         Trusted by the{' '}
         <span
           className="bg-clip-text text-transparent"
@@ -140,7 +140,7 @@ function SectionHeading() {
           Community
         </span>
       </h2>
-      <p className="mx-auto mt-5 max-w-xl text-base text-gray-500 leading-relaxed">
+      <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-gray-500 dark:text-slate-300">
         Thousands of people with disabilities rely on Accessify every day to navigate the world with
         confidence and ease.
       </p>
@@ -156,7 +156,7 @@ function TestimonialCard({ name, role, avatar, text, rating }: (typeof testimoni
     <figure
       className={cn(
         'group relative mx-4 shrink-0 w-[22vw] min-w-[260px] max-w-[360px]',
-        'rounded-[2.5rem] bg-white border border-gray-200',
+        'rounded-[2.5rem] border border-gray-200 bg-white dark:border-white/10 dark:bg-slate-900/80',
         'shadow-sm hover:shadow-xl',
         'p-8 flex flex-col overflow-hidden',
         'transition-all duration-300 ease-out',
@@ -178,7 +178,7 @@ function TestimonialCard({ name, role, avatar, text, rating }: (typeof testimoni
         aria-hidden
         className="pointer-events-none absolute right-[-8%] top-1/2 -translate-y-1/2 opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-300"
       >
-        <Quote className="w-28 h-28 text-purple-500" />
+        <Quote className="w-28 h-28 text-purple-500 dark:text-purple-300" />
       </div>
 
       {/* Top row: avatar + name/role */}
@@ -196,10 +196,10 @@ function TestimonialCard({ name, role, avatar, text, rating }: (typeof testimoni
 
         {/* Name & Role */}
         <div className="flex flex-col min-w-0">
-          <figcaption className="text-lg font-black text-gray-900 leading-tight truncate">
+          <figcaption className="truncate text-lg font-black leading-tight text-gray-900 dark:text-white">
             {name}
           </figcaption>
-          <p className="text-xs text-gray-400 font-medium mt-0.5 truncate">{role}</p>
+          <p className="mt-0.5 truncate text-xs font-medium text-gray-400 dark:text-slate-400">{role}</p>
         </div>
       </div>
 
@@ -209,7 +209,7 @@ function TestimonialCard({ name, role, avatar, text, rating }: (typeof testimoni
       </div>
 
       {/* Review text */}
-      <p className="relative mt-4 text-sm text-gray-600 leading-relaxed break-words whitespace-normal">
+      <p className="relative mt-4 break-words whitespace-normal text-sm leading-relaxed text-gray-600 dark:text-slate-300">
         {text}
       </p>
     </figure>
@@ -221,7 +221,7 @@ function TestimonialCard({ name, role, avatar, text, rating }: (typeof testimoni
 ───────────────────────────────────────── */
 export default function Testimonials() {
   return (
-    <section className="relative w-full overflow-hidden bg-white py-32">
+    <section className="relative w-full overflow-hidden bg-white py-32 transition-colors duration-300 dark:bg-slate-950">
       {/* Background glow blobs */}
       <div
         aria-hidden
@@ -270,16 +270,13 @@ export default function Testimonials() {
       </ThreeDScrollTriggerContainer>
 
       {/* Edge fades — matched to white bg */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-white to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-1/4 bg-gradient-to-r from-white to-transparent dark:from-slate-950" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-1/4 bg-gradient-to-l from-white to-transparent dark:from-slate-950" />
 
       {/* Bottom gradient glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute bottom-0 inset-x-0 h-32"
-        style={{
-          background: 'linear-gradient(to top, rgba(255,255,255,1) 0%, transparent 100%)',
-        }}
+        className="pointer-events-none absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-white to-transparent dark:from-slate-950"
       />
     </section>
   );
