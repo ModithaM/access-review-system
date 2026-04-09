@@ -25,14 +25,6 @@ const ACCESS_FEATURE_CATEGORIES: AccessFeature['category'][] = [
   'Other',
 ];
 
-const ACCESS_FEATURE_CATEGORIES: AccessFeature['category'][] = [
-  'Mobility',
-  'Visual',
-  'Auditory',
-  'Cognitive',
-  'Other',
-];
-
 export default function AccessFeaturesPage() {
   const [features, setFeatures] = useState<AccessFeature[]>([]);
   const [loading, setLoading] = useState(true);
