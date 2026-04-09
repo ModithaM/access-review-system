@@ -16,6 +16,7 @@ import AccessFeaturesPage from './pages/admin/AccessFeaturesPage';
 import ReviewsPage from './pages/admin/ReviewsPage';
 import UsersPage from './pages/admin/UsersPage';
 import ReportedIssuesPage from './pages/admin/ReportedIssuesPage';
+import CompactAnalyticsDashboardPage from './pages/admin/CompactAnalyticsDashboardPage';
 
 function MainLayout() {
   return (
@@ -59,10 +60,7 @@ function App() {
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="issues" element={<ReportedIssuesPage />} />
-          <Route
-            path="analytics"
-            element={<div className="p-8 font-medium">Analytics (Coming Soon)</div>}
-          />
+          <Route path="analytics" element={<CompactAnalyticsDashboardPage />} />
           <Route
             path="settings"
             element={<div className="p-8 font-medium">Settings (Coming Soon)</div>}
