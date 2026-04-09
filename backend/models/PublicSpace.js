@@ -37,6 +37,12 @@ const publicSpaceSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    accessFeatures: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'AccessFeature',
+      },
+    ],
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );

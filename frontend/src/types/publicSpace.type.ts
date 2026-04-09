@@ -10,6 +10,14 @@ export interface LocationDetails {
   coordinates: SpaceCoordinates;
 }
 
+export interface PublicSpaceAccessFeature {
+  _id: string;
+  name: string;
+  description?: string;
+  category?: 'Mobility' | 'Visual' | 'Auditory' | 'Cognitive' | 'Other';
+  isActive?: boolean;
+}
+
 export interface PublicSpace {
   _id: string;
   id?: string;
@@ -18,6 +26,7 @@ export interface PublicSpace {
   locationDetails: LocationDetails;
   imageUrl?: string;
   description?: string;
+  accessFeatures?: PublicSpaceAccessFeature[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -28,6 +37,14 @@ export interface CreatePublicSpaceDTO {
   locationDetails: LocationDetails;
   imageUrl?: string;
   description?: string;
+  accessFeatures?: string[];
 }
 
-export type UpdatePublicSpaceDTO = Partial<CreatePublicSpaceDTO>;
+export interface UpdatePublicSpaceDTO {
+  name?: string;
+  category?: SpaceCategory;
+  locationDetails?: LocationDetails;
+  imageUrl?: string;
+  description?: string;
+  accessFeatures?: string[];
+}
