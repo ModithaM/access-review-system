@@ -7,6 +7,7 @@ import Register from './components/auth/register.component';
 import ProfilePage from './pages/ProfilePage';
 import ReportIssuePage from './pages/ReportIssuePage';
 import Header from './components/shared/Header';
+import { useTheme } from './hooks/useTheme';
 
 // Admin
 import AdminLayout from './components/admin/AdminLayout';
@@ -27,6 +28,8 @@ function MainLayout() {
 }
 
 function App() {
+  const { theme } = useTheme();
+
   return (
     <Router>
       <ToastContainer
@@ -39,17 +42,18 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme={theme}
       />
       <Routes>
         {/* Public / Main Routes */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/report-issue" element={<ReportIssuePage />} />
         </Route>
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>

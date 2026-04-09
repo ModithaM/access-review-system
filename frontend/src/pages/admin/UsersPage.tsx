@@ -1,4 +1,4 @@
-import { Plus, Lock, Trash2, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Lock, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Button from '../../components/admin/Button';

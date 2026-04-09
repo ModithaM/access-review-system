@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 export type Theme = 'light' | 'dark';
 
 const STORAGE_KEY = 'accessify-theme';
+const THEME_EVENT = 'accessify-theme-change';
 
 function getPreferredTheme(): Theme {
   if (typeof window === 'undefined') {
@@ -17,13 +18,18 @@ function getPreferredTheme(): Theme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
+function applyTheme(nextTheme: Theme) {
+  const root = document.documentElement;
+  root.classList.toggle('dark', nextTheme === 'dark');
+  window.localStorage.setItem(STORAGE_KEY, nextTheme);
+  window.dispatchEvent(new CustomEvent<Theme>(THEME_EVENT, { detail: nextTheme }));
+}
+
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => getPreferredTheme());
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle('dark', theme === 'dark');
-    window.localStorage.setItem(STORAGE_KEY, theme);
+    applyTheme(theme);
   }, [theme]);
 
   useEffect(() => {
@@ -36,13 +42,24 @@ export function useTheme() {
       }
     };
 
+    const handleThemeChange = (event: Event) => {
+      const customEvent = event as CustomEvent<Theme>;
+      setTheme(customEvent.detail);
+    };
+
     mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    window.addEventListener(THEME_EVENT, handleThemeChange as EventListener);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+      window.removeEventListener(THEME_EVENT, handleThemeChange as EventListener);
+    };
   }, []);
 
   return {
     theme,
     isDark: theme === 'dark',
+    setTheme,
     toggleTheme: () => setTheme((current) => (current === 'dark' ? 'light' : 'dark')),
   };
 }

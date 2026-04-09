@@ -1,38 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Search, Bell, Moon, Sun } from 'lucide-react';
+import { Search, Bell } from 'lucide-react';
+import ThemeToggle from '@/components/shared/ThemeToggle';
+import { useTheme } from '@/hooks/useTheme';
 
 interface NavbarProps {
   title: string;
 }
 
 export default function AdminNavbar({ title }: NavbarProps) {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Determine default mode based on localStorage or browser preference
-    const storedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-      setIsDark(true);
-    }
-  };
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <header className="h-20 bg-white/70 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-40 flex items-center justify-between px-8 dark:bg-gray-900/70 dark:border-gray-800 transition-colors">
@@ -53,17 +28,7 @@ export default function AdminNavbar({ title }: NavbarProps) {
         </div>
 
         <div className="flex items-center space-x-2">
-          <button
-            onClick={toggleDarkMode}
-            className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          >
-            {isDark ? (
-              <Sun className="w-5 h-5 text-gray-300 hover:text-yellow-400 transition-colors" />
-            ) : (
-              <Moon className="w-5 h-5 text-gray-600 hover:text-blue-600 transition-colors" />
-            )}
-          </button>
+          <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
 
           <button className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
             <Bell className="w-5 h-5 text-gray-600 dark:text-gray-300" />
