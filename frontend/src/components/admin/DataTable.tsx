@@ -40,7 +40,6 @@ export default function DataTable({
   const [internalSearchTerm, setInternalSearchTerm] = useState('');
   const activeSearchTerm = searchTerm ?? internalSearchTerm;
   const safeData = Array.isArray(data) ? data : [];
-
   const handleSearchChange = (value: string) => {
     if (onSearchTermChange) {
       onSearchTermChange(value);
