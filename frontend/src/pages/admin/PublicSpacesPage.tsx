@@ -664,7 +664,7 @@ export default function PublicSpacesPage() {
                                 value: category,
                                 label: category === 'All' ? 'All categories' : category,
                               }))}
-                              className="min-w-[220px]"
+                              className="min-w-55"
                             />
                           </div>
 
@@ -739,7 +739,7 @@ export default function PublicSpacesPage() {
                   <button
                     type="submit"
                     disabled={formik.isSubmitting}
-                    className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#FF0080] via-[#7928CA] to-[#0070F3] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:scale-[1.01] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-xl bg-linear-to-r from-[#FF0080] via-[#7928CA] to-[#0070F3] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:scale-[1.01] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {formik.isSubmitting && <Loader2 size={14} className="animate-spin" />}
                     {modalMode === 'add' ? 'Create' : 'Save Changes'}
