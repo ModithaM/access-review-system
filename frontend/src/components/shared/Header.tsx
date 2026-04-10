@@ -53,15 +53,17 @@ export default function Header() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'py-4' : 'py-8'
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? 'py-4' : 'py-8'
+      }`}
     >
       <div className="container mx-auto px-4">
         <div
-          className={`relative flex w-full items-center p-2 rounded-[2rem] transition-all duration-500 ${scrolled
-            ? 'bg-white/80 shadow-2xl backdrop-blur-xl dark:bg-slate-950/75 dark:shadow-black/30'
-            : 'bg-white/80 shadow-none backdrop-blur-xl dark:bg-transparent dark:backdrop-blur-none'
-            }`}
+          className={`relative flex w-full items-center p-2 rounded-[2rem] transition-all duration-500 ${
+            scrolled
+              ? 'bg-white/80 shadow-2xl backdrop-blur-xl dark:bg-slate-950/75 dark:shadow-black/30'
+              : 'bg-white/80 shadow-none backdrop-blur-xl dark:bg-transparent dark:backdrop-blur-none'
+          }`}
         >
           <div className="mr-auto flex shrink-0 items-center gap-3 px-4">
             <Link
@@ -118,8 +120,9 @@ export default function Header() {
                 <User className="h-4 w-4" />
                 <span className="max-w-32 truncate">{userName ?? 'Account'}</span>
                 <ChevronDown
-                  className={`h-4 w-4 transition-transform duration-200 ${isProfileMenuOpen ? 'rotate-180' : ''
-                    }`}
+                  className={`h-4 w-4 transition-transform duration-200 ${
+                    isProfileMenuOpen ? 'rotate-180' : ''
+                  }`}
                 />
               </Button>
 
