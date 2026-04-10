@@ -154,10 +154,11 @@ function SpaceCard({ space, isSelected, onClick, index }: SpaceCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.18, delay: Math.min(index * 0.035, 0.4) }}
       onClick={onClick}
-      className={`w-full text-left rounded-xl border p-3 transition-all group ${isSelected
-        ? 'border-[#7928CA]/50 bg-white dark:bg-gray-800 shadow-md shadow-[#7928CA]/10'
-        : 'border-gray-200 dark:border-gray-700/50 bg-white dark:bg-gray-800/40 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm'
-        }`}
+      className={`w-full text-left rounded-xl border p-3 transition-all group ${
+        isSelected
+          ? 'border-[#7928CA]/50 bg-white dark:bg-gray-800 shadow-md shadow-[#7928CA]/10'
+          : 'border-gray-200 dark:border-gray-700/50 bg-white dark:bg-gray-800/40 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm'
+      }`}
     >
       <div className="flex items-start gap-3">
         <div
@@ -169,8 +170,9 @@ function SpaceCard({ space, isSelected, onClick, index }: SpaceCardProps) {
 
         <div className="flex-1 min-w-0">
           <p
-            className={`text-sm font-bold truncate leading-snug ${isSelected ? 'text-[#7928CA] dark:text-purple-400' : 'text-gray-900 dark:text-white'
-              }`}
+            className={`text-sm font-bold truncate leading-snug ${
+              isSelected ? 'text-[#7928CA] dark:text-purple-400' : 'text-gray-900 dark:text-white'
+            }`}
           >
             {space.name}
           </p>
@@ -196,10 +198,11 @@ function SpaceCard({ space, isSelected, onClick, index }: SpaceCardProps) {
         </div>
 
         <ChevronRight
-          className={`shrink-0 w-4 h-4 mt-1 transition-all ${isSelected
-            ? 'text-[#7928CA]'
-            : 'text-gray-300 dark:text-gray-600 group-hover:text-gray-500 dark:group-hover:text-gray-400'
-            }`}
+          className={`shrink-0 w-4 h-4 mt-1 transition-all ${
+            isSelected
+              ? 'text-[#7928CA]'
+              : 'text-gray-300 dark:text-gray-600 group-hover:text-gray-500 dark:group-hover:text-gray-400'
+          }`}
         />
       </div>
     </motion.button>
@@ -515,8 +518,7 @@ function SpaceDetailModal({ space, onClose }: { space: PublicSpace; onClose: () 
               </p>
               <div className="space-y-2">
                 {space.accessFeatures.map((feature) => {
-                  const fColor =
-                    FEATURE_CATEGORY_COLOR[feature.category ?? 'Other'] ?? '#6b7280';
+                  const fColor = FEATURE_CATEGORY_COLOR[feature.category ?? 'Other'] ?? '#6b7280';
                   return (
                     <div
                       key={feature._id}
@@ -575,16 +577,19 @@ function SpaceDetailModal({ space, onClose }: { space: PublicSpace; onClose: () 
                 <p className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500">
                   Average Rating
                 </p>
-                <p className="mt-1 text-sm font-bold text-gray-900 dark:text-white">{averageRating}/5</p>
+                <p className="mt-1 text-sm font-bold text-gray-900 dark:text-white">
+                  {averageRating}/5
+                </p>
               </div>
               <div className="rounded-lg bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700 p-3">
                 <p className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500">
                   Total Reviews
                 </p>
-                <p className="mt-1 text-sm font-bold text-gray-900 dark:text-white">{reviewsCount}</p>
+                <p className="mt-1 text-sm font-bold text-gray-900 dark:text-white">
+                  {reviewsCount}
+                </p>
               </div>
             </div>
-
           </div>
 
           <div className="space-y-3 rounded-xl border border-gray-100 dark:border-gray-700/60 bg-white dark:bg-gray-900 p-4">
@@ -763,9 +768,7 @@ export default function ExploreSpacesPage() {
 
   const [selectedSpace, setSelectedSpace] = useState<PublicSpace | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [flyTarget, setFlyTarget] = useState<{ coords: [number, number]; id: string } | null>(
-    null,
-  );
+  const [flyTarget, setFlyTarget] = useState<{ coords: [number, number]; id: string } | null>(null);
 
   // Load all spaces
   useEffect(() => {
@@ -900,10 +903,11 @@ export default function ExploreSpacesPage() {
                 <button
                   key={value}
                   onClick={() => setView(value)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${view === value
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                    }`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    view === value
+                      ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                  }`}
                 >
                   {label}
                 </button>
@@ -921,17 +925,19 @@ export default function ExploreSpacesPage() {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${isActive
-                    ? 'text-white border-transparent shadow-sm'
-                    : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-transparent'
-                    }`}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
+                    isActive
+                      ? 'text-white border-transparent shadow-sm'
+                      : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-transparent'
+                  }`}
                   style={isActive ? { backgroundColor: color, borderColor: color } : {}}
                 >
                   {cat !== 'All' && CATEGORY_ICON[cat]}
                   {cat}
                   <span
-                    className={`text-[10px] font-semibold ${isActive ? 'text-white/70' : 'text-gray-400 dark:text-gray-500'
-                      }`}
+                    className={`text-[10px] font-semibold ${
+                      isActive ? 'text-white/70' : 'text-gray-400 dark:text-gray-500'
+                    }`}
                   >
                     {count}
                   </span>
@@ -946,10 +952,9 @@ export default function ExploreSpacesPage() {
       <div className="flex-1 flex overflow-hidden min-h-0">
         {showSidebar && (
           <div
-            className={`shrink-0 flex-col border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 overflow-hidden ${view === 'list'
-              ? 'flex flex-1'
-              : 'hidden md:flex w-80 xl:w-96'
-              }`}
+            className={`shrink-0 flex-col border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 overflow-hidden ${
+              view === 'list' ? 'flex flex-1' : 'hidden md:flex w-80 xl:w-96'
+            }`}
           >
             <div className="flex-1 overflow-y-auto p-3">
               {isLoading ? (
@@ -1084,9 +1089,7 @@ export default function ExploreSpacesPage() {
               <div className="absolute inset-0 flex items-center justify-center bg-gray-100/75 backdrop-blur-sm pointer-events-none">
                 <div className="bg-white rounded-2xl p-6 shadow-xl text-center max-w-xs mx-4">
                   <MapPin className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                  <p className="font-semibold text-gray-700 text-sm">
-                    No map locations available
-                  </p>
+                  <p className="font-semibold text-gray-700 text-sm">No map locations available</p>
                   <p className="text-xs text-gray-500 mt-1">
                     The filtered spaces don't have coordinates set yet
                   </p>
