@@ -358,8 +358,7 @@ export default function PublicSpacesPage() {
   };
 
   const filteredFeatureCatalog = featureCatalog.filter(
-    (feature) =>
-      selectedFeatureCategory === 'All' || feature.category === selectedFeatureCategory,
+    (feature) => selectedFeatureCategory === 'All' || feature.category === selectedFeatureCategory,
   );
 
   const selectedFeatureDetails = formik.values.accessFeatures
@@ -455,7 +454,10 @@ export default function PublicSpacesPage() {
               </div>
 
               {/* Form */}
-              <form onSubmit={formik.handleSubmit} className="space-y-6 px-8 py-8 md:px-10 md:py-10">
+              <form
+                onSubmit={formik.handleSubmit}
+                className="space-y-6 px-8 py-8 md:px-10 md:py-10"
+              >
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                   {/* Space Name */}
                   <div>
@@ -569,7 +571,8 @@ export default function PublicSpacesPage() {
                   {/* Image URL */}
                   <div>
                     <label className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                      Image URL <span className="text-xs font-normal text-gray-500">(optional)</span>
+                      Image URL{' '}
+                      <span className="text-xs font-normal text-gray-500">(optional)</span>
                     </label>
                     <div className="relative">
                       <Image
