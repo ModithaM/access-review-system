@@ -5,6 +5,7 @@ import {
   AlertTriangle,
   ArrowUpRight,
   Building2,
+  Download,
   MapPinned,
   MoreVertical,
   ShieldCheck,
@@ -25,6 +26,7 @@ import usersService, { type User } from '@/services/users.service';
 import type { PublicSpace } from '@/types/publicSpace.type';
 import type { AccessibilityReview } from '@/types/review.type';
 import { cn } from '@/lib/utils';
+import { downloadReviewsReport, type ReviewReportFormat } from '@/utils/downloadReviewsReport';
 
 type DashboardData = {
   users: User[];
@@ -550,13 +552,15 @@ function ActivityList({
   title,
   items,
   className,
+  action,
 }: {
   title: string;
   items: ActivityItem[];
   className?: string;
+  action?: React.ReactNode;
 }) {
   return (
-    <DashboardCard title={title} className={cn('h-full', className)}>
+    <DashboardCard title={title} className={cn('h-full', className)} action={action}>
       <div className="space-y-3">
         {items.map((item) => (
           <div
@@ -652,6 +656,7 @@ export default function DashboardPage() {
     accessFeatures: [],
   });
   const [loading, setLoading] = useState(true);
+  const [reportFormat, setReportFormat] = useState<ReviewReportFormat>('pdf');
 
   useEffect(() => {
     let active = true;
@@ -800,6 +805,10 @@ export default function DashboardPage() {
     };
   }, [data]);
 
+  const handleDownloadReviewReport = () => {
+    downloadReviewsReport(data.reviews, reportFormat);
+  };
+
   if (loading) {
     return (
       <div className="grid gap-5 lg:grid-cols-3">
@@ -921,6 +930,28 @@ export default function DashboardPage() {
           title="Recent Reviews"
           items={analytics.recentReviews}
           className="col-span-12 lg:col-span-6 xl:col-span-4"
+          action={
+            <div className="flex items-center gap-2">
+              <select
+                value={reportFormat}
+                onChange={(event) => setReportFormat(event.target.value as ReviewReportFormat)}
+                className="h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-medium text-slate-600 transition hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7928CA]/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                aria-label="Report format"
+              >
+                <option value="pdf">PDF</option>
+                <option value="csv">CSV</option>
+              </select>
+              <button
+                type="button"
+                onClick={handleDownloadReviewReport}
+                disabled={data.reviews.length === 0}
+                className="inline-flex h-9 items-center rounded-xl bg-linear-to-r from-[#FF0080] via-[#7928CA] to-[#0070F3] px-3 text-xs font-semibold text-white shadow-[0_12px_28px_rgba(121,40,202,0.18)] transition hover:shadow-[0_16px_34px_rgba(121,40,202,0.24)] disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Download className="mr-1.5 h-3.5 w-3.5" />
+                Export
+              </button>
+            </div>
+          }
         />
         <ActivityList
           title="Reported Issues"
