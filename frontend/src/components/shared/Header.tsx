@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown, LogOut, Menu, Shield, User, X } from 'lucide-react';
+import { ChevronDown, LogOut, Menu, Shield, User, X, LayoutDashboard } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/shared/Button';
@@ -12,7 +12,6 @@ import { useTheme } from '@/hooks/useTheme';
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Explore Spaces', href: '/explore-spaces' },
-  { name: 'Accessibility Features', href: '#' },
   { name: 'Report Issue', href: '/report-issue' },
 ] as const;
 
@@ -21,6 +20,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ export default function Header() {
     const user = AuthService.getCurrentUser();
     setIsLoggedIn(!!user?.token);
     setUserName(user?.user?.name || null);
+    setIsAdmin(user?.user?.userType === 'admin');
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -153,6 +154,16 @@ export default function Header() {
                         <User className="h-4 w-4" />
                         Profile
                       </Link>
+                      {isAdmin && (
+                        <Link
+                          to="/admin"
+                          className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-300 dark:hover:bg-blue-500/10"
+                          onClick={() => setIsProfileMenuOpen(false)}
+                        >
+                          <LayoutDashboard className="h-4 w-4" />
+                          Admin Dashboard
+                        </Link>
+                      )}
                       <button
                         type="button"
                         className="flex items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-500/10"
