@@ -16,15 +16,13 @@ const normalizeAccessFeatures = async (accessFeatures) => {
     throw new Error('Access features must be provided as an array.');
   }
 
-  const normalizedIds = [...new Set(accessFeatures)]
-    .filter(Boolean)
-    .map((featureId) => {
-      if (!mongoose.Types.ObjectId.isValid(featureId)) {
-        throw new Error(`Invalid access feature id: ${featureId}`);
-      }
+  const normalizedIds = [...new Set(accessFeatures)].filter(Boolean).map((featureId) => {
+    if (!mongoose.Types.ObjectId.isValid(featureId)) {
+      throw new Error(`Invalid access feature id: ${featureId}`);
+    }
 
-      return featureId;
-    });
+    return featureId;
+  });
 
   if (normalizedIds.length === 0) {
     return [];
@@ -93,14 +91,7 @@ exports.getAllPublicSpaces = async (req, res) => {
 // update a public space by ID
 exports.updatePublicSpace = async (req, res) => {
   try {
-    const {
-      name,
-      category,
-      locationDetails,
-      imageUrl,
-      description,
-      accessFeatures,
-    } = req.body;
+    const { name, category, locationDetails, imageUrl, description, accessFeatures } = req.body;
 
     const updateData = {};
 
