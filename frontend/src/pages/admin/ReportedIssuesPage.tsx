@@ -1,4 +1,4 @@
-import { AlertCircle, CheckCircle2, Clock, Edit3, Loader } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Clock, Edit3, Loader, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import SummaryCard from '../../components/admin/SummaryCard';
@@ -7,6 +7,7 @@ import Badge from '../../components/admin/Badge';
 import Modal from '../../components/admin/Modal';
 import Button from '../../components/admin/Button';
 import issueService, { type Issue } from '../../services/issue.service';
+import { downloadIssuesReport, type IssueReportFormat } from '../../utils/downloadIssuesReport';
 
 const COLUMNS: Column[] = [
   {
@@ -77,6 +78,8 @@ export default function ReportedIssuesPage() {
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
+  const [reportFormat, setReportFormat] = useState<IssueReportFormat>('pdf');
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
   const [editFormData, setEditFormData] = useState<Partial<Issue>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -165,6 +168,11 @@ export default function ReportedIssuesPage() {
     }
   };
 
+  const handleDownloadReport = () => {
+    downloadIssuesReport(issues, reportFormat);
+    setDownloadModalOpen(false);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -239,6 +247,17 @@ export default function ReportedIssuesPage() {
             onView={handleViewIssue}
             onEdit={handleEditIssue}
             onDelete={handleDeleteIssue}
+            toolbarActions={
+              <button
+                onClick={() => setDownloadModalOpen(true)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
+                title="Download report"
+                aria-label="Download PDF"
+              >
+                <Download size={14} />
+                Download
+              </button>
+            }
           />
         </motion.div>
 
@@ -632,6 +651,73 @@ export default function ReportedIssuesPage() {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* Download Report Modal */}
+      <Modal
+        isOpen={downloadModalOpen}
+        onClose={() => setDownloadModalOpen(false)}
+        title="Download Issues Report"
+        size="sm"
+      >
+        <div className="space-y-6">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Choose a format to download the issues report with {issues.length} issue
+            {issues.length !== 1 ? 's' : ''}.
+          </p>
+
+          <div className="space-y-3">
+            <label className="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <input
+                type="radio"
+                name="format"
+                value="pdf"
+                checked={reportFormat === 'pdf'}
+                onChange={(e) => setReportFormat(e.target.value as IssueReportFormat)}
+                className="w-4 h-4 text-blue-600 dark:text-blue-400"
+              />
+              <div className="ml-3 flex-1">
+                <p className="font-medium text-gray-900 dark:text-white text-sm">PDF Document</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  Professional formatted report with branding
+                </p>
+              </div>
+            </label>
+
+            <label className="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <input
+                type="radio"
+                name="format"
+                value="csv"
+                checked={reportFormat === 'csv'}
+                onChange={(e) => setReportFormat(e.target.value as IssueReportFormat)}
+                className="w-4 h-4 text-blue-600 dark:text-blue-400"
+              />
+              <div className="ml-3 flex-1">
+                <p className="font-medium text-gray-900 dark:text-white text-sm">CSV Spreadsheet</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  Comma-separated values for spreadsheet applications
+                </p>
+              </div>
+            </label>
+          </div>
+
+          <div className="flex gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
+            <Button
+              onClick={handleDownloadReport}
+              className="flex-1 h-10 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
+            >
+              <Download size={16} />
+              Download
+            </Button>
+            <Button
+              onClick={() => setDownloadModalOpen(false)}
+              className="flex-1 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
       </Modal>
     </>
   );
