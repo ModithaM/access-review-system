@@ -67,7 +67,9 @@ function ProfileCard({
     >
       <div className="mb-5">
         <h2 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h2>
-        {description && <p className="mt-1 text-[13px] text-gray-600 dark:text-slate-400">{description}</p>}
+        {description && (
+          <p className="mt-1 text-[13px] text-gray-600 dark:text-slate-400">{description}</p>
+        )}
       </div>
       {children}
     </motion.section>
@@ -90,13 +92,20 @@ function ProfileSidebar({
   onEdit: () => void;
 }) {
   const quickStats = [
-    { label: 'Profile fields', value: `${completionItems.filter((item) => item.complete).length}/3` },
+    {
+      label: 'Profile fields',
+      value: `${completionItems.filter((item) => item.complete).length}/3`,
+    },
     { label: 'Account role', value: user.userType || 'User' },
     { label: 'Session status', value: user.isLoggedIn ? 'Active' : 'Inactive' },
   ];
 
   return (
-    <ProfileCard title="Profile Summary" description="Your AccessAble account at a glance." className="sticky top-28">
+    <ProfileCard
+      title="Profile Summary"
+      description="Your AccessAble account at a glance."
+      className="sticky top-28"
+    >
       <div className="space-y-5">
         <div className="flex flex-col items-center text-center">
           <div className="relative">
@@ -111,7 +120,9 @@ function ProfileSidebar({
           </div>
 
           <div className="mt-4 space-y-2">
-            <h1 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{fullName}</h1>
+            <h1 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+              {fullName}
+            </h1>
             <div className="flex items-center justify-center gap-2 text-[13px] text-gray-600 dark:text-slate-400">
               <Mail className="h-4 w-4 text-[#7928CA]" />
               <span>{user.email || 'No email provided'}</span>
@@ -128,7 +139,9 @@ function ProfileSidebar({
               <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400 dark:text-slate-500">
                 Profile Completion
               </p>
-              <p className="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{profileCompletion}%</p>
+              <p className="mt-1 text-xl font-semibold text-gray-900 dark:text-white">
+                {profileCompletion}%
+              </p>
             </div>
             <BadgeCheck className="h-8 w-8 text-[#7928CA]" />
           </div>
@@ -157,11 +170,16 @@ function ProfileSidebar({
 
         <div className="grid gap-2.5 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
           {quickStats.map((stat) => (
-            <div key={stat.label} className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-white/5">
+            <div
+              key={stat.label}
+              className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-white/5"
+            >
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-400 dark:text-slate-500">
                 {stat.label}
               </p>
-              <p className="mt-1.5 text-[13px] font-semibold text-gray-900 dark:text-white">{stat.value}</p>
+              <p className="mt-1.5 text-[13px] font-semibold text-gray-900 dark:text-white">
+                {stat.value}
+              </p>
             </div>
           ))}
         </div>
@@ -179,17 +197,15 @@ function ProfileSidebar({
   );
 }
 
-function ProfileInfoRow({
-  label,
-  value,
-}: {
-  label: string;
-  value?: string;
-}) {
+function ProfileInfoRow({ label, value }: { label: string; value?: string }) {
   return (
     <div className="rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-3 dark:border-white/10 dark:bg-white/5">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-400 dark:text-slate-500">{label}</p>
-      <p className="mt-1.5 text-[13px] font-medium text-gray-900 dark:text-white">{value || 'Not provided'}</p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-400 dark:text-slate-500">
+        {label}
+      </p>
+      <p className="mt-1.5 text-[13px] font-medium text-gray-900 dark:text-white">
+        {value || 'Not provided'}
+      </p>
     </div>
   );
 }
@@ -517,8 +533,12 @@ export default function ProfilePage() {
     return (
       <div className="min-h-screen bg-[#fafcff] px-4 pb-12 pt-32 dark:bg-slate-950">
         <div className="mx-auto max-w-3xl rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-white/10 dark:bg-slate-950">
-          <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">Access Denied</h1>
-          <p className="mt-3 text-sm text-gray-600 dark:text-slate-400">Unable to load profile information.</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+            Access Denied
+          </h1>
+          <p className="mt-3 text-sm text-gray-600 dark:text-slate-400">
+            Unable to load profile information.
+          </p>
           <button
             onClick={() => navigate('/')}
             className="mt-8 rounded-xl bg-gradient-to-r from-[#FF0080] via-[#7928CA] to-[#0070F3] px-8 py-3 font-semibold text-white shadow-[0_16px_36px_rgba(121,40,202,0.2)] transition-all duration-300 hover:scale-[1.01]"
@@ -641,7 +661,9 @@ export default function ProfilePage() {
                 </div>
               ) : reviewsError ? (
                 <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-4 dark:border-rose-400/30 dark:bg-rose-500/10">
-                  <p className="text-sm font-medium text-rose-700 dark:text-rose-300">{reviewsError}</p>
+                  <p className="text-sm font-medium text-rose-700 dark:text-rose-300">
+                    {reviewsError}
+                  </p>
                   <Button
                     type="button"
                     onClick={loadMyReviews}
@@ -787,8 +809,12 @@ export default function ProfilePage() {
                         <UserRound className="h-4 w-4" />
                       </div>
                       <div>
-                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">User ID</p>
-                        <p className="mt-1 break-all text-[12px] text-gray-600 dark:text-slate-400">{user.id}</p>
+                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">
+                          User ID
+                        </p>
+                        <p className="mt-1 break-all text-[12px] text-gray-600 dark:text-slate-400">
+                          {user.id}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -799,8 +825,12 @@ export default function ProfilePage() {
                         <ShieldCheck className="h-4 w-4" />
                       </div>
                       <div>
-                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">Role</p>
-                        <p className="mt-1 text-[12px] text-gray-600 dark:text-slate-400">{user.userType}</p>
+                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">
+                          Role
+                        </p>
+                        <p className="mt-1 text-[12px] text-gray-600 dark:text-slate-400">
+                          {user.userType}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -815,7 +845,9 @@ export default function ProfilePage() {
                         )}
                       </div>
                       <div>
-                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">Login Status</p>
+                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">
+                          Login Status
+                        </p>
                         <p className="mt-1 text-[12px] text-gray-600 dark:text-slate-400">
                           {user.isLoggedIn ? 'Logged in and active' : 'Currently logged out'}
                         </p>
@@ -829,7 +861,9 @@ export default function ProfilePage() {
                         <Mail className="h-4 w-4" />
                       </div>
                       <div>
-                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">Password Update</p>
+                        <p className="text-[13px] font-semibold text-gray-900 dark:text-white">
+                          Password Update
+                        </p>
                         <a
                           href="#profile-password"
                           className="mt-1 inline-block text-[12px] font-medium text-[#7928CA] transition hover:text-[#FF0080] dark:text-[#38BDF8]"
