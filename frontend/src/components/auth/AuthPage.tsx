@@ -1,14 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
-import {
-  ArrowRight,
-  LockKeyhole,
-  Mail,
-  Sparkles,
-  UserRound,
-  CheckCircle2,
-} from 'lucide-react';
+import { ArrowRight, LockKeyhole, Mail, Sparkles, UserRound, CheckCircle2 } from 'lucide-react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import AuthService from '@/services/auth.service.ts';
@@ -64,7 +57,9 @@ const loginSchema = Yup.object({
 });
 
 const signupSchema = Yup.object({
-  fullName: Yup.string().min(2, 'Full name must be at least 2 characters').required('Full name is required'),
+  fullName: Yup.string()
+    .min(2, 'Full name must be at least 2 characters')
+    .required('Full name is required'),
   email: Yup.string().email('Enter a valid email address').required('Email is required'),
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
@@ -109,9 +104,8 @@ function getRedirectPath() {
 
 function getErrorMessage(error: unknown, fallback: string) {
   if (typeof error === 'object' && error !== null) {
-    const maybeMessage = (
-      error as { response?: { data?: { message?: string } }; message?: string }
-    ).response?.data?.message;
+    const maybeMessage = (error as { response?: { data?: { message?: string } }; message?: string })
+      .response?.data?.message;
 
     if (maybeMessage) {
       return maybeMessage;
@@ -566,7 +560,8 @@ function AuthPage({ initialMode = 'login' }: AuthPageProps) {
 
                               {values.rememberMe && (
                                 <p className="text-xs leading-6 text-gray-400 dark:text-slate-500">
-                                  Your session is stored locally so you can come back without starting over.
+                                  Your session is stored locally so you can come back without
+                                  starting over.
                                 </p>
                               )}
                             </Form>
