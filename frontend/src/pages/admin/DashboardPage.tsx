@@ -16,9 +16,7 @@ import {
 } from 'lucide-react';
 
 import AuthService from '@/services/auth.service';
-import accessFeaturesService, {
-  type AccessFeature,
-} from '@/services/access-features.service';
+import accessFeaturesService, { type AccessFeature } from '@/services/access-features.service';
 import issueService, { type Issue } from '@/services/issue.service';
 import publicSpaceService from '@/services/public-space.service';
 import reviewService from '@/services/review.service';
@@ -78,8 +76,12 @@ function DashboardCard({
       {(title || subtitle || action) && (
         <div className="mb-5 flex items-start justify-between gap-4">
           <div>
-            {title && <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{title}</h3>}
-            {subtitle && <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>}
+            {title && (
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{title}</h3>
+            )}
+            {subtitle && (
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>
+            )}
           </div>
           {action ?? (
             <button
@@ -175,7 +177,9 @@ function BarChartCard({
                   className="w-full rounded-full bg-[linear-gradient(180deg,#38BDF8_0%,#60A5FA_45%,#34D399_100%)] shadow-[0_0_20px_rgba(56,189,248,0.18)]"
                 />
               </div>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{item.label}</span>
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                {item.label}
+              </span>
             </div>
           );
         })}
@@ -185,7 +189,9 @@ function BarChartCard({
         <div>
           <p className="text-sm text-slate-500 dark:text-slate-400">{footerLabel}</p>
           <div className="mt-2 flex items-end gap-3">
-            <span className="text-4xl font-semibold tracking-tight text-[#60A5FA]">{footerValue}</span>
+            <span className="text-4xl font-semibold tracking-tight text-[#60A5FA]">
+              {footerValue}
+            </span>
             <span className="mb-1 inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-300">
               34.5%
               <ArrowUpRight className="h-3.5 w-3.5" />
@@ -261,7 +267,9 @@ function DonutChart({
               </span>
             </div>
             <div className="pl-3 text-right">
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.percent}%</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                {item.percent}%
+              </p>
               <p className="text-xs text-slate-500 dark:text-slate-400">{item.value} entries</p>
             </div>
           </div>
@@ -290,7 +298,9 @@ function GaugeCard({
     <DashboardCard className={cn('min-h-[230px]', className)}>
       <div className="flex items-start justify-between">
         <div>
-          <div className="text-4xl font-semibold text-slate-900 dark:text-white">{value.toFixed(1)}%</div>
+          <div className="text-4xl font-semibold text-slate-900 dark:text-white">
+            {value.toFixed(1)}%
+          </div>
           <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">{label}</div>
         </div>
         <button
@@ -324,7 +334,12 @@ function GaugeCard({
               <stop offset="100%" stopColor="#FF0080" />
             </linearGradient>
           </defs>
-          <text x="80" y="74" textAnchor="middle" className="fill-slate-900 dark:fill-white text-[26px] font-semibold">
+          <text
+            x="80"
+            y="74"
+            textAnchor="middle"
+            className="fill-slate-900 dark:fill-white text-[26px] font-semibold"
+          >
             {Math.round(value)}%
           </text>
         </svg>
@@ -408,14 +423,18 @@ function PublicSpacesOverviewCard({
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
                 {item.label}
               </p>
-              <p className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">{item.value}</p>
+              <p className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">
+                {item.value}
+              </p>
             </div>
           ))}
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/55">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Space verification</p>
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
+              Space verification
+            </p>
             <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
               {coverage}%
             </span>
@@ -453,7 +472,9 @@ function AreaTrendCard({
     <DashboardCard className={cn('h-full', className)}>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">{total}</div>
+          <div className="text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
+            {total}
+          </div>
           <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">{title}</div>
         </div>
         <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-semibold text-emerald-300">
@@ -498,7 +519,9 @@ function WelcomeCard({
             </div>
             <div>
               <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Welcome back</p>
-              <h2 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">{name}!</h2>
+              <h2 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
+                {name}!
+              </h2>
             </div>
           </div>
 
@@ -518,8 +541,12 @@ function WelcomeCard({
               },
             ].map((metric) => (
               <div key={metric.label}>
-                <div className="text-[2rem] font-semibold text-slate-900 dark:text-white">{metric.value}</div>
-                <div className="mt-1 text-base text-slate-500 dark:text-slate-400">{metric.label}</div>
+                <div className="text-[2rem] font-semibold text-slate-900 dark:text-white">
+                  {metric.value}
+                </div>
+                <div className="mt-1 text-base text-slate-500 dark:text-slate-400">
+                  {metric.label}
+                </div>
                 <div className="mt-4 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
                   <div
                     className={`h-2 rounded-full bg-gradient-to-r ${metric.color}`}
@@ -539,7 +566,9 @@ function WelcomeCard({
           </div>
           <div className="absolute bottom-14 right-20 rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 dark:border-slate-700 dark:bg-slate-900/90">
             <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Pulse</p>
-            <p className="mt-1 text-sm font-semibold text-slate-900 dark:text-white">AccessAble analytics</p>
+            <p className="mt-1 text-sm font-semibold text-slate-900 dark:text-white">
+              AccessAble analytics
+            </p>
           </div>
           <div className="absolute right-20 top-10 h-36 w-24 rounded-t-[3rem] rounded-b-2xl bg-gradient-to-b from-[#38BDF8] via-[#22C55E] to-[#FBBF24] opacity-20 blur-2xl" />
         </div>
@@ -700,13 +729,16 @@ export default function DashboardPage() {
     const totalReviews = data.reviews.length;
     const totalIssues = data.issues.length;
     const totalFeatures = data.accessFeatures.length;
-    const activeUsers = data.users.filter((user) => user.enabled !== false).length || Math.round(totalUsers * 0.78);
+    const activeUsers =
+      data.users.filter((user) => user.enabled !== false).length || Math.round(totalUsers * 0.78);
 
     const userGrowth = getCurrentVsPrevious(data.users);
     const reviewGrowth = getCurrentVsPrevious(data.reviews);
     const issueGrowth = getCurrentVsPrevious(data.issues);
     const spaceGrowth = getCurrentVsPrevious(data.publicSpaces);
-    const verifiedSpaces = data.publicSpaces.filter((space) => (space.accessFeatures?.length ?? 0) > 0).length;
+    const verifiedSpaces = data.publicSpaces.filter(
+      (space) => (space.accessFeatures?.length ?? 0) > 0,
+    ).length;
 
     const monthlyActivity = countByRecentMonths(
       [
@@ -746,35 +778,37 @@ export default function DashboardPage() {
     const resolvedIssues = data.issues.filter((issue) => issue.status === 'Resolved').length;
     const openIssues = data.issues.filter((issue) => issue.status !== 'Resolved').length;
 
-    const recentReviews: ActivityItem[] = data.reviews
-      .slice(0, 4)
-      .map((review, index) => ({
-        id: review._id ?? `review-${index}`,
-        title: review.title || 'Accessibility review submitted',
-        subtitle: typeof review.spaceId === 'object' ? review.spaceId.name || 'Unnamed space' : 'Public space review',
-        meta: new Date(review.createdAt || Date.now()).toLocaleDateString(),
-        accent: BRAND[index % BRAND.length],
-      }));
+    const recentReviews: ActivityItem[] = data.reviews.slice(0, 4).map((review, index) => ({
+      id: review._id ?? `review-${index}`,
+      title: review.title || 'Accessibility review submitted',
+      subtitle:
+        typeof review.spaceId === 'object'
+          ? review.spaceId.name || 'Unnamed space'
+          : 'Public space review',
+      meta: new Date(review.createdAt || Date.now()).toLocaleDateString(),
+      accent: BRAND[index % BRAND.length],
+    }));
 
-    const recentIssues: ActivityItem[] = data.issues
-      .slice(0, 4)
-      .map((issue, index) => ({
-        id: issue._id ?? `issue-${index}`,
-        title: issue.title,
-        subtitle: `${issue.severity} severity • ${issue.status ?? 'Open'}`,
-        meta: issue.location,
-        accent: issue.severity === 'Critical' ? '#FF0080' : issue.severity === 'High' ? '#F97316' : '#38BDF8',
-      }));
+    const recentIssues: ActivityItem[] = data.issues.slice(0, 4).map((issue, index) => ({
+      id: issue._id ?? `issue-${index}`,
+      title: issue.title,
+      subtitle: `${issue.severity} severity • ${issue.status ?? 'Open'}`,
+      meta: issue.location,
+      accent:
+        issue.severity === 'Critical'
+          ? '#FF0080'
+          : issue.severity === 'High'
+            ? '#F97316'
+            : '#38BDF8',
+    }));
 
-    const recentSpaces: ActivityItem[] = data.publicSpaces
-      .slice(0, 4)
-      .map((space, index) => ({
-        id: space._id,
-        title: space.name,
-        subtitle: `${space.category} • ${space.locationDetails?.address ?? 'No address'}`,
-        meta: space.createdAt ? new Date(space.createdAt).toLocaleDateString() : 'Recently added',
-        accent: BRAND[index % BRAND.length],
-      }));
+    const recentSpaces: ActivityItem[] = data.publicSpaces.slice(0, 4).map((space, index) => ({
+      id: space._id,
+      title: space.name,
+      subtitle: `${space.category} • ${space.locationDetails?.address ?? 'No address'}`,
+      meta: space.createdAt ? new Date(space.createdAt).toLocaleDateString() : 'Recently added',
+      accent: BRAND[index % BRAND.length],
+    }));
 
     return {
       totalUsers,
@@ -830,7 +864,11 @@ export default function DashboardPage() {
       <div className="grid grid-cols-12 gap-5">
         <div className="col-span-12 xl:col-span-8">
           <WelcomeCard
-            name={currentUser?.name ? `${currentUser.name} ${currentUser.surname ?? ''}`.trim() : 'Admin'}
+            name={
+              currentUser?.name
+                ? `${currentUser.name} ${currentUser.surname ?? ''}`.trim()
+                : 'Admin'
+            }
             totalUsers={analytics.totalUsers}
             growthRate={analytics.growthRate}
             activeUsers={analytics.activeUsers}
@@ -917,7 +955,9 @@ export default function DashboardPage() {
         <div className="col-span-12 xl:col-span-3">
           <AreaTrendCard
             title="Platform Activity"
-            total={formatCompact(analytics.totalUsers + analytics.totalReviews + analytics.totalSpaces)}
+            total={formatCompact(
+              analytics.totalUsers + analytics.totalReviews + analytics.totalSpaces,
+            )}
             delta={`${analytics.spaceChange.toFixed(1)}%`}
             values={analytics.combinedSeries}
             className="min-h-[230px]"
@@ -992,7 +1032,9 @@ export default function DashboardPage() {
                   className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/55"
                 >
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">{metric.label}</p>
+                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                      {metric.label}
+                    </p>
                     <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
                       {percent}%
                     </span>
@@ -1009,9 +1051,24 @@ export default function DashboardPage() {
 
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: 'Open Issues', value: analytics.openIssues, icon: AlertTriangle, color: '#FF0080' },
-                { label: 'Feature Library', value: analytics.totalFeatures, icon: Accessibility, color: '#38BDF8' },
-                { label: 'Public Spaces', value: analytics.totalSpaces, icon: MapPinned, color: '#22C55E' },
+                {
+                  label: 'Open Issues',
+                  value: analytics.openIssues,
+                  icon: AlertTriangle,
+                  color: '#FF0080',
+                },
+                {
+                  label: 'Feature Library',
+                  value: analytics.totalFeatures,
+                  icon: Accessibility,
+                  color: '#38BDF8',
+                },
+                {
+                  label: 'Public Spaces',
+                  value: analytics.totalSpaces,
+                  icon: MapPinned,
+                  color: '#22C55E',
+                },
                 { label: 'Users', value: analytics.totalUsers, icon: UserRound, color: '#F59E0B' },
               ].map((metric) => (
                 <div
@@ -1046,9 +1103,24 @@ export default function DashboardPage() {
         >
           <div className="space-y-4">
             {[
-              { label: 'Verified roles', value: `${analytics.totalUsers} accounts`, icon: ShieldCheck, color: '#38BDF8' },
-              { label: 'Community reviews', value: `${analytics.totalReviews} submissions`, icon: Star, color: '#F472B6' },
-              { label: 'Accessible locations', value: `${analytics.totalSpaces} indexed`, icon: Building2, color: '#22C55E' },
+              {
+                label: 'Verified roles',
+                value: `${analytics.totalUsers} accounts`,
+                icon: ShieldCheck,
+                color: '#38BDF8',
+              },
+              {
+                label: 'Community reviews',
+                value: `${analytics.totalReviews} submissions`,
+                icon: Star,
+                color: '#F472B6',
+              },
+              {
+                label: 'Accessible locations',
+                value: `${analytics.totalSpaces} indexed`,
+                icon: Building2,
+                color: '#22C55E',
+              },
             ].map((item) => (
               <div
                 key={item.label}
@@ -1061,7 +1133,9 @@ export default function DashboardPage() {
                   <item.icon className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.label}</p>
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                    {item.label}
+                  </p>
                   <p className="text-sm text-slate-500 dark:text-slate-400">{item.value}</p>
                 </div>
               </div>
