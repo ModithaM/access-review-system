@@ -287,13 +287,17 @@ export default function PublicSpacesPage() {
     {
       key: 'name',
       header: 'Name',
-      render: (row) => <span className="font-medium text-white">{row.name}</span>,
+      render: (row) => (
+        <span className="font-medium text-gray-900 dark:text-white">{row.name}</span>
+      ),
     },
     {
       key: 'locationDetails',
       header: 'Address',
       render: (row) => (
-        <span className="text-gray-300 max-w-50 truncate block">{row.locationDetails.address}</span>
+        <span className="text-gray-700 dark:text-gray-300 max-w-50 truncate block">
+          {row.locationDetails.address}
+        </span>
       ),
     },
     {
@@ -307,7 +311,7 @@ export default function PublicSpacesPage() {
       key: 'coordinates',
       header: 'Coordinates',
       render: (row) => (
-        <span className="font-mono text-xs text-gray-400">
+        <span className="font-mono text-xs text-gray-600 dark:text-gray-400">
           {row.locationDetails.coordinates.lat.toFixed(4)},{' '}
           {row.locationDetails.coordinates.lng.toFixed(4)}
         </span>
@@ -317,7 +321,7 @@ export default function PublicSpacesPage() {
       key: 'description',
       header: 'Description',
       render: (row) => (
-        <span className="text-gray-400 text-xs max-w-40 truncate block">
+        <span className="text-gray-600 dark:text-gray-400 text-xs max-w-40 truncate block">
           {row.description || '—'}
         </span>
       ),
@@ -329,13 +333,16 @@ export default function PublicSpacesPage() {
         const features = row.accessFeatures ?? [];
 
         if (features.length === 0) {
-          return <span className="text-gray-500 text-xs">None selected</span>;
+          return <span className="text-gray-500 dark:text-gray-500 text-xs">None selected</span>;
         }
 
         const featureList = features.map((feature) => feature.name).join(', ');
 
         return (
-          <span className="text-gray-300 text-xs max-w-56 truncate block" title={featureList}>
+          <span
+            className="text-gray-700 dark:text-gray-300 text-xs max-w-56 truncate block"
+            title={featureList}
+          >
             {featureList}
           </span>
         );

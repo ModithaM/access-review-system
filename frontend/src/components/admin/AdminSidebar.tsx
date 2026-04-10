@@ -7,8 +7,6 @@ import {
   Accessibility,
   Star,
   UserRound,
-  BarChart3,
-  Settings,
   Menu,
   ChevronLeft,
   LogOut,
@@ -45,18 +43,6 @@ const MENU_ITEMS = [
     label: 'Reported Issues',
     icon: AlertCircle,
     route: '/admin/issues',
-  },
-  {
-    id: 'analytics',
-    label: 'Analytics',
-    icon: BarChart3,
-    route: '/admin/analytics',
-  },
-  {
-    id: 'settings',
-    label: 'Settings',
-    icon: Settings,
-    route: '/admin/settings',
   },
 ];
 

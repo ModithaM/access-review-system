@@ -120,7 +120,7 @@ export default function DataTable({
                   {columns.map((col) => (
                     <td
                       key={col.key}
-                      className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap"
+                      className="px-6 py-4 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap"
                     >
                       {col.render ? col.render(row) : row[col.key]}
                     </td>

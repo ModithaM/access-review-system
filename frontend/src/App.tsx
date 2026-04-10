@@ -65,14 +65,6 @@ function App() {
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="issues" element={<ReportedIssuesPage />} />
-          <Route
-            path="analytics"
-            element={<div className="p-8 font-medium">Analytics (Coming Soon)</div>}
-          />
-          <Route
-            path="settings"
-            element={<div className="p-8 font-medium">Settings (Coming Soon)</div>}
-          />
         </Route>
       </Routes>
     </Router>

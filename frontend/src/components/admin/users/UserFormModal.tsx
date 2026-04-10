@@ -213,8 +213,8 @@ export default function UserFormModal({
                       formik.setFieldValue('userType', role);
                       setIsRoleMenuOpen(false);
                     }}
-                    className={`w-full px-4 py-2 text-left flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
-                      role === formik.values.userType ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                    className={`w-full px-4 py-2 text-left text-gray-900 dark:text-white flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+                      role === formik.values.userType ? 'bg-blue-50 dark:bg-blue-900/30' : ''
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -224,7 +224,7 @@ export default function UserFormModal({
                       {getRoleLabel(role)}
                     </span>
                     {role === formik.values.userType && (
-                      <Check size={18} className="text-blue-500" />
+                      <Check size={18} className="text-blue-500 dark:text-blue-400" />
                     )}
                   </button>
                 ))}
